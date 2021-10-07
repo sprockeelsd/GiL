@@ -515,6 +515,24 @@
         (hcircuit-aux sp (length vids1) costs x y vid))
 )
 
+(cffi::defcfun ("precede" precede-aux) :void
+    "Post the constraint that if there exists j (0 ≤ j < |x|) such that x[j] = u, 
+    then there must exist i with i < j such that x[i] = s"
+    (sp :pointer)
+    (n :int)
+    (vids :pointer)
+    (s :int)
+    (u :int)
+)
+
+(defun precede (sp vids s u)
+    "Post the constraint that if there exists j (0 ≤ j < |x|) such that x[j] = u, 
+    then there must exist i with i < j such that x[i] = s"
+    (let ((x (cffi::foreign-alloc :int :initial-contents vids)))
+        (precede-aux sp (length vids) x s u)
+    )
+)
+
 ;BoolVar operation flags
 (defparameter gil::BOT_AND 0)    ; logical and
 (defparameter gil::BOT_OR 1)     ; logical or

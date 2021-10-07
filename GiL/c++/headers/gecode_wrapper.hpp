@@ -235,6 +235,11 @@ void nvalues(void* sp, int n, int* vids, int rel_type, int vid);
 void circuit(void* sp, int n, int* c, int* vids1, int* vids2, int vid);
 
 /**
+ Wraps the WSpace cst_precede method 
+*/
+void precede(void* sp, int n, int* vids, int s, int u);
+
+/**
  Wraps the WSpace cst_boolop_val method.
  */
 void val_boolop(void* sp, int vid1, int bool_op, int vid2, int val);

@@ -296,6 +296,13 @@ void circuit(void* sp, int n, int* c, int* vids1, int* vids2, int vid) {
 }
 
 /**
+ Wraps the WSpace cst_precede method 
+*/
+void precede(void* sp, int n, int* vids, int s, int u){
+    return static_cast<WSpace*>(sp)->cst_precede(n, vids, s, u);
+}
+
+/**
  Wraps the WSpace cst_boolop_val method.
  */
 void val_boolop(void* sp, int vid1, int bool_op, int vid2, int val) {

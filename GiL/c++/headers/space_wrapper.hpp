@@ -323,6 +323,12 @@ public:
      */
     void cst_circuit(int n, int* c, int* vids1, int* vids2, int vid);
 
+    /**
+     Post the constraint that if there exists j (0 ≤ j < |x|) such thatx[j] = t, 
+     then there must exist i with i < j such that x[i] = s
+    */ 
+    void cst_precede(int n, int* vids, int t, int u);
+
     //=== BOOLVARS ===
 
     /**

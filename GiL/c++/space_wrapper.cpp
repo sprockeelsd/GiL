@@ -434,6 +434,14 @@ void WSpace::cst_circuit(int n, int* c, int* vids1, int* vids2, int vid) {
     circuit(*this, int_args(n*n, c), int_var_args(n, vids1), int_var_args(n, vids2), get_int_var(vid));
 }
 
+/**
+ Post the constraint that if there exists j (0 ≤ j < |x|) such that x[j] = u, 
+ then there must exist i with i < j such that x[i] = s
+*/ 
+void WSpace::cst_precede(int n, int* vids, int s, int u){
+    precede(*this, int_var_args(n, vids), s, u);
+}
+
 
 //=== BOOLVAR ===
 

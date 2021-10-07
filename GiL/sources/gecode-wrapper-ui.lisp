@@ -206,6 +206,13 @@
     by costs, and v is the total cost of the circuit, i.e. sum(vars2)."
     (hcircuit sp costs (vid vars1) (vid vars2) (vid v)))
 
+;VALUE PRECEDENCE
+(defmethod g-precede (sp vars s u)
+    "Post the constraint that if there exists j (0 ≤ j < |x|) such that x[j] = u, 
+    then there must exist i with i < j such that x[i] = s"
+    (precede sp (vid vars) s u)
+)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Methods for bool constraints ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
