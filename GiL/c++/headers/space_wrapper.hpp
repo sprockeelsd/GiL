@@ -14,6 +14,7 @@
 using namespace Gecode;
 using namespace Gecode::Int;
 using namespace std;
+using namespace Gecode::Search;
 
 class WSpace: public IntMinimizeSpace {
 protected:
@@ -403,6 +404,54 @@ public:
     void print(int n, int* vids);
 };
 
+//==================
+//= Search options =
+//==================
+
+class WTimeStop {
+    protected:
+    Gecode::Search::TimeStop stop;
+    Gecode::Search::TimeStop* stop_ptr;
+
+    public:
+    WTimeStop(int maxTime);
+    ~WTimeStop();
+
+    void reset();
+    TimeStop getStop();
+    TimeStop* getStopPtr();
+};
+
+class WSearchOptions {
+    protected:
+        Gecode::Search::Options opts;
+
+    public:
+    WSearchOptions();
+    ~WSearchOptions();
+
+    /**
+     getter for the opts field
+    */
+    Options getOpts();
+
+    /**
+     Different functions to add options
+     */
+
+    /**
+     set the number of threads to use for parallel search
+     */
+    int setNbThreads(int nThreads);
+
+    /**
+    Set the time stopping mechanism that is to be used during the search to a certain duration in ms
+    */ 
+    void setTimeStop(WTimeStop* timestop);
+};
+
+
+
 //=================
 //= Search engine =
 //=================
@@ -424,7 +473,7 @@ class WdfsEngine {
 protected:
     DFS<WSpace>* dfs;
 public:
-    WdfsEngine(WSpace* sp);
+    WdfsEngine(WSpace* sp, Options opts);
     ~WdfsEngine();
 
     /**

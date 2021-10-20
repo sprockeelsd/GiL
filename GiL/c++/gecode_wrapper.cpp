@@ -352,6 +352,46 @@ void cost(void* sp, int vid) {
 }
 
 /**
+ Wraps the WTimeStop constructor
+ */
+void* new_time_stop(int maxTime){
+    return (void*) new WTimeStop(maxTime);
+}
+
+/**
+ Wraps the WTimeStop reset method
+ */
+void reset_time_stop(void* tStop){
+    WTimeStop* _tStop = static_cast<WTimeStop*>(tStop);
+    _tStop->reset();
+}
+
+/**
+ Wraps the WSearchOptions constructor.
+ */
+void* new_search_options(){
+    return (void*) new WSearchOptions();
+}
+
+/**
+ Wraps the WSearchOptions setNbThreads method.
+ */
+int set_nb_threads(void* sOpts, int nThreads){
+    return static_cast<WSearchOptions*>(sOpts)->setNbThreads(nThreads);
+}
+
+/**
+ Wraps the WSearchOptions setTimeStop method.
+ Returns the options object passed as an argument as a void pointer
+ */
+void* set_time_stop(void* sOpts, void* tStop){
+    WTimeStop* _tStop = static_cast<WTimeStop*>(tStop);
+    WSearchOptions* _sOpts = static_cast<WSearchOptions*>(sOpts);
+    _sOpts->setTimeStop(_tStop);
+    return (void*) _sOpts;
+}
+
+/**
  Wraps the WbabEngine constructor.
  */
 void* new_bab_engine(void* sp) {
@@ -369,9 +409,10 @@ void* bab_next(void* se) {
 /**
  Wraps the WdfsEngine constructor.
  */
-void* new_dfs_engine(void* sp) {
+void* new_dfs_engine(void* sp, void* opts) {
     WSpace* _sp = static_cast<WSpace*>(sp);
-    return (void*) new WdfsEngine(_sp);
+    WSearchOptions* _opts = static_cast<WSearchOptions*>(opts);
+    return (void*) new WdfsEngine(_sp, _opts->getOpts());
 }
 
 /**

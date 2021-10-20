@@ -610,6 +610,32 @@
     (vid :int)
 )
 
+(cffi::defcfun ("new_time_stop" new-time-stop) :pointer
+    "Create a new TimeStop object to specify the time after which the search should stop"
+    (max-time :int)
+)
+
+(cffi::defcfun ("reset_time_stop" reset-time-stop) :void
+    "Reset the timer of the timeStop object"
+    (t-stop :pointer)
+)
+
+(cffi::defcfun ("new_search_options" new-search-options) :pointer
+    "Create a new options object to specify the search options"
+)
+
+(cffi::defcfun ("set_nb_threads" set-nb-threads) :int
+    "Sets the number of threads to use during the search"
+    (s-opts :pointer)
+    (n-threads :int)
+)
+
+(cffi::defcfun ("set_time_stop" set-t-stop) :pointer
+    "Sets the stop field of the Options object to the timeStop object"
+    (s-opts :pointer)
+    (t-stop :pointer)
+)
+
 (cffi::defcfun ("new_bab_engine" bab-engine-low) :pointer
     "Create a new branch and bound search-engine."
     (sp :pointer)
@@ -623,6 +649,7 @@
 (cffi::defcfun ("new_dfs_engine" dfs-engine-low) :pointer
     "Create a new depth-first search search-engine."
     (sp :pointer)
+    (opts :pointer)
 )
 
 (cffi::defcfun ("dfs_next" dfs-next) :pointer

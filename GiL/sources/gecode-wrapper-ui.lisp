@@ -267,6 +267,45 @@
 ; Methods for search engines ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+; Methods for search engine options
+
+(defclass time-stop ()
+    ((ts :initform nil :initarg ts :accessor ts)); ts is a void pointer to a WTimeStop object in Gecode
+)
+
+(defmethod t-stop ()
+    (make-instance 'time-stop)
+)
+
+(defmethod time-stop-init (tstop max-time)
+    (setf (ts tstop) (new-time-stop max-time))
+)
+
+(defmethod time-stop-reset (tstop)
+    (reset-time-stop tstop)
+)
+
+(defclass search-options ()
+    ((opts :initform nil :initarg opts :accessor opts)); opts is a void pointer to a WSearchOptions object in Gecode
+)
+
+(defmethod search-opts ()
+    (make-instance 'search-options)
+)
+
+(defmethod init-search-opts (sopts)
+    (setf (opts sopts) (new-search-options))
+)
+
+(defmethod set-n-threads (s-opts nthreads)
+    (set-nb-threads (opts s-opts) nthreads)
+)
+
+(defmethod set-time-stop (s-opts t-stop)
+    (set-t-stop (opts s-opts) (ts t-stop))
+)
+
+
 (defclass BAB-engine ()
     ((bab :initform nil :initarg :bab :accessor bab))
 )
@@ -275,11 +314,11 @@
     ((dfs :initform nil :initarg :dfs :accessor dfs))
 )
 
-(defmethod search-engine (sp &optional (bab nil))
+(defmethod search-engine (sp opts &optional (bab nil))
     "Creates a new search engine (dfs or bab)."
     (if bab
         (make-instance 'BAB-engine :bab (bab-engine-low sp))
-        (make-instance 'DFS-engine :dfs (dfs-engine-low sp))))
+        (make-instance 'DFS-engine :dfs (dfs-engine-low sp opts))))
 
 ;solution exist?
 (defun sol? (sol)

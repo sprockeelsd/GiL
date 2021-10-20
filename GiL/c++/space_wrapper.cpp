@@ -583,6 +583,69 @@ void WSpace::print(int n, int* vids) {
     std::cout << "}" << std::endl;
 }
 
+//==================
+//= Search options =
+//==================
+
+/**
+ Default constructor
+ */
+WTimeStop::WTimeStop(int maxTime) : stop(Gecode::Search::TimeStop(maxTime)) {
+    stop_ptr = &stop;
+}
+
+WTimeStop::~WTimeStop(){
+
+}
+
+TimeStop WTimeStop::getStop(){
+    return stop;
+}
+
+TimeStop* WTimeStop::getStopPtr(){
+    return stop_ptr;
+}
+
+/**
+ Reset the time value of the time stop object
+ */
+void WTimeStop::reset(){
+    stop.reset();
+}
+
+/**
+ Default constructor
+ */
+WSearchOptions::WSearchOptions(){
+    
+}
+
+WSearchOptions::~WSearchOptions(){
+
+}
+
+/**
+ getter for the opts field
+ */
+Options WSearchOptions::getOpts(){
+    return opts;
+}
+/**
+ set the number of threads to use for parallel search
+ */
+int WSearchOptions::setNbThreads(int nThreads){
+    opts.threads = nThreads;
+    return opts.threads;
+}
+
+/**
+ Set the time stopping mechanism that is to be used during the search to a certain duration in ms
+ Takes a WTimeStop object as argument, and sets the WSearchOptions object's opts.stop field to the TimeStop pointer of the WTimeStop object
+ */
+void WSearchOptions::setTimeStop(WTimeStop* timestop){
+    opts.stop = timestop->getStopPtr();
+}
+
 //=================
 //= Search engine =
 //=================
@@ -608,8 +671,8 @@ WSpace* WbabEngine::next() {
 /*
  Depth-first search
 */
-WdfsEngine::WdfsEngine(WSpace* sp) {
-    dfs = new DFS<WSpace>(sp);
+WdfsEngine::WdfsEngine(WSpace* sp, Options opts) {
+    dfs = new DFS<WSpace>(sp, opts);
 }
 
 WdfsEngine::~WdfsEngine() {

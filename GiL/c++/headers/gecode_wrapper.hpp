@@ -275,6 +275,31 @@ void branch_b(void* sp, int n, int* vids, int var_strategy, int val_strategy);
 void cost(void* sp, int vid);
 
 /**
+ Wraps the WTimeStop constructor
+ */
+void* new_time_stop(int maxTime);
+
+/**
+ Wraps the WTimeStop reset method
+ */
+void reset_time_stop(void* tStop);
+
+/**
+ Wraps the WSearchOptions constructor
+ */
+void* new_search_options();
+
+/**
+ Wraps the WSearchOptions setNbThreads method.
+ */
+int set_nb_threads(void* sOpts, int nThreads);
+
+/**
+ Wraps the WSearchOptions setTimeStop method.
+ */
+void* set_time_stop(void* sOpts, void* tStop);
+
+/**
  Wraps the WbabEngine constructor.
  */
 void* new_bab_engine(void* sp);
@@ -287,7 +312,7 @@ void* bab_next(void* se);
 /**
  Wraps the WdfsEngine constructor.
  */
-void* new_dfs_engine(void* sp);
+void* new_dfs_engine(void* sp, void* opts);
 
 /**
  Wraps the WdfsEngine next method.
