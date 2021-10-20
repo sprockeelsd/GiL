@@ -282,7 +282,7 @@
 )
 
 (defmethod time-stop-reset (tstop)
-    (reset-time-stop tstop)
+    (reset-time-stop (ts tstop))
 )
 
 (defclass search-options ()
