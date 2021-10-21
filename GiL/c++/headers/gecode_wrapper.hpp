@@ -302,7 +302,7 @@ void* set_time_stop(void* sOpts, void* tStop);
 /**
  Wraps the WbabEngine constructor.
  */
-void* new_bab_engine(void* sp);
+void* new_bab_engine(void* sp, void* opts);
 
 /**
  Wraps the WbabEngine next method.

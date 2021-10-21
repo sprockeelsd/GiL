@@ -653,7 +653,7 @@ void WSearchOptions::setTimeStop(WTimeStop* timestop){
 /*
  Branch and bound
  */
-WbabEngine::WbabEngine(WSpace* sp) {
+WbabEngine::WbabEngine(WSpace* sp, Options opts) {
     bab = new BAB<WSpace>(sp);
 }
 

@@ -394,9 +394,10 @@ void* set_time_stop(void* sOpts, void* tStop){
 /**
  Wraps the WbabEngine constructor.
  */
-void* new_bab_engine(void* sp) {
+void* new_bab_engine(void* sp, void* opts) {
     WSpace* _sp = static_cast<WSpace*>(sp);
-    return (void*) new WbabEngine(_sp);
+    WSearchOptions* _opts = static_cast<WSearchOptions*>(opts);
+    return (void*) new WbabEngine(_sp, _opts->getOpts());
 }
 
 /**

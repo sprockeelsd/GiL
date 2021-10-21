@@ -460,7 +460,7 @@ class WbabEngine {
 protected:
     BAB<WSpace>* bab;
 public:
-    WbabEngine(WSpace* sp);
+    WbabEngine(WSpace* sp, Options opts);
     ~WbabEngine();
     
     /**

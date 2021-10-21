@@ -317,7 +317,7 @@
 (defmethod search-engine (sp opts &optional (bab nil))
     "Creates a new search engine (dfs or bab)."
     (if bab
-        (make-instance 'BAB-engine :bab (bab-engine-low sp))
+        (make-instance 'BAB-engine :bab (bab-engine-low sp opts))
         (make-instance 'DFS-engine :dfs (dfs-engine-low sp opts))))
 
 ;solution exist?
