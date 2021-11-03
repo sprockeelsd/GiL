@@ -305,6 +305,9 @@
     (set-t-stop (opts s-opts) (ts t-stop))
 )
 
+;Search-engine types
+(defparameter gil::DFS "dfs")
+(defparameter gil::BAB "bab")
 
 (defclass BAB-engine ()
     ((bab :initform nil :initarg :bab :accessor bab))
@@ -314,12 +317,16 @@
     ((dfs :initform nil :initarg :dfs :accessor dfs))
 )
 
-(defmethod search-engine (sp opts &optional (bab nil))
+(defmethod search-engine (sp opts se-type)
     "Creates a new search engine (dfs or bab)."
-    (if bab
-        (make-instance 'BAB-engine :bab (bab-engine-low sp opts))
-        (make-instance 'DFS-engine :dfs (dfs-engine-low sp opts))))
-
+    (cond
+        ((string-equal se-type gil::DFS) (make-instance 'DFS-engine :dfs (dfs-engine-low sp opts)))
+        ((string-equal se-type gil::BAB) (make-instance 'BAB-engine :bab (bab-engine-low sp opts)))
+    )
+    ;; (if bab
+    ;;     (make-instance 'BAB-engine :bab (bab-engine-low sp opts))
+    ;;     (make-instance 'DFS-engine :dfs (dfs-engine-low sp opts))))
+)
 ;solution exist?
 (defun sol? (sol)
     "Existence predicate for a solution"
