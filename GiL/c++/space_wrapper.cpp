@@ -583,9 +583,11 @@ void WSpace::print(int n, int* vids) {
     std::cout << "}" << std::endl;
 }
 
-//==================
-//= Search options =
-//==================
+//============================
+//= Search options managment =
+//============================
+
+// === TIME STOP OBJECT ===
 
 /**
  Default constructor
@@ -612,6 +614,8 @@ TimeStop* WTimeStop::getStopPtr(){
 void WTimeStop::reset(){
     stop.reset();
 }
+
+// === OPTIONS OBJECT ===
 
 /**
  Default constructor
@@ -654,7 +658,7 @@ void WSearchOptions::setTimeStop(WTimeStop* timestop){
  Branch and bound
  */
 WbabEngine::WbabEngine(WSpace* sp, Options opts) {
-    bab = new BAB<WSpace>(sp);
+    bab = new BAB<WSpace>(sp, opts);
 }
 
 WbabEngine::~WbabEngine() {
@@ -666,6 +670,13 @@ WbabEngine::~WbabEngine() {
  */
 WSpace* WbabEngine::next() {
     return bab->next();
+}
+
+/**
+ Returns true if the search has been stopped by a search object
+ */
+int WbabEngine::stopped(){
+    return bab->stopped();
 }
 
 /*
@@ -684,6 +695,13 @@ WdfsEngine::~WdfsEngine() {
  */
 WSpace* WdfsEngine::next() {
     return dfs->next();
+}
+
+/**
+ Returns true if the search has been stopped by a search object
+ */
+int WdfsEngine::stopped(){
+    return dfs->stopped();
 }
 
 

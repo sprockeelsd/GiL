@@ -310,6 +310,11 @@ void* new_bab_engine(void* sp, void* opts);
 void* bab_next(void* se);
 
 /**
+ Wraps the WbabEngine stopped method.
+ */
+int bab_stopped(void* se);
+
+/**
  Wraps the WdfsEngine constructor.
  */
 void* new_dfs_engine(void* sp, void* opts);
@@ -318,6 +323,11 @@ void* new_dfs_engine(void* sp, void* opts);
  Wraps the WdfsEngine next method.
  */
 void* dfs_next(void* se);
+
+/**
+ Wraps the WdfsEngine stopped method.
+ */
+int dfs_stopped(void* se);
 
 /**
  Wraps the WSpace destructor.

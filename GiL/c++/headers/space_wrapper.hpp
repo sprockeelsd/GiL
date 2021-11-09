@@ -467,6 +467,7 @@ public:
      Search the next solution for this search engine.
      */
     WSpace* next();
+    int stopped();
 };
 
 class WdfsEngine {
@@ -480,6 +481,7 @@ public:
      Search the next solution for this search engine.
      */
     WSpace* next();
+    int stopped();
 };
 
 #endif

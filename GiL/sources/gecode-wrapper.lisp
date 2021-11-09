@@ -647,6 +647,11 @@
     (se :pointer)
 )
 
+(cffi::defcfun ("bab_stopped" bab-stopped) :int
+    "returns t if the search engine has been stopped, nil otherwise"
+    (se :pointer)
+)
+
 (cffi::defcfun ("new_dfs_engine" dfs-engine-low) :pointer
     "Create a new depth-first search search-engine."
     (sp :pointer)
@@ -655,6 +660,11 @@
 
 (cffi::defcfun ("dfs_next" dfs-next) :pointer
     "Find the next solution for the search-engine se."
+    (se :pointer)
+)
+
+(cffi::defcfun ("dfs_stopped" dfs-stopped) :int
+    "returns t if the search engine has been stopped, nil otherwise"
     (se :pointer)
 )
 

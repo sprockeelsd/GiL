@@ -408,6 +408,13 @@ void* bab_next(void* se) {
 }
 
 /**
+ Wraps the WdfsEngine stopped method.
+ */
+int bab_stopped(void* se){
+    return static_cast<WbabEngine*>(se)->stopped();
+}
+
+/**
  Wraps the WdfsEngine constructor.
  */
 void* new_dfs_engine(void* sp, void* opts) {
@@ -421,6 +428,13 @@ void* new_dfs_engine(void* sp, void* opts) {
  */
 void* dfs_next(void* se) {
     return (void*) static_cast<WdfsEngine*>(se)->next();
+}
+
+/**
+ Wraps the WdfsEngine stopped method.
+ */
+int dfs_stopped(void* se){
+    return static_cast<WdfsEngine*>(se)->stopped();
 }
 
 /**

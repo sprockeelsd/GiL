@@ -317,16 +317,20 @@
     ((dfs :initform nil :initarg :dfs :accessor dfs))
 )
 
-(defmethod search-engine (sp opts se-type)
+(defmethod search-engine (sp opts &optional (bab nil))
     "Creates a new search engine (dfs or bab)."
-    (cond
-        ((string-equal se-type gil::DFS) (make-instance 'DFS-engine :dfs (dfs-engine-low sp opts)))
-        ((string-equal se-type gil::BAB) (make-instance 'BAB-engine :bab (bab-engine-low sp opts)))
-    )
-    ;; (if bab
-    ;;     (make-instance 'BAB-engine :bab (bab-engine-low sp opts))
-    ;;     (make-instance 'DFS-engine :dfs (dfs-engine-low sp opts))))
-)
+    (if bab
+        (make-instance 'BAB-engine :bab (bab-engine-low sp opts))
+        (make-instance 'DFS-engine :dfs (dfs-engine-low sp opts))))
+
+;; (defmethod search-engine (sp opts se-type)
+;;     "Creates a new search engine (dfs or bab)."
+;;     (cond
+;;         ((string-equal se-type gil::DFS) (make-instance 'DFS-engine :dfs (dfs-engine-low sp opts)))
+;;         ((string-equal se-type gil::BAB) (make-instance 'BAB-engine :bab (bab-engine-low sp opts)))
+;;     )
+;; )
+
 ;solution exist?
 (defun sol? (sol)
     "Existence predicate for a solution"
@@ -342,6 +346,16 @@
 
 (defmethod search-next ((se null))
     nil)
+
+;stopped
+; returns 1 if stopped, 0 if not
+(defmethod stopped ((se BAB-engine))
+    (bab-stopped (bab se))
+)
+
+(defmethod stopped ((se DFS-engine))
+    (dfs-stopped (dfs se))
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Methods for solutions ;
