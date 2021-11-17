@@ -456,7 +456,7 @@ class WSearchOptions {
 //= Search engine =
 //=================
 
-class WbabEngine {
+/* class WbabEngine { // new version
 protected:
     BAB<WSpace>* bab;
 public:
@@ -465,9 +465,22 @@ public:
     
     /**
      Search the next solution for this search engine.
-     */
+     */ /*
     WSpace* next();
     int stopped();
+}; */
+
+class WbabEngine {// old version
+protected:
+    BAB<WSpace>* bab;
+public:
+    WbabEngine(WSpace* sp);
+    ~WbabEngine();
+    
+    /**
+     Search the next solution for this search engine.
+     */
+    WSpace* next();
 };
 
 class WdfsEngine {

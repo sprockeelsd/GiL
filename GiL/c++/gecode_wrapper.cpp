@@ -391,13 +391,36 @@ void* set_time_stop(void* sOpts, void* tStop){
     return (void*) _sOpts;
 }
 
+//new version
 /**
  Wraps the WbabEngine constructor.
  */
-void* new_bab_engine(void* sp, void* opts) {
+/* void* new_bab_engine(void* sp, void* opts) {
     WSpace* _sp = static_cast<WSpace*>(sp);
     WSearchOptions* _opts = static_cast<WSearchOptions*>(opts);
     return (void*) new WbabEngine(_sp, _opts->getOpts());
+} */
+
+/**
+ Wraps the WbabEngine next method.
+ */
+/* void* bab_next(void* se) {
+    return (void*) static_cast<WbabEngine*>(se)->next();
+} */
+
+/**
+ Wraps the WdfsEngine stopped method.
+ */
+/* int bab_stopped(void* se){
+    return static_cast<WbabEngine*>(se)->stopped();
+} */
+
+/**
+ Wraps the WbabEngine constructor.
+ */
+void* new_bab_engine(void* sp) {
+    WSpace* _sp = static_cast<WSpace*>(sp);
+    return (void*) new WbabEngine(_sp);
 }
 
 /**
@@ -405,13 +428,6 @@ void* new_bab_engine(void* sp, void* opts) {
  */
 void* bab_next(void* se) {
     return (void*) static_cast<WbabEngine*>(se)->next();
-}
-
-/**
- Wraps the WdfsEngine stopped method.
- */
-int bab_stopped(void* se){
-    return static_cast<WbabEngine*>(se)->stopped();
 }
 
 /**

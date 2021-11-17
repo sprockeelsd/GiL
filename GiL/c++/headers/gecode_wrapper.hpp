@@ -299,20 +299,32 @@ int set_nb_threads(void* sOpts, int nThreads);
  */
 void* set_time_stop(void* sOpts, void* tStop);
 
+//new version
 /**
  Wraps the WbabEngine constructor.
  */
-void* new_bab_engine(void* sp, void* opts);
+//void* new_bab_engine(void* sp, void* opts);
+
+/**
+ Wraps the WbabEngine next method.
+ */
+//void* bab_next(void* se);
+
+/**
+ Wraps the WbabEngine stopped method.
+ */
+//int bab_stopped(void* se);
+
+//old version
+/**
+ Wraps the WbabEngine constructor.
+ */
+void* new_bab_engine(void* sp);
 
 /**
  Wraps the WbabEngine next method.
  */
 void* bab_next(void* se);
-
-/**
- Wraps the WbabEngine stopped method.
- */
-int bab_stopped(void* se);
 
 /**
  Wraps the WdfsEngine constructor.
