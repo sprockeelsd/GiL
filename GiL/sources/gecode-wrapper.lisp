@@ -304,7 +304,7 @@
     (vid :int)
 )
 
-(defun ge-arr-max (sp vids vid)
+(defun ge-arr-max (sp vid vids)
     "Post the constraint that vid = max(vids)."
     (let ((x (cffi::foreign-alloc :int :initial-contents vids)))
         (ge-arr-max-aux sp (length vids) x vid))
