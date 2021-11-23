@@ -398,7 +398,7 @@ void WSpace::cst_count_val_val(int n, int* vids, int val1, int rel_type, int val
  with vid.
  */
 void WSpace::cst_count_val_var(int n, int* vids, int val, int rel_type, int vid) {
-    count(*this, int_var_args(n, vids), val, (IntRelType) rel_type, vid);
+    count(*this, int_var_args(n, vids), val, (IntRelType) rel_type, get_int_var(vid));
 }
 
 /**
@@ -414,7 +414,14 @@ void WSpace::cst_count_var_val(int n, int* vids, int vid, int rel_type, int val)
  with vid2.
  */
 void WSpace::cst_count_var_var(int n, int* vids, int vid1, int rel_type, int vid2) {
-    count(*this, int_var_args(n, vids), vid1, (IntRelType) rel_type, vid2);
+    count(*this, int_var_args(n, vids), vid1, (IntRelType) rel_type, get_int_var(vid2));
+}
+
+/**
+ Post the constraint that the number of variables in vids in the set set has relation rel_type with val
+ */
+void WSpace::cst_count_var_set_val(int n, int*vids, int s, int* set, int rel_type, int val){
+    count(*this, int_var_args(n, vids), IntSet(set, s), (IntRelType) rel_type, val);
 }
 
 /**
@@ -683,6 +690,10 @@ void WSearchOptions::setTimeStop(WTimeStop* timestop){
 //old version
 WbabEngine::WbabEngine(WSpace* sp) {
     bab = new BAB<WSpace>(sp);
+    ofstream myfile;
+    myfile.open ("test.txt");
+    myfile << "Writing this to a file.\n";
+    myfile.close();
 }
 
 WbabEngine::~WbabEngine() {

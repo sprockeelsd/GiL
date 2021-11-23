@@ -194,6 +194,10 @@
 (defmethod g-count (sp vars (v1 int-var) rel-type (v2 int-var)) 
     (count-var-var sp (vid vars) (vid v1) rel-type (vid v2)))
 
+(defmethod g-count (sp vars (s-set list) rel-type (val fixnum))
+    (count-var-set-val sp (vid vars) s-set rel-type val)
+)
+
 ;NUMBER OF VALUES
 (defmethod g-nvalues (sp vars rel-type (v int-var))
     "Post the constraints that v is the number of distinct values in vars."
@@ -321,7 +325,9 @@
     "Creates a new search engine (dfs or bab)."
     (if bab
         (make-instance 'BAB-engine :bab (bab-engine-low sp)); add options later if it works
-        (make-instance 'DFS-engine :dfs (dfs-engine-low sp opts))))
+        (make-instance 'DFS-engine :dfs (dfs-engine-low sp opts))
+    )
+)
 
 ;; (defmethod search-engine (sp opts se-type)
 ;;     "Creates a new search engine (dfs or bab)."

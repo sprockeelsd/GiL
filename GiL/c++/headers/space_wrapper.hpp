@@ -11,6 +11,9 @@
 #include "gecode/minimodel.hh"
 #include "gecode/set.hh"
 
+#include <iostream>
+#include <fstream>
+
 using namespace Gecode;
 using namespace Gecode::Int;
 using namespace std;
@@ -310,6 +313,11 @@ public:
      with vid2.
      */
     void cst_count_var_var(int n, int* vids, int vid1, int rel_type, int vid2);
+
+    /**
+     Post the constraint that the number of variables in vids in the set set has relation rel_type with vid2
+     */
+    void cst_count_var_set_val(int n, int*vids, int s, int* set, int rel_type, int val);
 
     /**
      Post the constraint the number of distinct values in the n variables denoted by vids

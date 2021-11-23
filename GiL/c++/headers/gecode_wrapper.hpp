@@ -225,6 +225,11 @@ void count_var_val(void* sp, int n, int* vids, int vid, int rel_type, int val);
 void count_var_var(void* sp, int n, int* vids, int vid1, int rel_type, int vid2);
 
 /**
+ Wraps the WSpace cst_count_var_set_val method.
+ */
+void count_var_set_val(void*sp, int n, int* vids, int s, int* set, int rel_type, int val);
+
+/**
  Wraps the WSpace cst_nvalues method.
  */
 void nvalues(void* sp, int n, int* vids, int rel_type, int vid);

@@ -476,6 +476,24 @@
         (count-var-var-aux sp (length vids) x vid1 rel-type vid2))
 )
 
+(cffi::defcfun ("count_var_set_val" count-var-set-val-aux) :void
+    "Post the constraint that the number of variables in vids belonging to the set set has relation rel-type with val."
+    (sp :pointer)
+    (n :int)
+    (vids :pointer)
+    (s :int)
+    (s-set :pointer)
+    (rel-type :int)
+    (val :int)
+)
+
+(defun count-var-set-val (sp vids s-set rel-type val)
+"Post the constraint that the number of variables in vids belonging to the set set has relation rel-type with val."
+    (let ((x (cffi::foreign-alloc :int :initial-contents vids))
+            (y (cffi::foreign-alloc :int :initial-contents s-set)))
+        (count-var-set-val-aux sp (length vids) x (length s-set) y rel-type val))
+)
+
 (cffi::defcfun ("nvalues" nvalues-aux) :void
     "Post the constraint the number of distinct values in the n variables denoted by vids
      has the given rel-type relation with the variable vid."
