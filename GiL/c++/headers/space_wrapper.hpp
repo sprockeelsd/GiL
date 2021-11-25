@@ -359,6 +359,16 @@ public:
      Post a relation constraint between vid1 and vid2.
      */
     void cst_boolrel_var(int vid1, int rel_type, int vid2);
+
+    //======================================
+    //Branch and bound constraint function =
+    //======================================
+
+    /*
+     Constrain method for BAB search
+     This is called everytime the solver finds a solution
+    */
+    virtual void constrain(const Space& _b);
     
     //==========================
     //= Exploration strategies =

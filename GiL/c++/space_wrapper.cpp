@@ -480,6 +480,19 @@ void WSpace::cst_boolrel_var(int vid1, int rel_type, int vid2) {
     rel(*this, get_bool_var(vid1), (IntRelType) rel_type, get_bool_var(vid2));
 }
 
+//======================================
+//Branch and bound constraint function =
+//======================================
+
+/*
+ Constrain method for BAB search
+ This is called everytime the solver finds a solution
+ This is a virtual method as declared in space_wrapper.h
+*/
+void WSpace::constrain(const Space& _b) {
+    // right now, do nothing
+}
+
 //==========================
 //= Exploration strategies =
 //==========================
@@ -690,10 +703,6 @@ void WSearchOptions::setTimeStop(WTimeStop* timestop){
 //old version
 WbabEngine::WbabEngine(WSpace* sp) {
     bab = new BAB<WSpace>(sp);
-    ofstream myfile;
-    myfile.open ("test.txt");
-    myfile << "Writing this to a file.\n";
-    myfile.close();
 }
 
 WbabEngine::~WbabEngine() {
