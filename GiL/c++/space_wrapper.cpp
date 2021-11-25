@@ -678,31 +678,8 @@ void WSearchOptions::setTimeStop(WTimeStop* timestop){
 /*
  Branch and bound
  */
-/* WbabEngine::WbabEngine(WSpace* sp, Options opts) {
+WbabEngine::WbabEngine(WSpace* sp, Options opts) {
     bab = new BAB<WSpace>(sp, opts);
-} */
-
-/* WbabEngine::~WbabEngine() {
-    delete bab;
-} */
-
-/**
- Search the next solution for this search engine.
- */
-/* WSpace* WbabEngine::next() {
-    return bab->next();
-} */
-
-/**
- Returns true if the search has been stopped by a search object
- */
-/* int WbabEngine::stopped(){
-    return bab->stopped();
-} */
-
-//old version
-WbabEngine::WbabEngine(WSpace* sp) {
-    bab = new BAB<WSpace>(sp);
 }
 
 WbabEngine::~WbabEngine() {
@@ -716,7 +693,12 @@ WSpace* WbabEngine::next() {
     return bab->next();
 }
 
-
+/**
+ Returns true if the search has been stopped by a search object
+ */
+int WbabEngine::stopped(){
+    return bab->stopped();
+}
 
 /*
  Depth-first search

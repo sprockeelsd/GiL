@@ -657,7 +657,7 @@
 (cffi::defcfun ("new_bab_engine" bab-engine-low) :pointer
     "Create a new branch and bound search-engine."
     (sp :pointer)
-    ;(opts :pointer)
+    (opts :pointer)
 )
 
 (cffi::defcfun ("bab_next" bab-next) :pointer

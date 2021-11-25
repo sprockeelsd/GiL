@@ -308,28 +308,17 @@ void* set_time_stop(void* sOpts, void* tStop);
 /**
  Wraps the WbabEngine constructor.
  */
-//void* new_bab_engine(void* sp, void* opts);
-
-/**
- Wraps the WbabEngine next method.
- */
-//void* bab_next(void* se);
-
-/**
- Wraps the WbabEngine stopped method.
- */
-//int bab_stopped(void* se);
-
-//old version
-/**
- Wraps the WbabEngine constructor.
- */
-void* new_bab_engine(void* sp);
+void* new_bab_engine(void* sp, void* opts);
 
 /**
  Wraps the WbabEngine next method.
  */
 void* bab_next(void* se);
+
+/**
+ Wraps the WbabEngine stopped method.
+ */
+int bab_stopped(void* se);
 
 /**
  Wraps the WdfsEngine constructor.
