@@ -26,6 +26,7 @@ protected:
     int i_size;
     int b_size;
     int cost_id;
+    int* solution_variable_indexes;
     
     //======================
     //= Variables from idx =
@@ -110,7 +111,12 @@ public:
      Return the indices of the IntVars in int_vars.
      */
     int* add_intVarArrayWithDom(int n, int s, int* dom);
-    
+
+    /**
+     Define which variables are to be the solution so they can be accessed to add a constraint with bab
+    */
+    int* set_as_solution_variables(int* vids);
+        
     /**
      Return the number of IntVars in the space.
      */

@@ -60,6 +60,20 @@
             collect (cffi::mem-aref p :int i)))
 )
 
+(cffi::defcfun ("set_solution_vars" set-solution-vars-aux) :pointer
+    (sp :pointer)
+    (vids :pointer)
+)
+
+(defun set-solution-vars (sp vids)
+    (let ((x (cffi::foreign-alloc :int :initial-contents vids))
+        p)
+        (setq p (set-solution-vars-aux sp x))
+        (loop for i from 0 below (length vids)
+            collect (cffi::mem-aref p :int i))
+    )
+)
+
 (cffi::defcfun ("nvars" nvars) :int
     "Return the number of variables in the space."
     (sp :pointer)

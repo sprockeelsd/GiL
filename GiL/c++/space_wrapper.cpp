@@ -151,6 +151,14 @@ int* WSpace::add_intVarArrayWithDom(int n, int s, int* dom) {
 }
 
 /**
+ Define which variables are to be the solution so they can be accessed to add a constraint with bab
+ */
+int* WSpace::set_as_solution_variables(int* vids){
+    solution_variable_indexes = vids;
+    return solution_variable_indexes;
+}
+
+/**
  Return the number of IntVars in the space.
  */
 int WSpace::nvars() {
@@ -491,6 +499,8 @@ void WSpace::cst_boolrel_var(int vid1, int rel_type, int vid2) {
 */
 void WSpace::constrain(const Space& _b) {
     // right now, do nothing
+    const WSpace& b = static_cast<const WSpace&>(_b);// cast the space
+
 }
 
 //==========================

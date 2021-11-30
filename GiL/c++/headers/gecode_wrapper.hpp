@@ -50,6 +50,11 @@ int* add_intVarArray(void* sp, int n, int min, int max);
 int* add_intVarArrayWithDom(void* sp, int n, int s, int* dom);
 
 /**
+ Wraps the WSpace set_as_solution_variables method.
+ */
+int* set_solution_vars(void* sp, int* vids);
+
+/**
  Wraps the WSpace nvars method.
  */
 int nvars(void* sp);

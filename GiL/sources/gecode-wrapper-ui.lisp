@@ -29,6 +29,11 @@
     (loop for v in (add-int-var-array-dom-low sp n dom) collect
         (make-instance 'int-var :id v)))
 
+(defmethod g-specify-sol-variables (sp vids)
+    "Specifies the variables that will contain the solution"
+    (set-solution-vars sp vids)
+)
+
 ;id getter
 (defmethod vid ((self int-var))
     "Gets the vid of the variable self"
