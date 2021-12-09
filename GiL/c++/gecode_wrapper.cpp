@@ -39,8 +39,8 @@ int* add_intVarArrayWithDom(void* sp, int n, int s, int* dom) {
 /**
  Wraps the WSpace set_as_solution_variables method.
  */
-int* set_solution_vars(void* sp, int* vids){
-    return static_cast<WSpace*>(sp)->set_as_solution_variables(vids);
+int* set_solution_vars(void* sp, int n, int* vids){
+    return static_cast<WSpace*>(sp)->set_as_solution_variables(n, vids);
 }
 
 /**

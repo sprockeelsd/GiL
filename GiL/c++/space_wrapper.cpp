@@ -153,7 +153,7 @@ int* WSpace::add_intVarArrayWithDom(int n, int s, int* dom) {
 /**
  Define which variables are to be the solution so they can be accessed to add a constraint with bab
  */
-int* WSpace::set_as_solution_variables(int* vids){
+int* WSpace::set_as_solution_variables(int n, int* vids){
     solution_variable_indexes = vids;
     return solution_variable_indexes;
 }
@@ -499,8 +499,12 @@ void WSpace::cst_boolrel_var(int vid1, int rel_type, int vid2) {
 */
 void WSpace::constrain(const Space& _b) {
     // right now, do nothing
-    const WSpace& b = static_cast<const WSpace&>(_b);// cast the space
-
+    //const WSpace& b = static_cast<const WSpace&>(_b);// cast the space
+    //IntVarArgs vars(int_var_args(var_sol_size, solution_variable_indexes));
+    //for(int i = 0; i < var_sol_size; ++i){
+    //    rel(*this, vars[i], IRT_NQ, 2);
+    //    b.vars[i].val()
+    //}
 }
 
 //==========================
@@ -513,30 +517,38 @@ void WSpace::constrain(const Space& _b) {
  var_strategy:
     - 0 : INT_VAR_SIZE_MIN()
     - 1 : INT_VAR_RND(r)
+    - 2 : INT_VAR_DEGREE_MAX()
  val_strategy:
     - 0 : INT_VAL_MIN()
     - 1 : INT_VAL_RND(r)
  */
 void WSpace::branch(int n, int* vids, int var_strategy, int val_strategy) {
+    IntVarBranch var_strat;
+    IntValBranch val_strat;
+
+    Rnd r1(1U);
+    Rnd r2(3U);
+
+    //determine the variable strategy
     if(var_strategy == 0){//INT_VAR_SIZE_MIN()
-        if(val_strategy == 0){//INT_VAL_MIN()
-            Gecode::branch(*this, int_var_args(n, vids), INT_VAR_SIZE_MIN(), INT_VAL_MIN());
-        }
-        else if(val_strategy == 1){//INT_VAL_RND(r)
-            Rnd r(3U);
-            Gecode::branch(*this, int_var_args(n, vids), INT_VAR_SIZE_MIN(), INT_VAL_RND(r));
-        }
+        var_strat = INT_VAR_SIZE_MIN();
     }
-    else if(var_strategy == 1){//INT_VAR_RND(r)
-        Rnd r1(1U);
-        if(val_strategy == 0){//INT_VAL_MIN()
-            Gecode::branch(*this, int_var_args(n, vids), INT_VAR_RND(r1), INT_VAL_MIN());
-        }
-        else if(val_strategy == 1){//INT_VAL_RND(r)
-            Rnd r2(3U);
-            Gecode::branch(*this, int_var_args(n, vids), INT_VAR_RND(r1), INT_VAL_RND(r2));
-        }
+    else if(var_strategy == 1){//INT_VAR_RND(r1)
+        var_strat = INT_VAR_RND(r1);
     }
+    else if(var_strategy == 2){//INT_VAR_DEGREE_MAX()
+        var_strat = INT_VAR_DEGREE_MAX();
+    }
+
+    //determine the value strategy
+    if(val_strategy == 0){//INT_VAL_MIN()
+        val_strat = INT_VAL_MIN();
+    }
+    else if(val_strategy == 1){//INT_VAL_RND(r2)
+        val_strat = INT_VAL_RND(r2);
+    }
+
+    Gecode::branch(*this, int_var_args(n, vids), var_strat, val_strat);
 }
 
 

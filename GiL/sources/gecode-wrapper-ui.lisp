@@ -249,6 +249,7 @@
 ;Variable branching strategies
 (defparameter gil::INT_VAR_SIZE_MIN 0)    ; select first the variable with the smallest domain
 (defparameter gil::INT_VAR_RND 1) ; select first a random variable
+(defparameter gil::INT_VAR_DEGREE_MAX 2); select the variable with the highest degree
 
 ;Variable branching strategies
 (defparameter gil::INT_VAL_MIN 0)    ; select first the smallest value of the domain
