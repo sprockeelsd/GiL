@@ -521,6 +521,9 @@ void WSpace::constrain(const Space& _b) {
  val_strategy:
     - 0 : INT_VAL_MIN()
     - 1 : INT_VAL_RND(r)
+    - 2 : INT_VAL_SPLIT_MIN()
+    - 3 : INT_VAL_SPLIT_MAX()
+    - 4 : INT_VAL_MED()
  */
 void WSpace::branch(int n, int* vids, int var_strategy, int val_strategy) {
     IntVarBranch var_strat;
@@ -546,6 +549,15 @@ void WSpace::branch(int n, int* vids, int var_strategy, int val_strategy) {
     }
     else if(val_strategy == 1){//INT_VAL_RND(r2)
         val_strat = INT_VAL_RND(r2);
+    }
+    else if(val_strategy == 2){//INT_VAL_SPLIT_MIN()
+        val_strat = INT_VAL_SPLIT_MIN();
+    }
+    else if(val_strategy == 3){//INT_VAL_SPLIT_MAX()
+        val_strat = INT_VAL_SPLIT_MAX();
+    }
+    else if(val_strategy == 4){//INT_VAL_MED()
+        val_strat = INT_VAL_MED();
     }
 
     Gecode::branch(*this, int_var_args(n, vids), var_strat, val_strat);

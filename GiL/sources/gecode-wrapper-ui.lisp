@@ -254,7 +254,9 @@
 ;Variable branching strategies
 (defparameter gil::INT_VAL_MIN 0)    ; select first the smallest value of the domain
 (defparameter gil::INT_VAL_RND 1) ; select first a random value
-
+(defparameter gil::INT_VAL_SPLIT_MIN 2) ; select the values not greater than the (min+max)/2
+(defparameter gil::INT_VAL_SPLIT_MAX 3) ; select the values greater than (min+max)/2
+(defparameter gil::INT_VAL_MED 4) ; selects the greatest value not bigger than the median
 
 (defmethod g-branch (sp (v int-var) var-strat val-strat)
     "Post a branching on v with strategies var-strat and val-strat."
