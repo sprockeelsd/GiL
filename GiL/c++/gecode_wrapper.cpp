@@ -296,6 +296,13 @@ void count_var_set_val(void*sp, int n, int* vids, int s, int* set, int rel_type,
 }
 
 /**
+ Wraps the WSpace cst_count_array_val method.
+ */
+void count_array_val(void* sp, int n, int* vids, int* c, int rel_type, int val){
+    return static_cast<WSpace*>(sp)->cst_count_array_val(n, vids, c, rel_type, val);
+}
+
+/**
  Wraps the WSpace cst_nvalues method.
  */
 void nvalues(void* sp, int n, int* vids, int rel_type, int vid) {

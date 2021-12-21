@@ -199,8 +199,12 @@
 (defmethod g-count (sp vars (v1 int-var) rel-type (v2 int-var)) 
     (count-var-var sp (vid vars) (vid v1) rel-type (vid v2)))
 
-(defmethod g-count (sp vars (s-set list) rel-type (val fixnum))
+(defmethod g-count (sp vars (s-set list) rel-type (val fixnum)); ajouté
     (count-var-set-val sp (vid vars) s-set rel-type val)
+)
+
+(defmethod g-count-array (sp vars (c list) rel-type (val fixnum)); ajouté
+    (count-array-val sp (vid vars) c rel-type val)
 )
 
 ;NUMBER OF VALUES

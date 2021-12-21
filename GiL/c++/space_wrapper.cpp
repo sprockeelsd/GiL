@@ -340,7 +340,7 @@ void WSpace::cst_max(int vid1, int vid2, int vid3) {
 /**
  Post the constraint that vid = max(vids).
  */
-void WSpace::cst_arr_max(int n, int* vids, int vid) {
+void WSpace::cst_arr_max(int n, int* vids, int vid) {// corrigé
     Gecode::max(*this, int_var_args(n, vids), get_int_var(vid));
 }
 
@@ -413,8 +413,8 @@ void WSpace::cst_count_val_var(int n, int* vids, int val, int rel_type, int vid)
  Post the constraint that the number of variables in vids equal to vid has relation rel_type 
  with val.
  */
-void WSpace::cst_count_var_val(int n, int* vids, int vid, int rel_type, int val) {
-    count(*this, int_var_args(n, vids), vid, (IntRelType) rel_type, val);
+void WSpace::cst_count_var_val(int n, int* vids, int vid, int rel_type, int val) {// corrigé
+    count(*this, int_var_args(n, vids), get_int_var(vid), (IntRelType) rel_type, val);
 }
 
 /**
@@ -428,8 +428,15 @@ void WSpace::cst_count_var_var(int n, int* vids, int vid1, int rel_type, int vid
 /**
  Post the constraint that the number of variables in vids in the set set has relation rel_type with val
  */
-void WSpace::cst_count_var_set_val(int n, int*vids, int s, int* set, int rel_type, int val){
+void WSpace::cst_count_var_set_val(int n, int*vids, int s, int* set, int rel_type, int val){// ajouté
     count(*this, int_var_args(n, vids), IntSet(set, s), (IntRelType) rel_type, val);
+}
+
+/** 
+ Post the constraint that the number of variables in vids where vars[i] = c[i] and c is an array of integers has rel_type to val
+ */
+void WSpace::cst_count_array_val(int n, int*vids, int* c, int rel_type, int val){
+    count(*this, int_var_args(n, vids), int_args(n, c), (IntRelType) rel_type, val);
 }
 
 /**

@@ -327,6 +327,11 @@ public:
      */
     void cst_count_var_set_val(int n, int*vids, int s, int* set, int rel_type, int val);
 
+    /** 
+     Post the constraint that the number of variables in vids where vars[i] = c[i] and c is an array of integers has rel_type to val
+     */
+    void cst_count_array_val(int n, int*vids, int* c, int rel_type, int val);
+
     /**
      Post the constraint the number of distinct values in the n variables denoted by vids
      has the given rel_type relation with the variable vid.

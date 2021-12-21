@@ -509,6 +509,22 @@
         (count-var-set-val-aux sp (length vids) x (length s-set) y rel-type val))
 )
 
+(cffi::defcfun ("count_array_val" count-array-val-aux) :void
+    (sp :pointer)
+    (n :int)
+    (vids :pointer)
+    (c :pointer)
+    (rel-type :int)
+    (val :int)
+)
+
+(defun count-array-val (sp vids c rel-type val)
+"Post the constraint that the number of times that vars[i] = c[i] is equal to val"
+        (let ((x (cffi::foreign-alloc :int :initial-contents vids))
+                (y (cffi::foreign-alloc :int :initial-contents c)))
+            (count-array-val-aux sp (length vids) x y rel-type val))
+)
+
 (cffi::defcfun ("nvalues" nvalues-aux) :void
     "Post the constraint the number of distinct values in the n variables denoted by vids
      has the given rel-type relation with the variable vid."
