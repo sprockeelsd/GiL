@@ -714,7 +714,6 @@ void WSearchOptions::setTimeStop(WTimeStop* timestop){
 //=================
 //= Search engine =
 //=================
-// new version
 
 /*
  Branch and bound

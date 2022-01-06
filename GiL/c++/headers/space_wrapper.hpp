@@ -11,9 +11,6 @@
 #include "gecode/minimodel.hh"
 #include "gecode/set.hh"
 
-#include <iostream>
-#include <fstream>
-
 using namespace Gecode;
 using namespace Gecode::Int;
 using namespace std;

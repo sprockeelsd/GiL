@@ -430,7 +430,7 @@ void* bab_next(void* se) {
 }
 
 /**
- Wraps the WdfsEngine stopped method.
+ Wraps the WbabEngine stopped method.
  */
 int bab_stopped(void* se){
     return static_cast<WbabEngine*>(se)->stopped();

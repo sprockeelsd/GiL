@@ -255,7 +255,7 @@
 (defparameter gil::INT_VAR_RND 1) ; select first a random variable
 (defparameter gil::INT_VAR_DEGREE_MAX 2); select the variable with the highest degree
 
-;Variable branching strategies
+;Value branching strategies
 (defparameter gil::INT_VAL_MIN 0)    ; select first the smallest value of the domain
 (defparameter gil::INT_VAL_RND 1) ; select first a random value
 (defparameter gil::INT_VAL_SPLIT_MIN 2) ; select the values not greater than the (min+max)/2
@@ -332,14 +332,6 @@
 (defclass DFS-engine ()
     ((dfs :initform nil :initarg :dfs :accessor dfs))
 )
-
-;; (defmethod search-engine (sp opts &optional (bab nil))
-;;     "Creates a new search engine (dfs or bab)."
-;;     (if bab
-;;         (make-instance 'BAB-engine :bab (bab-engine-low sp opts))
-;;         (make-instance 'DFS-engine :dfs (dfs-engine-low sp opts))
-;;     )
-;; )
 
 (defmethod search-engine (sp opts se-type)
     "Creates a new search engine (dfs or bab)."
