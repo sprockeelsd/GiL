@@ -4,6 +4,8 @@ GiL (Gecode interface Lisp) is a wrapper that allows to use Gecode functions in 
 
 ## How to use
 **Disclaimer : GiL currently only works onMacOS.**
+
+
 Install Gecode, a Common Lisp implementation and CFFI. Depending on what MacOS version you are using, you might run into a problem with the dynamic library not finding Gecode due to a relative path problem. If this is the case, there is a script **script.sh** in the c++ folder that should solve the problem. You should update the value for the relative and full path in the script, then run it. The problem should be gone after that.
 
 
