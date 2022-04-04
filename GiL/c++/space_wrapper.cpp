@@ -1,9 +1,19 @@
 #include "headers/space_wrapper.hpp"
 #include <iostream>
+#include <fstream>
 
 using namespace Gecode;
 using namespace Gecode::Int;
+using namespace Gecode::Set;
 using namespace std;
+
+/*
+To Print value to a file :
+    ofstream myfile;
+    myfile.open ("/home/amdiels/Bureau/example.txt", ios::app);
+    myfile << set_vars.size() << endl;
+    myfile.close();
+*/
 
 /**
  Default constructor
@@ -11,6 +21,7 @@ using namespace std;
 WSpace::WSpace() {
     i_size = 0;
     b_size = 0;
+    s_size = 0;
 }
 
 //======================
@@ -29,6 +40,13 @@ IntVar WSpace::get_int_var(int vid) {
  */
 BoolVar WSpace::get_bool_var(int vid) {
     return bool_vars.at(vid);
+}
+
+/**
+Return the SetVar contained in set_vars at index vid.
+*/
+SetVar WSpace::get_set_var(int vid){
+    return set_vars.at(vid);
 }
 
 //====================
@@ -54,6 +72,17 @@ BoolVarArgs WSpace::bool_var_args(int n, int* vids) {
     BoolVarArgs x(n);
     for(int i = 0; i < n; i++)
         x[i] = get_bool_var(vids[i]);
+    return x;
+}
+
+/**
+ Return a SetVarArgs of size n, containing the n SetVars contained in
+ set_vars at indices vids.
+ */
+SetVarArgs WSpace::set_var_args(int n, int* vids) {
+    SetVarArgs x(n);
+    for(int i = 0; i < n; i++)
+        x[i] = get_set_var(vids[i]);
     return x;
 }
 
@@ -193,6 +222,28 @@ int WSpace::add_boolVar_expr_val(int vid, int int_rel, int val) {
 int WSpace::add_boolVar_expr_var(int vid1, int int_rel, int vid2) {
     bool_vars.push_back(bool_expr_var(vid1, int_rel, vid2));
     return b_size++;
+}
+
+/**
+Add a SetVar to the WSpace initialized with n integer from array r.
+In practice, push a new SetVar at the end of the vector set_vars.
+Return the index of the SetVar in set_vars.
+*/
+int WSpace::add_setVar(int card_min, int card_max) {
+    set_vars.push_back(SetVar(*this,IntSet::empty, IntSet(0, 127), card_min, card_max));
+    return s_size++;
+}
+
+/**
+ Add n SetVars to the WSpace ranging with cardinality card_min to card_max.
+ In practice, push n new SetVars at the end of the vector set_vars.
+ Return the indices of the SetVars in set_vars.
+ */
+int* WSpace::add_setVarArray(int n, int card_min, int card_max) {
+    int* vids = new int[n];
+    for(int i = 0; i < n; i++)
+        vids[i] = this->add_setVar(card_min, card_max);
+    return vids;
 }
 
 
@@ -495,6 +546,36 @@ void WSpace::cst_boolrel_var(int vid1, int rel_type, int vid2) {
     rel(*this, get_bool_var(vid1), (IntRelType) rel_type, get_bool_var(vid2));
 }
 
+//=== SETVAR ===
+
+/**
+ Post the constraint that vid1 set_op vid2 = vid3.
+ */
+void WSpace::cst_setop_var(int vid1, int set_op, int vid2, int set_rel, int vid3) {
+    rel(*this, get_set_var(vid1), (SetOpType) set_op, get_set_var(vid2), (SetRelType) set_rel, get_set_var(vid3));
+}
+
+/**
+ Post a relation constraint between vid1 and vid2.
+ */
+void WSpace::cst_setrel_var(int vid1, int rel_type, int vid2) {
+    rel(*this, get_set_var(vid1), (SetRelType) rel_type, get_set_var(vid2));
+}
+
+/**
+ Post a relation constraint between vid1 and domain dom.
+ */
+void WSpace::cst_setrel_val(int vid1, int rel_type, int* dom, int s) {
+    rel(*this, get_set_var(vid1), (SetRelType) rel_type, IntVar(*this, IntSet(dom, s)));
+}
+
+/**
+ Post a cardinality constraint on vid1
+ */
+void WSpace::cst_card_var(int n, int* vids, int min_card, int max_card) {
+    cardinality(*this, set_var_args(n, vids), min_card, max_card);
+}
+
 //======================================
 //Branch and bound constraint function =
 //======================================
@@ -579,6 +660,14 @@ void WSpace::branch_b(int n, int* vids, int var_strategy, int val_strategy) {
     Gecode::branch(*this, bool_var_args(n, vids), BOOL_VAR_NONE(), BOOL_VAL_MIN()); //default for now
 } 
 
+/**
+ Post a branching strategy on the n SetVars in vids.
+ */
+void WSpace::branch_set(int n, int* vids) {
+    Rnd r2(3U);
+    Gecode::branch(*this, set_var_args(n, vids), SET_VAL_RND_INC(r2)); //default for now
+} 
+
 //==================
 //= Search support =
 //==================
@@ -594,7 +683,7 @@ IntVar WSpace::cost(void) const {
     return int_vars.at(cost_id);
 }
 
-WSpace::WSpace(WSpace& s): IntMinimizeSpace(s), int_vars(s.i_size), bool_vars(s.b_size), i_size(s.i_size), b_size(s.b_size), cost_id(s.cost_id) {
+WSpace::WSpace(WSpace& s): IntMinimizeSpace(s), int_vars(s.i_size), bool_vars(s.b_size), set_vars(s.s_size), i_size(s.i_size), b_size(s.b_size), s_size(s.s_size), cost_id(s.cost_id) {
     //IntVars update
     vector<IntVar>::iterator itd, its;
     for(itd = int_vars.begin(), its = s.int_vars.begin(); itd != int_vars.end(); ++itd, ++its)
@@ -604,6 +693,11 @@ WSpace::WSpace(WSpace& s): IntMinimizeSpace(s), int_vars(s.i_size), bool_vars(s.
     vector<BoolVar>::iterator btd, bts;
     for(btd = bool_vars.begin(), bts = s.bool_vars.begin(); btd != bool_vars.end(); ++btd, ++bts)
         btd->update(*this, *bts);
+    
+    //SetVars update
+    vector<SetVar>::iterator std, sts;
+    for(std = set_vars.begin(), sts = s.set_vars.begin(); std != set_vars.end(); ++std, ++sts)
+        std->update(*this, *sts);
 }
 
 Space* WSpace::copy(void) {
@@ -619,6 +713,24 @@ Space* WSpace::copy(void) {
  */
 int WSpace::value(int vid) {
     return get_int_var(vid).val();
+}
+
+/**
+ Return the current values of the variable denoted by vid.
+ */
+int* WSpace::value_set(int vid, int n) {
+    SetVar sv = get_set_var(vid);
+    int* vals = new int[n] ;
+    int i = 0 ;
+    for (SetVarGlbValues d(sv);d();++d){
+        vals[i] = d.val() ;
+        i++ ;
+    }
+    return vals;
+}
+
+int WSpace::value_size(int vid) {
+    return get_set_var(vid).glbSize() ;
 }
 
 /**

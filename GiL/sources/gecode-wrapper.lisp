@@ -111,6 +111,28 @@
     (vid2 :int)
 )
 
+(cffi::defcfun ("add_setVar" add-set-var-card) :int
+    "Add a SetVar ranging from l to h. Return the index to this BoolVar."
+    (sp :pointer)
+    (card-min :int)
+    (card-max :int)
+)
+
+(cffi::defcfun ("add_setVarArray" add-set-var-array-aux) :pointer
+    "Add n setVar with cardinality card-min to card-max to the specified space."
+    (sp :pointer)
+    (n :int)
+    (card-min :int)
+    (card-max :int)
+)
+    
+(defun add-set-var-array-card (sp n card-min card-max)
+    "Add n SetVar ranging cardinality from card-min to card-max to the specified space. Return the references of those variables for this space"
+    (let ((p (add-set-var-array-aux sp n card-min card-max)))
+        (loop for i from 0 below n 
+            collect (cffi::mem-aref p :int i)))
+)
+
 (cffi::defcfun ("val_rel" val-rel) :void
     "Post a variable/value rel constraint."
     (sp :pointer)
@@ -623,6 +645,80 @@
     (vid2 :int)
 )
 
+;SetVar relation flags
+(defparameter gil::SRT_EQ 0)    ; equality relation
+(defparameter gil::SRT_NQ 1)    ; inequality
+(defparameter gil::SRT_SUB 2)   ; Subset
+(defparameter gil::SRT_SUP 3)   ; Superset
+(defparameter gil::SRT_DISJ 4)  ; Disjoint
+(defparameter gil::SRT_CMPL 5)  ; Complement
+(defparameter gil::SRT_LQ 6)    ; Less or equal
+(defparameter gil::SRT_LE 7)    ; Strictly lower 
+(defparameter gil::SRT_GQ 8)    ; Greater or equal
+(defparameter gil::SRT_GR 9)    ; Strictly greater
+
+;SetVar operation flags
+(defparameter gil::SOT_UNION 0)   ; union
+(defparameter gil::SOT_DUNION 1)  ; disjoint union
+(defparameter gil::SOT_INTER 2)   ; intersection
+(defparameter gil::SOT_MINUS 3)   ; difference
+
+(cffi::defcfun ("var_setop" var-set-op) :void
+    "Post the constraint that vid3 set_rel( set-op(vid1, vid2))."
+    (sp :pointer)
+    (vid1 :int)
+    (set-op :int)
+    (vid2 :int)
+    (set-rel :int)
+    (vid3 :int)
+)
+
+(cffi::defcfun ("var_setrel" var-set-rel) :void
+    "Post setVar rel constraint."
+    (sp :pointer)
+    (vid1 :int)
+    (rel-type :int)
+    (vid2 :int)
+)
+
+(cffi::defcfun ("val_setrel" val-set-rel-aux) :void
+    "Post setVar rel constraint."
+    (sp :pointer)
+    (vid :int)
+    (rel-type :int)
+    (dom :pointer)
+    (s :int)
+)
+
+(defun val-set-rel (sp vid1 rel-type dom)
+    "Post the constraint that vid = min(vids)."
+    (let ((x (cffi::foreign-alloc :int :initial-contents dom)))
+        (val-set-rel-aux sp vid1 rel-type x (length dom)))
+)
+
+(cffi::defcfun ("var_card" var-card-aux) :void
+    "Post setVar cardinality constraint."
+    (sp :pointer)
+    (n :int)
+    (vids :pointer)
+    (min-card :int)
+    (max-card :int)
+)
+
+(defun var-card (sp vids min-card max-card)
+    "Post branching on the IntVars denoted by vids."
+    (let ((x (cffi::foreign-alloc :int :initial-contents vids)))
+        (var-card-aux sp (length vids) x min-card max-card))
+)
+
+(cffi::defcfun ("var_setrel" var-set-rel) :void
+    "Post setVar rel constraint."
+    (sp :pointer)
+    (vid1 :int)
+    (rel-type :int)
+    (vid2 :int)
+)
+
 (cffi::defcfun ("branch" branch-aux) :void
     "Post branching on the n IntVars denoted by vids."
     (sp :pointer)
@@ -651,6 +747,19 @@
     "Post branching on the BoolVars denoted by vids."
     (let ((x (cffi::foreign-alloc :int :initial-contents vids)))
         (branch-b-aux sp (length vids) x var-strat val-strat))
+)
+
+(cffi::defcfun ("branch_set" branch-set-aux) :void
+    "Post branching on the n SetVars denoted by vids."
+    (sp :pointer)
+    (n :int)
+    (vids :pointer)
+)
+
+(defun branch-set (sp vids)
+    "Post branching on the SetVars denoted by vids."
+    (let ((x (cffi::foreign-alloc :int :initial-contents vids)))
+        (branch-set-aux sp (length vids) x))
 )
 
 (cffi::defcfun ("cost" set-cost) :void
@@ -719,6 +828,26 @@
 
 (cffi::defcfun ("get_value" get-value) :int
     "Get the value of the variable denoted by vid."
+    (sp :pointer)
+    (vid :int)
+)
+
+(cffi::defcfun ("get_value_set" get-value-set-aux) :pointer
+    "Get the value of the variable denoted by vid."
+    (sp :pointer)
+    (vid :int)
+    (n :int)
+)
+
+(defun get-value-set (sp vid n)
+    "get all the values of a SetVar"
+    (let ((p (get-value-set-aux sp vid n)))
+        (loop for i from 0 below n 
+            collect (cffi::mem-aref p :int i)))
+)
+
+(cffi::defcfun ("get_value_size" get-value-size) :int
+    "Get the size of the solution of SetVar denoted by vid."
     (sp :pointer)
     (vid :int)
 )

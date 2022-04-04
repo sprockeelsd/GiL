@@ -71,6 +71,17 @@ int add_boolVar_expr_var(void* sp, int vid1, int rel_type, int vid2) {
     return static_cast<WSpace*>(sp)->add_boolVar_expr_var(vid1, rel_type, vid2);
 }
 
+int add_setVar(void* sp, int card_min, int card_max) {
+    return static_cast<WSpace*>(sp)->add_setVar(card_min, card_max);
+}
+
+/**
+ Wraps the WSpace add_setVarArray method.
+ */
+int* add_setVarArray(void* sp, int n, int card_min, int card_max) {
+    return static_cast<WSpace*>(sp)->add_setVarArray(n, card_min, card_max);
+}
+
 /**
  Wraps the WSpace cst_val_rel method.
  */
@@ -352,6 +363,34 @@ void var_boolrel(void* sp, int vid1, int rel_type, int vid2) {
 }
 
 /**
+ Wraps the WSpace cst_setop_var method.
+ */
+void var_setop(void* sp, int vid1, int set_op, int vid2, int set_rel, int vid3) {
+    return static_cast<WSpace*>(sp)->cst_setop_var(vid1, set_op, vid2, set_rel, vid3);
+}
+
+/**
+ Wraps the WSpace cst_setrel_var method.
+ */
+void var_setrel(void* sp, int vid1, int rel_type, int vid2) {
+    return static_cast<WSpace*>(sp)->cst_setrel_var(vid1, rel_type, vid2);
+}
+
+/**
+ Wraps the WSpace cst_setrel_val method.
+ */
+void val_setrel(void* sp, int vid1, int rel_type, int* dom, int s) {
+    return static_cast<WSpace*>(sp)->cst_setrel_val(vid1, rel_type, dom, s);
+}
+
+/**
+ Wraps the WSpace cst_setrel_var method.
+ */
+void var_card(void* sp, int n, int* vids, int min_card, int max_card) {
+    return static_cast<WSpace*>(sp)->cst_card_var(n, vids, min_card, max_card);
+}
+
+/**
  Wraps the WSpace branch method.
  */
 void branch(void* sp, int n, int* vids, int var_strategy, int val_strategy) {
@@ -363,6 +402,13 @@ void branch(void* sp, int n, int* vids, int var_strategy, int val_strategy) {
  */
 void branch_b(void* sp, int n, int* vids, int var_strategy, int val_strategy) {
     return static_cast<WSpace*>(sp)->branch_b(n, vids, var_strategy, val_strategy);
+}
+
+/**
+ Wraps the WSpace branch_set method.
+ */
+void branch_set(void* sp, int n, int* vids) {
+    return static_cast<WSpace*>(sp)->branch_set(n, vids);
 }
 
 /**
@@ -471,6 +517,20 @@ void release(void* sp) {
  */
 int get_value(void* sp, int vid) {
     return static_cast<WSpace*>(sp)->value(vid);
+}
+
+/**
+ Wraps the WSpace value method.
+ */
+int* get_value_set(void* sp, int vid, int n) {
+    return static_cast<WSpace*>(sp)->value_set(vid, n);
+}
+
+/**
+ Wraps the WSpace value method.
+ */
+int get_value_size(void* sp, int vid) {
+    return static_cast<WSpace*>(sp)->value_size(vid);
 }
 
 /**

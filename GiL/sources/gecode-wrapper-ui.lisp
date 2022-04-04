@@ -68,6 +68,26 @@
 ;id getter
 (defmethod vid ((self bool-var)) (id self))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Creating set variables ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defclass set-var ()
+    ((id :initarg :id :accessor id))
+)
+
+(defmethod add-set-var (sp card-min card-max)
+    "Adds a set variable with minimum cardinality card-min and max card-max"
+    (make-instance 'set-var :id (add-set-var-card sp card-min card-max)))
+    
+(defmethod add-set-var-array (sp n card-min card-max)
+    "Adds an array of n set variables with cardinality card-min to card-max to sp"
+    (loop for v in (add-set-var-array-card sp n card-min card-max) collect
+        (make-instance 'set-var :id v)))
+    
+;id getter
+(defmethod vid ((self set-var)) (id self))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Methods for int constraints ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -246,6 +266,33 @@
 (defmethod g-rel (sp (v1 bool-var) rel-type (v2 bool-var))
     (var-bool-rel sp (vid v1) rel-type (vid v2)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Methods for setVar constraints ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;OP
+(defmethod g-op (sp (v1 set-var) set-op (v2 set-var) (v3 set-var))
+    (var-set-op sp (vid v1) set-op (vid v2) 0 (vid v3)))
+
+(defmethod g-set-op (sp (v1 set-var) set-op (v2 set-var) set_rel (v3 set-var))
+    (var-set-op sp (vid v1) set-op (vid v2) set_rel (vid v3)))
+
+;REL
+(defmethod g-rel (sp (v1 set-var) rel-type (v2 set-var))
+    "Post the constraints that v1 rel-type v2."
+    (var-set-rel sp (vid v1) rel-type (vid v2)))
+
+(defmethod g-rel (sp (v1 set-var) rel-type dom)
+    "Post the constraints that v1 rel-type domain dom."
+    (val-set-rel sp (vid v1) rel-type dom))
+
+;CARDINALITY
+(defmethod g-card (sp (v1 set-var) min-card max-card)
+    (car-card sp (list (vid v1)) min-card max-card))
+
+(defmethod g-card (sp (v list) min-card max-card)
+    (var-card sp (vid v) min-card max-card))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Methods for exploration ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -269,10 +316,15 @@
 (defmethod g-branch (sp (v bool-var) var-strat val-strat)
     (branch-b sp (list (vid v)) var-strat val-strat))
 
+(defmethod g-branch (sp (v set-var) var-strat val-strat)
+    (branch-set sp (list (vid v))))
+
 (defmethod g-branch (sp (v list) var-strat val-strat)
     (if (typep (car v) 'int-var)
         (branch sp (vid v) var-strat val-strat)
-        (branch-b sp (vid v) var-strat val-strat)))
+        (if (typep (car v) 'bool-var)
+            (branch-b sp (vid v) var-strat val-strat)
+            (branch-set sp (vid v)))))
 
 ;cost
 (defmethod g-cost (sp (v int-var))
@@ -375,6 +427,14 @@
 (defmethod g-values (sp (v int-var))
     "Get the values assigned to v."
     (get-value sp (vid v)))
+
+(defmethod g-values (sp (v set-var))
+    "Get the values assigned to v."
+    (get-value-set sp (vid v) (g-value-size sp v)))
+
+(defmethod g-value-size (sp (v set-var))
+    "Get the size of a SetVar"
+    (get-value-size sp (vid v)))
 
 (defmethod g-values (sp (v list))
     (get-values sp (vid v)))

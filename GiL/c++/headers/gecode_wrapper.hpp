@@ -75,14 +75,24 @@ int add_boolVar_expr_val(void* sp, int vid, int rel_type, int val);
 int add_boolVar_expr_var(void* sp, int vid1, int rel_type, int vid2);
 
 /**
- Wraps the WSpace cst_val_rel method.
- */
-void val_rel(void* sp, int vid, int rel_type, int val);
+Wraps the WSpace add_setVar method
+*/
+int add_setVar(void* sp, int card_min, int card_max);
+
+/**
+Wraps the WSpace add_setVarArray method
+*/
+int* add_setVarArray(void* sp, int n, int card_min, int card_max);
 
 /**
  Wraps the WSpace cst_var_relr method.
  */
 void var_rel(void* sp, int vid1, int rel_type, int vid2);
+
+/**
+ Wraps the WSpace cst_val_rel method.
+ */
+void val_rel(void* sp, int vid, int rel_type, int val);
 
 /**
  Wraps the WSpace cst_arr_val_rel method.
@@ -275,6 +285,26 @@ void val_boolrel(void* sp, int vid, int rel_type, int val);
 void var_boolrel(void* sp, int vid1, int rel_type, int vid2);
 
 /**
+ Wraps the WSpace cst_setop_var method.
+ */
+void var_setop(void* sp, int vid1, int set_op, int vid2, int set_rel, int vid3);
+
+/**
+ Wraps the WSpace cst_setrel_var method.
+ */
+void var_setrel(void* sp, int vid1, int rel_type, int vid2);
+
+/**
+ Wraps the WSpace cst_setrel_val method.
+ */
+void val_setrel(void* sp, int vid1, int rel_type, int* dom, int s);
+
+/**
+ Wraps the WSpace cst_card_var method.
+ */
+void var_card(void* sp, int n, int* vids, int min_card, int max_card);
+
+/**
  Wraps the WSpace branch method.
  */
 void branch(void* sp, int n, int* vids, int var_strategy, int val_strategy);
@@ -283,6 +313,11 @@ void branch(void* sp, int n, int* vids, int var_strategy, int val_strategy);
  Wraps the WSpace branch_b method.
  */
 void branch_b(void* sp, int n, int* vids, int var_strategy, int val_strategy);
+
+/**
+ Wraps the WSpace branch_set method.
+ */
+void branch_set(void* sp, int n, int* vids);
 
 /**
  Wraps the WSpace cost method.
@@ -354,6 +389,16 @@ void release(void* sp);
  Wraps the WSpace value method.
  */
 int get_value(void* sp, int vid);
+
+/**
+ Wraps the WSpace value method.
+ */
+int* get_value_set(void* sp, int vid, int n);
+
+/**
+ Wraps the WSpace value method.
+ */
+int get_value_size(void* sp, int vid);
 
 /**
  Wraps the WSpace values method.

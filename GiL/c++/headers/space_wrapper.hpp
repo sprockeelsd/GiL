@@ -13,6 +13,7 @@
 
 using namespace Gecode;
 using namespace Gecode::Int;
+using namespace Gecode::Set;
 using namespace std;
 using namespace Gecode::Search;
 
@@ -20,8 +21,10 @@ class WSpace: public IntMinimizeSpace {
 protected:
     vector<IntVar> int_vars;
     vector<BoolVar> bool_vars;
+    vector<SetVar> set_vars;
     int i_size;
     int b_size;
+    int s_size;
     int cost_id;
 
     int* solution_variable_indexes;// to know what variables will hold the solution, useful for bab
@@ -40,6 +43,11 @@ protected:
      Return the BoolVar contained in bool_vars at index vid.
      */
     BoolVar get_bool_var(int vid);
+    
+    /**
+    Return the SetVar contained in set_vars at index vid.
+    */
+    SetVar get_set_var(int vid);
 
     
     //====================
@@ -57,6 +65,12 @@ protected:
      bool_vars at indices vids.
      */
     BoolVarArgs bool_var_args(int n, int* vids);
+    
+        /**
+     Return a SetVarArgs of size n, containing the n SetVars contained in
+     set_vars at indices vids.
+     */
+    SetVarArgs set_var_args(int n, int* vids);
     
     /**
      Return an IntArgs of size n, containing the n values in vals
@@ -151,6 +165,20 @@ public:
      Return the index of the BoolVar in bool_vars
      */
     int add_boolVar_expr_var(int vid1, int int_rel, int vid2);
+    
+    /**
+    Add a SetVar to the WSpace initialized with n integer from array r.
+    In practice, push a new SetVar at the end of the vector set_vars.
+    Return the index of the SetVar in set_vars.
+    */
+    int add_setVar(int card_min, int card_max);
+    
+    /**
+    Add n SetVars to the WSpace ranging with cardinality card_min to card_max.
+    In practice, push n new SetVars at the end of the vector set_vars.
+    Return the indices of the SetVars in set_vars.
+    */
+    int* add_setVarArray(int n, int card_min, int card_max);
     
     //=======================
     //= Posting constraints =
@@ -369,6 +397,29 @@ public:
      Post a relation constraint between vid1 and vid2.
      */
     void cst_boolrel_var(int vid1, int rel_type, int vid2);
+    
+    //=== SETVARS ===
+    
+    /**
+     Post the constraint that vid1 set_op vid2 = vid3.
+     */
+    void cst_setop_var(int vid1, int set_op, int vid2, int set_rel, int vid3);
+
+    /**
+     Post a relation constraint between vid1 and vid2.
+     */
+    void cst_setrel_var(int vid1, int rel_type, int vid2);
+    
+    /**
+     Post a relation constraint between vid1 and vid2.
+     */
+    void cst_setrel_val(int vid1, int rel_type, int* dom, int s);
+    
+    /**
+     Post a cardinality constraint on vid1.
+     */
+    void cst_card_var(int n, int* vids, int min_card, int max_card);
+
 
     //======================================
     //Branch and bound constraint function =
@@ -396,6 +447,12 @@ public:
      */
     void branch_b(int n, int* vids, int var_strategy, int val_strategy);   
     
+    /**
+     Post a branching strategy on the n SetVars in vids, with strategies denoted by var_strategy and
+     val_strategy.
+     */
+    void branch_set(int n, int* vids);  
+    
     //==================
     //= Search support =
     //==================
@@ -416,6 +473,17 @@ public:
      Return the current values of the variable denoted by vid.
      */
     int value(int vid);
+    
+     /**
+     Return the current values of the SetVar denoted by vid.
+     */
+    int* value_set(int vid, int n);
+    
+    /**
+     Return the current size of the SetVar denoted by vid.
+     */
+    int value_size(int vid);
+
 
     /**
      Return the current values of the n variables denoted by vids.
