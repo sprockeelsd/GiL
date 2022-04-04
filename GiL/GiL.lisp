@@ -5,7 +5,7 @@
 (setf *gecode-sources-dir* (make-pathname :directory (append (pathname-directory *load-pathname*) '("sources"))))
 
 (defvar *libgecode* nil)
-(setf *libgecode* (make-pathname :directory (pathname-directory *gecode-sources-dir*) :name "libgecode.dylib"))                                                             
+(setf *libgecode* (make-pathname :directory (pathname-directory *gecode-sources-dir*) :name "libgecode.so"))                                                             
 
 (if (equal (cffi:load-foreign-library  *libgecode*) nil)
     (print "There is a problem loading the Framework. Please double check that Gecode is correctly installed and you are using the appropriate version of GiL for your Operative System"))
