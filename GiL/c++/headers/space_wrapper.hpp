@@ -416,6 +416,16 @@ public:
     void cst_setrel_val(int vid1, int rel_type, int* dom, int s);
     
     /**
+    Post a dom constraint between vid1 and dom {i,..., j}.
+    */
+    void cst_setdom_ints(int vid1, int rel_type, int i, int j);
+    
+    /**
+    Post a constraint that SetVar vid1 has to be empty
+    */
+    void cst_set_empty(int vid1);
+    
+    /**
      Post a cardinality constraint on vid1.
      */
     void cst_card_var(int n, int* vids, int min_card, int max_card);

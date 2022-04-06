@@ -272,7 +272,7 @@
 
 ;OP
 (defmethod g-op (sp (v1 set-var) set-op (v2 set-var) (v3 set-var))
-    (var-set-op sp (vid v1) set-op (vid v2) 0 (vid v3)))
+    (var-set-op sp (vid v1) set-op (vid v2) gil::SRT_EQ (vid v3)))
 
 (defmethod g-set-op (sp (v1 set-var) set-op (v2 set-var) set_rel (v3 set-var))
     (var-set-op sp (vid v1) set-op (vid v2) set_rel (vid v3)))
@@ -285,6 +285,14 @@
 (defmethod g-rel (sp (v1 set-var) rel-type dom)
     "Post the constraints that v1 rel-type domain dom."
     (val-set-rel sp (vid v1) rel-type dom))
+
+(defmethod g-dom-ints (sp (v1 set-var) rel-type i j)
+    "Post the constraints that v1 rel-type domain {i, ..., j}."
+    (ints-set-dom sp (vid v1) rel-type i j))
+
+(defmethod g-empty (sp (v1 set-var))
+    "Post the constraints that v1 is empty."
+    (empty-set sp (vid v1)))
 
 ;CARDINALITY
 (defmethod g-card (sp (v1 set-var) min-card max-card)

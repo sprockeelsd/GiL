@@ -565,8 +565,22 @@ void WSpace::cst_setrel_var(int vid1, int rel_type, int vid2) {
 /**
  Post a relation constraint between vid1 and domain dom.
  */
-void WSpace::cst_setrel_val(int vid1, int rel_type, int* dom, int s) {
-    rel(*this, get_set_var(vid1), (SetRelType) rel_type, IntVar(*this, IntSet(dom, s)));
+void WSpace::cst_setrel_val(int vid1, int rel_type, int* domain, int s) {
+    dom(*this, get_set_var(vid1), (SetRelType) rel_type, IntSet(domain, s));
+}
+
+/**
+ Post a constraint that SetVar vid1 has to be empty
+ */
+void WSpace::cst_set_empty(int vid1) {
+    dom(*this, get_set_var(vid1), (SetRelType) 0, IntSet::empty);
+}
+
+/**
+ Post a dom constraint between vid1 and dom {i,..., j}.
+ */
+void WSpace::cst_setdom_ints(int vid1, int rel_type, int i, int j) {
+    dom(*this, get_set_var(vid1), (SetRelType) rel_type, i, j);
 }
 
 /**

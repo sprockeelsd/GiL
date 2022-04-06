@@ -384,6 +384,20 @@ void val_setrel(void* sp, int vid1, int rel_type, int* dom, int s) {
 }
 
 /**
+ Wraps the WSpace cst_setdom_ints method.
+ */
+void ints_setdom(void* sp, int vid1, int rel_type, int i, int j) {
+    return static_cast<WSpace*>(sp)->cst_setdom_ints(vid1, rel_type, i, j);
+}
+
+/**
+ Wraps the WSpace cst_set_empty method.
+ */
+void empty_set(void* sp, int vid1) {
+    return static_cast<WSpace*>(sp)->cst_set_empty(vid1);
+}
+
+/**
  Wraps the WSpace cst_setrel_var method.
  */
 void var_card(void* sp, int n, int* vids, int min_card, int max_card) {

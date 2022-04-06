@@ -681,6 +681,12 @@
     (vid2 :int)
 )
 
+(cffi::defcfun ("empty_set" empty-set) :void
+    "post that vid1 has to be empty"
+    (sp :pointer)
+    (vid1 :int)
+)
+
 (cffi::defcfun ("val_setrel" val-set-rel-aux) :void
     "Post setVar rel constraint."
     (sp :pointer)
@@ -694,6 +700,15 @@
     "Post the constraint that vid = min(vids)."
     (let ((x (cffi::foreign-alloc :int :initial-contents dom)))
         (val-set-rel-aux sp vid1 rel-type x (length dom)))
+)
+
+(cffi::defcfun ("ints_setdom" ints-set-dom) :void
+    "Post setVar dom constraint."
+    (sp :pointer)
+    (vid1 :int)
+    (rel-type :int)
+    (i :int)
+    (j :int)
 )
 
 (cffi::defcfun ("var_card" var-card-aux) :void
