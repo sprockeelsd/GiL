@@ -296,7 +296,7 @@
 
 ;CARDINALITY
 (defmethod g-card (sp (v1 set-var) min-card max-card)
-    (car-card sp (list (vid v1)) min-card max-card))
+    (var-card sp (list (vid v1)) min-card max-card))
 
 (defmethod g-card (sp (v list) min-card max-card)
     (var-card sp (vid v) min-card max-card))
