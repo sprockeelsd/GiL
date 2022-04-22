@@ -76,13 +76,13 @@
     ((id :initarg :id :accessor id))
 )
 
-(defmethod add-set-var (sp card-min card-max)
+(defmethod add-set-var (sp lub-min lub-max card-min card-max)
     "Adds a set variable with minimum cardinality card-min and max card-max"
-    (make-instance 'set-var :id (add-set-var-card sp card-min card-max)))
+    (make-instance 'set-var :id (add-set-var-card sp lub-min lub-max card-min card-max)))
     
-(defmethod add-set-var-array (sp n card-min card-max)
+(defmethod add-set-var-array (sp n lub-min lub-max card-min card-max)
     "Adds an array of n set variables with cardinality card-min to card-max to sp"
-    (loop for v in (add-set-var-array-card sp n card-min card-max) collect
+    (loop for v in (add-set-var-array-card sp n lub-min lub-max card-min card-max) collect
         (make-instance 'set-var :id v)))
     
 ;id getter
@@ -300,6 +300,10 @@
 
 (defmethod g-card (sp (v list) min-card max-card)
     (var-card sp (vid v) min-card max-card))
+
+;CHANNEL
+(defmethod g-channel (sp (v1 list) (v2 list))
+    (channel-set sp (vid v1) (vid v2)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Methods for exploration ;

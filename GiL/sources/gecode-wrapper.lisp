@@ -114,6 +114,8 @@
 (cffi::defcfun ("add_setVar" add-set-var-card) :int
     "Add a SetVar ranging from l to h. Return the index to this BoolVar."
     (sp :pointer)
+    (lub-min :int)
+    (lub-max :int)
     (card-min :int)
     (card-max :int)
 )
@@ -122,13 +124,15 @@
     "Add n setVar with cardinality card-min to card-max to the specified space."
     (sp :pointer)
     (n :int)
+    (lub-min :int)
+    (lub-max :int)
     (card-min :int)
     (card-max :int)
 )
     
-(defun add-set-var-array-card (sp n card-min card-max)
+(defun add-set-var-array-card (sp n lub-min lub-max card-min card-max)
     "Add n SetVar ranging cardinality from card-min to card-max to the specified space. Return the references of those variables for this space"
-    (let ((p (add-set-var-array-aux sp n card-min card-max)))
+    (let ((p (add-set-var-array-aux sp n lub-min lub-max card-min card-max)))
         (loop for i from 0 below n 
             collect (cffi::mem-aref p :int i)))
 )
@@ -721,7 +725,7 @@
 )
 
 (defun var-card (sp vids min-card max-card)
-    "Post branching on the IntVars denoted by vids."
+    "Post cardinality constraint on the SetVars denoted by vids."
     (let ((x (cffi::foreign-alloc :int :initial-contents vids)))
         (var-card-aux sp (length vids) x min-card max-card))
 )
@@ -732,6 +736,22 @@
     (vid1 :int)
     (rel-type :int)
     (vid2 :int)
+)
+
+(cffi::defcfun ("channel_set" channel-set-aux) :void
+    "Post setVar channel constraint."
+    (sp :pointer)
+    (n1 :int)
+    (vids1 :pointer)
+    (n2 :int)
+    (vids2 :pointer)
+)
+
+(defun channel-set (sp vids1 vids2)
+    "Post channel constraint on the SetVars denoted by vids."
+    (let ((x (cffi::foreign-alloc :int :initial-contents vids1))
+          (y (cffi::foreign-alloc :int :initial-contents vids2)))
+        (channel-set-aux sp (length vids1) x (length vids2) y))
 )
 
 (cffi::defcfun ("branch" branch-aux) :void

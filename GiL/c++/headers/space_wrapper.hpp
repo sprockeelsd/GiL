@@ -171,14 +171,14 @@ public:
     In practice, push a new SetVar at the end of the vector set_vars.
     Return the index of the SetVar in set_vars.
     */
-    int add_setVar(int card_min, int card_max);
+    int add_setVar(int lub_min, int lub_max, int card_min, int card_max);
     
     /**
     Add n SetVars to the WSpace ranging with cardinality card_min to card_max.
     In practice, push n new SetVars at the end of the vector set_vars.
     Return the indices of the SetVars in set_vars.
     */
-    int* add_setVarArray(int n, int card_min, int card_max);
+    int* add_setVarArray(int n, int lub_min, int lub_max, int card_min, int card_max);
     
     //=======================
     //= Posting constraints =
@@ -429,6 +429,11 @@ public:
      Post a cardinality constraint on vid1.
      */
     void cst_card_var(int n, int* vids, int min_card, int max_card);
+    
+    /**
+    Post a channeling constraint between vid1 and vid2
+    */
+    void cst_channel(int n1, int* vids1, int n2, int* vids2);
 
 
     //======================================

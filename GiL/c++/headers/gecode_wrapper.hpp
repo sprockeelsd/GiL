@@ -77,12 +77,12 @@ int add_boolVar_expr_var(void* sp, int vid1, int rel_type, int vid2);
 /**
 Wraps the WSpace add_setVar method
 */
-int add_setVar(void* sp, int card_min, int card_max);
+int add_setVar(void* sp, int lub_min, int lub_max, int card_min, int card_max);
 
 /**
 Wraps the WSpace add_setVarArray method
 */
-int* add_setVarArray(void* sp, int n, int card_min, int card_max);
+int* add_setVarArray(void* sp, int n, int lub_min, int lub_max, int card_min, int card_max);
 
 /**
  Wraps the WSpace cst_var_relr method.
@@ -313,6 +313,11 @@ void empty_set(void* sp, int vid1);
  Wraps the WSpace cst_card_var method.
  */
 void var_card(void* sp, int n, int* vids, int min_card, int max_card);
+
+/**
+ Wraps the WSpace cst_channel method.
+ */
+void channel_set(void* sp, int n1, int* vids1, int n2, int* vids2);
 
 /**
  Wraps the WSpace branch method.

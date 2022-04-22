@@ -229,8 +229,8 @@ Add a SetVar to the WSpace initialized with n integer from array r.
 In practice, push a new SetVar at the end of the vector set_vars.
 Return the index of the SetVar in set_vars.
 */
-int WSpace::add_setVar(int card_min, int card_max) {
-    set_vars.push_back(SetVar(*this,IntSet::empty, IntSet(0, 127), card_min, card_max));
+int WSpace::add_setVar(int lub_min, int lub_max, int card_min, int card_max) {
+    set_vars.push_back(SetVar(*this,IntSet::empty, lub_min, lub_max, card_min, card_max));
     return s_size++;
 }
 
@@ -239,10 +239,10 @@ int WSpace::add_setVar(int card_min, int card_max) {
  In practice, push n new SetVars at the end of the vector set_vars.
  Return the indices of the SetVars in set_vars.
  */
-int* WSpace::add_setVarArray(int n, int card_min, int card_max) {
+int* WSpace::add_setVarArray(int n, int lub_min, int lub_max, int card_min, int card_max) {
     int* vids = new int[n];
     for(int i = 0; i < n; i++)
-        vids[i] = this->add_setVar(card_min, card_max);
+        vids[i] = this->add_setVar(lub_min, lub_max, card_min, card_max);
     return vids;
 }
 
@@ -588,6 +588,13 @@ void WSpace::cst_setdom_ints(int vid1, int rel_type, int i, int j) {
  */
 void WSpace::cst_card_var(int n, int* vids, int min_card, int max_card) {
     cardinality(*this, set_var_args(n, vids), min_card, max_card);
+}
+
+/**
+Post a channeling constraint between vid1 and vid2
+*/
+void WSpace::cst_channel(int n1, int* vids1, int n2, int* vids2){
+    channel(*this, set_var_args(n1, vids1), set_var_args(n2, vids2));
 }
 
 //======================================
