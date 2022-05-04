@@ -421,6 +421,11 @@ public:
     void cst_setdom_ints(int vid1, int rel_type, int i, int j);
     
     /**
+    Post a dom constraint between vid1 and vid2.
+    */
+    void cst_setdom_set(int vid1, int vid2);
+    
+    /**
     Post a constraint that SetVar vid1 has to be empty
     */
     void cst_set_empty(int vid1);

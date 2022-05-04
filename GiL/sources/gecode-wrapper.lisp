@@ -715,6 +715,13 @@
     (j :int)
 )
 
+(cffi::defcfun ("set_setdom" set-setdom) :void
+    "Post setVar dom constraint."
+    (sp :pointer)
+    (vid1 :int)
+    (vid2 :int)
+)
+
 (cffi::defcfun ("var_card" var-card-aux) :void
     "Post setVar cardinality constraint."
     (sp :pointer)

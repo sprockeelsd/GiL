@@ -584,6 +584,13 @@ void WSpace::cst_setdom_ints(int vid1, int rel_type, int i, int j) {
 }
 
 /**
+ Post a dom constraint between vid1 and dom vid2.
+ */
+void WSpace::cst_setdom_set(int vid1, int vid2) {
+    dom(*this, get_set_var(vid1), get_set_var(vid2));
+}
+
+/**
  Post a cardinality constraint on vid1
  */
 void WSpace::cst_card_var(int n, int* vids, int min_card, int max_card) {

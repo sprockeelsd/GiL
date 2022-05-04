@@ -391,6 +391,13 @@ void ints_setdom(void* sp, int vid1, int rel_type, int i, int j) {
 }
 
 /**
+ Wraps the WSpace cst_setdom_set method.
+ */
+void set_setdom(void* sp, int vid1, int vid2) {
+    return static_cast<WSpace*>(sp)->cst_setdom_set(vid1, vid2);
+}
+
+/**
  Wraps the WSpace cst_set_empty method.
  */
 void empty_set(void* sp, int vid1) {
