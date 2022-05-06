@@ -706,6 +706,22 @@
         (val-set-rel-aux sp vid1 rel-type x (length dom)))
 )
 
+(cffi::defcfun ("val_setrel_reify" val-set-rel-reify-aux) :void
+    "Post setVar rel constraint with reify."
+    (sp :pointer)
+    (vid :int)
+    (rel-type :int)
+    (dom :pointer)
+    (s :int)
+    (r :int)
+)
+
+(defun val-set-rel-reify (sp vid1 rel-type dom r)
+    "Post the constraint that vid = min(vids)."
+    (let ((x (cffi::foreign-alloc :int :initial-contents dom)))
+        (val-set-rel-reify-aux sp vid1 rel-type x (length dom) r))
+)
+
 (cffi::defcfun ("ints_setdom" ints-set-dom) :void
     "Post setVar dom constraint."
     (sp :pointer)

@@ -415,6 +415,11 @@ public:
      */
     void cst_setrel_val(int vid1, int rel_type, int* dom, int s);
     
+     /**
+     Post a relation constraint between vid1 and vid2 with reify.
+     */
+    void cst_setrel_val_reify(int vid1, int rel_type, int* dom, int s, int r);
+    
     /**
     Post a dom constraint between vid1 and dom {i,..., j}.
     */

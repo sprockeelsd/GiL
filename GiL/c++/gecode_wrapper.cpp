@@ -384,6 +384,13 @@ void val_setrel(void* sp, int vid1, int rel_type, int* dom, int s) {
 }
 
 /**
+ Wraps the WSpace cst_setrel_val_reify method.
+ */
+void val_setrel_reify(void* sp, int vid1, int rel_type, int* dom, int s, int r) {
+    return static_cast<WSpace*>(sp)->cst_setrel_val_reify(vid1, rel_type, dom, s, r);
+}
+
+/**
  Wraps the WSpace cst_setdom_ints method.
  */
 void ints_setdom(void* sp, int vid1, int rel_type, int i, int j) {

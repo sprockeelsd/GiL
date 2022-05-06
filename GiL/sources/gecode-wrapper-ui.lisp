@@ -286,6 +286,10 @@
     "Post the constraints that v1 rel-type domain dom."
     (val-set-rel sp (vid v1) rel-type dom))
 
+(defmethod g-rel-reify (sp (v1 set-var) rel-type dom r)
+    "Post the constraints that v1 rel-type domain dom."
+    (val-set-rel-reify sp (vid v1) rel-type dom (vid r)))
+
 ;DOM
 (defmethod g-dom (sp (v1 set-var) (v2 set-var))
     "Post the constraints that dom(v) = dom."
