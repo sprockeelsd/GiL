@@ -43,6 +43,21 @@
             collect (cffi::mem-aref p :int i)))
 )
 
+(cffi::defcfun ("add_boolVarArray" add-bool-var-array-aux) :pointer
+    "Add n boolVar ranging from min to max to the specified space."
+    (sp :pointer)
+    (n :int)
+    (min :int)
+    (max :int)
+)
+
+(defun add-bool-var-array-low (sp n min max)
+    "Add n BoolVar ranging from min to max to the specified space. Return the references of those variables for this space"
+    (let ((p (add-bool-var-array-aux sp n min max)))
+        (loop for i from 0 below n 
+            collect (cffi::mem-aref p :int i)))
+)
+
 (cffi::defcfun ("add_intVarArrayWithDom" add-int-var-array-dom-aux) :pointer
     "Add n IntVar with domain dom of size s to the specified space."
     (sp :pointer)
@@ -151,6 +166,16 @@
     (vid1 :int)
     (rel-type :int)
     (vid2 :int)
+)
+
+(cffi::defcfun ("var_rel_reify" var-rel-reify) :void
+    "Post a variable/variable rel constraint with reification."
+    (sp :pointer)
+    (vid1 :int)
+    (rel-type :int)
+    (vid2 :int)
+    (vid3 :int)
+    (mode :int)
 )
 
 (cffi::defcfun ("arr_val_rel" arr-val-rel-aux) :void
@@ -608,6 +633,11 @@
     )
 )
 
+;Reification mode
+(defparameter gil::RM_EQV 0)    ; Equivalent
+(defparameter gil::RM_IMP 1)    ; Implication
+(defparameter gil::RM_PMI 2)    ; Inverse implication
+
 ;BoolVar operation flags
 (defparameter gil::BOT_AND 0)    ; logical and
 (defparameter gil::BOT_OR 1)     ; logical or
@@ -677,6 +707,21 @@
     (vid3 :int)
 )
 
+(cffi::defcfun ("arr_setop" arr-set-op-aux) :void
+    "Post the constraint that vid2 set_op vid1."
+    (sp :pointer)
+    (set_op :int)
+    (s :int)
+    (vid1 :pointer)
+    (vid2 :int)
+)
+
+(defun arr-set-op (sp set_op vid1 vid2)
+ "Post the constraint that vid2 set_op vid1."
+    (let ((x (cffi::foreign-alloc :int :initial-contents vid1)))
+        (arr-set-op-aux sp set_op (length vid1) x vid2))
+)
+
 (cffi::defcfun ("var_setrel" var-set-rel) :void
     "Post setVar rel constraint."
     (sp :pointer)
@@ -714,12 +759,13 @@
     (dom :pointer)
     (s :int)
     (r :int)
+    (mode :int)
 )
 
-(defun val-set-rel-reify (sp vid1 rel-type dom r)
+(defun val-set-rel-reify (sp vid1 rel-type dom r mode)
     "Post the constraint that vid = min(vids)."
     (let ((x (cffi::foreign-alloc :int :initial-contents dom)))
-        (val-set-rel-reify-aux sp vid1 rel-type x (length dom) r))
+        (val-set-rel-reify-aux sp vid1 rel-type x (length dom) r mode))
 )
 
 (cffi::defcfun ("ints_setdom" ints-set-dom) :void
@@ -775,6 +821,32 @@
     (let ((x (cffi::foreign-alloc :int :initial-contents vids1))
           (y (cffi::foreign-alloc :int :initial-contents vids2)))
         (channel-set-aux sp (length vids1) x (length vids2) y))
+)
+
+(cffi::defcfun ("channel_set_bool" channel-set-bool-aux) :void
+    "Post setVar channel constraint."
+    (sp :pointer)
+    (n1 :int)
+    (vids1 :pointer)
+    (vid2 :int)
+)
+
+(defun channel-set-bool (sp vids1 vid2)
+    "Post channel constraint on the SetVar vid2 and boolVarArray vids1."
+    (let ((x (cffi::foreign-alloc :int :initial-contents vids1)))
+        (channel-set-bool-aux sp (length vids1) x vid2))
+)
+
+(cffi::defcfun ("set_min" set-min) :int
+    "Post minimum of SetVar constraint."
+    (sp :pointer)
+    (vid1 :int)
+)
+
+(cffi::defcfun ("set_max" set-max) :int
+    "Post maximum of SetVar constraint."
+    (sp :pointer)
+    (vid1 :int)
 )
 
 (cffi::defcfun ("branch" branch-aux) :void

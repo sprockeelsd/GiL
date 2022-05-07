@@ -55,6 +55,11 @@
     "Adds a boolean variable with domain [l,h] to sp"
     (make-instance 'bool-var :id (add-bool-var-range sp l h)))
 
+(defmethod add-bool-var-array (sp n l h)
+    "Adds an array of n boolean variables with domain [l,h] to sp"
+    (loop for v in (add-bool-var-array-low sp n l h) collect
+        (make-instance 'bool-var :id v)))
+
 (defmethod add-bool-var-expr (sp (v1 int-var) rel-type (v2 fixnum))
     "Adds a boolean variable representing the expression 
     v1 rel-type v2 to sp"
@@ -111,6 +116,11 @@
 
 (defmethod g-rel (sp (v1 list) rel-type (v2 list)) 
     (arr-arr-rel sp (vid v1) rel-type (vid v2)))
+
+(defmethod g-rel-reify (sp (v1 int-var) rel-type (v2 int-var) (v3 bool-var) &optional mode)
+    (if (not mode)
+        ((setf mode gil::RM_EQV)))
+    (var-rel-reify sp (vid v1) rel-type (vid v2) (vid v3) mode))
 
 ;DISTINCT
 (defmethod g-distinct (sp vars) 
@@ -277,6 +287,9 @@
 (defmethod g-set-op (sp (v1 set-var) set-op (v2 set-var) set_rel (v3 set-var))
     (var-set-op sp (vid v1) set-op (vid v2) set_rel (vid v3)))
 
+(defmethod g-arr-op (sp set-op (v1 list) (v2 set-var))
+    (arr-set-op sp set-op (vid v1) (vid v2)))
+
 ;REL
 (defmethod g-rel (sp (v1 set-var) rel-type (v2 set-var))
     "Post the constraints that v1 rel-type v2."
@@ -286,9 +299,11 @@
     "Post the constraints that v1 rel-type domain dom."
     (val-set-rel sp (vid v1) rel-type dom))
 
-(defmethod g-rel-reify (sp (v1 set-var) rel-type dom r)
+(defmethod g-rel-reify (sp (v1 set-var) rel-type dom r &optional mode)
     "Post the constraints that v1 rel-type domain dom."
-    (val-set-rel-reify sp (vid v1) rel-type dom (vid r)))
+    (if (not mode)
+        (setf mode gil::RM_EQV))
+    (val-set-rel-reify sp (vid v1) rel-type dom (vid r) mode))
 
 ;DOM
 (defmethod g-dom (sp (v1 set-var) (v2 set-var))
@@ -313,6 +328,17 @@
 ;CHANNEL
 (defmethod g-channel (sp (v1 list) (v2 list))
     (channel-set sp (vid v1) (vid v2)))
+
+(defmethod g-channel (sp (v1 list) (v2 set-var))
+    (channel-set-bool sp (vid v1) (vid v2)))
+
+;MINIMUM
+(defmethod g-setmin (sp (v1 set-var))
+    (make-instance 'int-var :id (set-min sp (vid v1))))
+
+;MAXIMUM
+(defmethod g-setmax (sp (v1 set-var))
+    (make-instance 'int-var :id (set-max sp (vid v1))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Methods for exploration ;

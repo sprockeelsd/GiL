@@ -205,6 +205,18 @@ int WSpace::add_boolVar(int min, int max) {
 }
 
 /**
+ Add n BoolVars to the WSpace ranging from min to max.
+ In practice, push n new BoolVars at the end of the vector bool_vars.
+ Return the indices of the BoolVars in bool_vars.
+ */
+int* WSpace::add_boolVarArray(int n, int min, int max) {
+    int* vids = new int[n];
+    for(int i = 0; i < n; i++)
+        vids[i] = this->add_boolVar(min, max);
+    return vids;
+}
+
+/**
  Add a BoolVar to the WSpace corresponding to the evaluation of int_rel(vid, val).
  In practice, push a new BoolVar at the end of the vector bool_vars.
  Return the index of the BoolVar in bool_vars
@@ -265,6 +277,13 @@ void WSpace::cst_val_rel(int vid, int rel_type, int val) {
 */
 void WSpace::cst_var_rel(int vid1, int rel_type, int vid2) {
     rel(*this, get_int_var(vid1), (IntRelType) rel_type, get_int_var(vid2));
+}
+
+/**
+ Post a relation constraint between the IntVars denoted by vid1 and vid2 with reification.
+*/
+void WSpace::cst_var_rel_reify(int vid1, int rel_type, int vid2, int vid3, int mode) {
+    rel(*this, get_int_var(vid1), (IntRelType) rel_type, get_int_var(vid2), Reify(get_bool_var(vid3), (ReifyMode) mode));
 }
 
 /**
@@ -556,6 +575,13 @@ void WSpace::cst_setop_var(int vid1, int set_op, int vid2, int set_rel, int vid3
 }
 
 /**
+ Post the constraint that y set_op x.
+ */
+void WSpace::cst_setop_arr(int set_op, int s, int* vid1, int vid2) {
+    rel(*this, (SetOpType) set_op, set_var_args(s, vid1), get_set_var(vid2));
+}
+
+/**
  Post a relation constraint between vid1 and vid2.
  */
 void WSpace::cst_setrel_var(int vid1, int rel_type, int vid2) {
@@ -572,8 +598,8 @@ void WSpace::cst_setrel_val(int vid1, int rel_type, int* domain, int s) {
 /**
  Post a relation constraint between vid1 and domain dom with a reify variable
  */
-void WSpace::cst_setrel_val_reify(int vid1, int rel_type, int* domain, int s, int r) {
-    dom(*this, get_set_var(vid1), (SetRelType) rel_type, IntSet(domain, s), get_bool_var(r));
+void WSpace::cst_setrel_val_reify(int vid1, int rel_type, int* domain, int s, int r, int mode) {
+    dom(*this, get_set_var(vid1), (SetRelType) rel_type, IntSet(domain, s), Reify(get_bool_var(r), (ReifyMode) mode));
 }
 
 /**
@@ -609,6 +635,29 @@ Post a channeling constraint between vid1 and vid2
 */
 void WSpace::cst_channel(int n1, int* vids1, int n2, int* vids2){
     channel(*this, set_var_args(n1, vids1), set_var_args(n2, vids2));
+}
+
+/**
+Post a channeling constraint between boolVarArray vid1 and SetVar vid2
+*/
+void WSpace::cst_channel_sb(int n1, int* vids1, int vid2){
+    channel(*this, bool_var_args(n1, vids1), get_set_var(vid2));
+}
+
+/**
+Return an intvar constrained to the minimum of the setvar vid1
+*/
+int WSpace::cst_setmin(int vid1){
+    int_vars.push_back(expr(*this, min(get_set_var(vid1))));
+    return i_size++ ;
+}
+
+/**
+Return an intvar constrained to the maximum of the setvar vid1
+*/
+int WSpace::cst_setmax(int vid1){
+    int_vars.push_back(expr(*this, max(get_set_var(vid1))));
+    return i_size++ ;
 }
 
 //======================================

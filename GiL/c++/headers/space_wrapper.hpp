@@ -151,6 +151,13 @@ public:
      Return the index of the BoolVar in bool_vars
      */
     int add_boolVar(int min, int max);
+    
+    /**
+    Add n BoolVars to the WSpace ranging from min to max.
+    In practice, push n new BoolVars at the end of the vector bool_vars.
+    Return the indices of the BoolVars in bool_vars.
+    */
+    int* add_boolVarArray(int n, int min, int max);
 
     /**
      Add a BoolVar to the WSpace corresponding to the evaluation of int_rel(vid, val).
@@ -195,6 +202,11 @@ public:
      Post a relation constraint between the IntVars denoted by vid1 and vid2.
     */
     void cst_var_rel(int vid1, int rel_type, int vid2);
+    
+    /**
+    Post a relation constraint between the IntVars denoted by vid1 and vid2 with reification.
+    */
+    void cst_var_rel_reify(int vid1, int rel_type, int vid2, int vid3, int mode);
 
     /**
      Post a relation constraint between the n IntVars denoted by vids and the val.
@@ -404,6 +416,11 @@ public:
      Post the constraint that vid1 set_op vid2 = vid3.
      */
     void cst_setop_var(int vid1, int set_op, int vid2, int set_rel, int vid3);
+    
+    /**
+    Post the constraint that y set_op x.
+    */
+    void cst_setop_arr(int set_op, int s, int* vid1, int vid2);
 
     /**
      Post a relation constraint between vid1 and vid2.
@@ -418,7 +435,7 @@ public:
      /**
      Post a relation constraint between vid1 and vid2 with reify.
      */
-    void cst_setrel_val_reify(int vid1, int rel_type, int* dom, int s, int r);
+    void cst_setrel_val_reify(int vid1, int rel_type, int* dom, int s, int r, int mode);
     
     /**
     Post a dom constraint between vid1 and dom {i,..., j}.
@@ -444,6 +461,21 @@ public:
     Post a channeling constraint between vid1 and vid2
     */
     void cst_channel(int n1, int* vids1, int n2, int* vids2);
+    
+    /**
+    Post a channeling constraint between boolVarArray vid1 and SetVar vid2
+    */
+    void cst_channel_sb(int n1, int* vids1, int vid2);
+    
+    /**
+    Return an intvar constrained to the minimum of setvar vid1
+    */
+    int cst_setmin(int vid1);
+    
+    /**
+    Return an intvar constrained to the maximum of the setvar vid1
+    */
+    int cst_setmax(int vid1);
 
 
     //======================================

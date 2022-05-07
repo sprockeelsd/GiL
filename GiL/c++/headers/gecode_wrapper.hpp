@@ -65,6 +65,11 @@ int nvars(void* sp);
 int add_boolVar(void* sp, int min, int max);
 
 /**
+ Wraps the WSpace add_boolVarArray method.
+ */
+int* add_boolVarArray(void* sp, int n, int min, int max);
+
+/**
  Wraps the WSpace add_boolVar_expr_val method.
  */
 int add_boolVar_expr_val(void* sp, int vid, int rel_type, int val);
@@ -88,6 +93,11 @@ int* add_setVarArray(void* sp, int n, int lub_min, int lub_max, int card_min, in
  Wraps the WSpace cst_var_relr method.
  */
 void var_rel(void* sp, int vid1, int rel_type, int vid2);
+
+/**
+ Wraps the WSpace cst_var_rel_reify method.
+ */
+void var_rel_reify(void* sp, int vid1, int rel_type, int vid2, int vid3, int mode);
 
 /**
  Wraps the WSpace cst_val_rel method.
@@ -290,6 +300,11 @@ void var_boolrel(void* sp, int vid1, int rel_type, int vid2);
 void var_setop(void* sp, int vid1, int set_op, int vid2, int set_rel, int vid3);
 
 /**
+ Wraps the WSpace cst_setop_arr method.
+ */
+void arr_setop(void* sp, int set_op, int s, int* vid1, int vid2);
+
+/**
  Wraps the WSpace cst_setrel_var method.
  */
 void var_setrel(void* sp, int vid1, int rel_type, int vid2);
@@ -302,7 +317,7 @@ void val_setrel(void* sp, int vid1, int rel_type, int* dom, int s);
 /**
  Wraps the WSpace cst_setrel_val_reify method.
  */
-void val_setrel_reify(void* sp, int vid1, int rel_type, int* dom, int s, int r);
+void val_setrel_reify(void* sp, int vid1, int rel_type, int* dom, int s, int r, int mode);
 
 /**
  Wraps the WSpace cst_setdom_ints method.
@@ -328,6 +343,26 @@ void var_card(void* sp, int n, int* vids, int min_card, int max_card);
  Wraps the WSpace cst_channel method.
  */
 void channel_set(void* sp, int n1, int* vids1, int n2, int* vids2);
+
+/**
+Wraps the WSpace cst_channel_sb method.
+*/
+void channel_set_bool(void* sp, int n1, int* vids1, int vid2);
+
+/**
+Wraps the WSpace cst_setmin method.
+*/
+int set_min(void* sp, int vid1);
+
+/**
+Wraps the WSpace cst_setmax method.
+*/
+int set_max(void* sp, int vid1);
+
+/**
+Wraps the WSpace cst_setmin method.
+*/
+void test(void* sp, int max_pitch, int s1, int* push, int s2, int* pushMap);
 
 /**
  Wraps the WSpace branch method.

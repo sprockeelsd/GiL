@@ -58,6 +58,13 @@ int add_boolVar(void* sp, int min, int max) {
 }
 
 /**
+ Wraps the WSpace add_boolVarArray method.
+ */
+int* add_boolVarArray(void* sp, int n, int min, int max) {
+    return static_cast<WSpace*>(sp)->add_boolVarArray(n, min, max);
+}
+
+/**
  Wraps the WSpace add_boolVar_expr_val method.
  */
 int add_boolVar_expr_val(void* sp, int vid, int rel_type, int val) {
@@ -90,10 +97,17 @@ void val_rel(void* sp, int vid, int rel_type, int val) {
 }
 
 /**
- Wraps the WSpace cst_var_relr method.
+ Wraps the WSpace cst_var_rel method.
  */
 void var_rel(void* sp, int vid1, int rel_type, int vid2) {
     return static_cast<WSpace*>(sp)->cst_var_rel(vid1, rel_type, vid2);
+}
+
+/**
+ Wraps the WSpace cst_var_rel_reify method.
+ */
+void var_rel_reify(void* sp, int vid1, int rel_type, int vid2, int vid3, int mode) {
+    return static_cast<WSpace*>(sp)->cst_var_rel_reify(vid1, rel_type, vid2, vid3, mode);
 }
 
 /**
@@ -370,6 +384,13 @@ void var_setop(void* sp, int vid1, int set_op, int vid2, int set_rel, int vid3) 
 }
 
 /**
+ Wraps the WSpace cst_setop_arr method.
+ */
+void arr_setop(void* sp, int set_op, int s, int* vid1, int vid2) {
+    return static_cast<WSpace*>(sp)->cst_setop_arr(set_op, s, vid1, vid2);
+}
+
+/**
  Wraps the WSpace cst_setrel_var method.
  */
 void var_setrel(void* sp, int vid1, int rel_type, int vid2) {
@@ -386,8 +407,8 @@ void val_setrel(void* sp, int vid1, int rel_type, int* dom, int s) {
 /**
  Wraps the WSpace cst_setrel_val_reify method.
  */
-void val_setrel_reify(void* sp, int vid1, int rel_type, int* dom, int s, int r) {
-    return static_cast<WSpace*>(sp)->cst_setrel_val_reify(vid1, rel_type, dom, s, r);
+void val_setrel_reify(void* sp, int vid1, int rel_type, int* dom, int s, int r, int mode) {
+    return static_cast<WSpace*>(sp)->cst_setrel_val_reify(vid1, rel_type, dom, s, r, mode);
 }
 
 /**
@@ -423,6 +444,27 @@ Wraps the WSpace cst_channel method.
 */
 void channel_set(void* sp, int n1, int* vids1, int n2, int* vids2) {
     return static_cast<WSpace*>(sp)->cst_channel(n1, vids1, n2, vids2);
+}
+
+/**
+Wraps the WSpace cst_channel_sb method.
+*/
+void channel_set_bool(void* sp, int n1, int* vids1, int vid2) {
+    return static_cast<WSpace*>(sp)->cst_channel_sb(n1, vids1, vid2);
+}
+
+/**
+Wraps the WSpace cst_setmin method.
+*/
+int set_min(void* sp, int vid1){
+    return static_cast<WSpace*>(sp)->cst_setmin(vid1);   
+}
+
+/**
+Wraps the WSpace cst_setmin method.
+*/
+int set_max(void* sp, int vid1){
+    return static_cast<WSpace*>(sp)->cst_setmax(vid1);   
 }
 
 /**
