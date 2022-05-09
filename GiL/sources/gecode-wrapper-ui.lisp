@@ -276,6 +276,9 @@
 (defmethod g-rel (sp (v1 bool-var) rel-type (v2 bool-var))
     (var-bool-rel sp (vid v1) rel-type (vid v2)))
 
+(defmethod g-rel (sp bool-op (v1 list) (v2 fixnum))
+    (val-arr-bool-op sp bool-op (vid v1)  v2))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Methods for setVar constraints ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

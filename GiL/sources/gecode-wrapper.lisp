@@ -654,6 +654,23 @@
     (val :int)
 )
 
+(cffi::defcfun ("val_arr_boolop" val-arr-bool-op-aux) :void
+    "Post the constraint that if there exists j (0 ≤ j < |x|) such that x[j] = u, 
+    then there must exist i with i < j such that x[i] = s"
+    (sp :pointer)
+    (bool_op :int)
+    (s :int)
+    (vids :pointer)
+    (val :int)
+)
+
+(defun val-arr-bool-op (sp bool-op vids val)
+    "Post the constraint that elements of vids bool-op val"
+    (let ((x (cffi::foreign-alloc :int :initial-contents vids)))
+        (val-arr-bool-op-aux sp bool-op (length vids) x val)
+    )
+)
+
 (cffi::defcfun ("var_boolop" var-bool-op) :void
     "Post the constraint that vid3 = bool-op(vid1, vid2)."
     (sp :pointer)

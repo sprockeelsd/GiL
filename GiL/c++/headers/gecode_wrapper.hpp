@@ -280,6 +280,11 @@ void precede(void* sp, int n, int* vids, int s, int u);
 void val_boolop(void* sp, int vid1, int bool_op, int vid2, int val);
 
 /**
+ Wraps the WSpace cst_boolop_arr_val method.
+ */
+void val_arr_boolop(void* sp, int bool_op, int s, int* vids, int val);
+
+/**
  Wraps the WSpace cst_boolop_var method.
  */
 void var_boolop(void* sp, int vid1, int bool_op, int vid2, int vid3);
