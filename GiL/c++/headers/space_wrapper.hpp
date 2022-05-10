@@ -460,7 +460,12 @@ public:
     /**
      Post a cardinality constraint on vid1.
      */
-    void cst_card_var(int n, int* vids, int min_card, int max_card);
+    void cst_card_val(int n, int* vids, int min_card, int max_card);
+    
+    /**
+    Post a cardinality constraint on vid1 with intvar vid2
+    */
+    void cst_card_var(int vid1, int vid2);
     
     /**
     Post a channeling constraint between vid1 and vid2

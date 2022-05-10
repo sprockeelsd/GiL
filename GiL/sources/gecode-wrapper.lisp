@@ -801,7 +801,7 @@
     (vid2 :int)
 )
 
-(cffi::defcfun ("var_card" var-card-aux) :void
+(cffi::defcfun ("val_card" val-card-aux) :void
     "Post setVar cardinality constraint."
     (sp :pointer)
     (n :int)
@@ -810,10 +810,17 @@
     (max-card :int)
 )
 
-(defun var-card (sp vids min-card max-card)
+(defun val-card (sp vids min-card max-card)
     "Post cardinality constraint on the SetVars denoted by vids."
     (let ((x (cffi::foreign-alloc :int :initial-contents vids)))
-        (var-card-aux sp (length vids) x min-card max-card))
+        (val-card-aux sp (length vids) x min-card max-card))
+)
+
+(cffi::defcfun ("var_card" var-card) :void
+    "Post setVar cardinality constraint."
+    (sp :pointer)
+    (vid1 :int)
+    (vid2 :int)
 )
 
 (cffi::defcfun ("var_setrel" var-set-rel) :void

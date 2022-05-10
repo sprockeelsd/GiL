@@ -440,10 +440,17 @@ void empty_set(void* sp, int vid1) {
 }
 
 /**
+ Wraps the WSpace cst_setrel_val method.
+ */
+void val_card(void* sp, int n, int* vids, int min_card, int max_card) {
+    return static_cast<WSpace*>(sp)->cst_card_val(n, vids, min_card, max_card);
+}
+
+/**
  Wraps the WSpace cst_setrel_var method.
  */
-void var_card(void* sp, int n, int* vids, int min_card, int max_card) {
-    return static_cast<WSpace*>(sp)->cst_card_var(n, vids, min_card, max_card);
+void var_card(void* sp, int vid1, int vid2) {
+    return static_cast<WSpace*>(sp)->cst_card_var(vid1, vid2);
 }
 
 /**

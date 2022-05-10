@@ -323,10 +323,13 @@
 
 ;CARDINALITY
 (defmethod g-card (sp (v1 set-var) min-card max-card)
-    (var-card sp (list (vid v1)) min-card max-card))
+    (val-card sp (list (vid v1)) min-card max-card))
 
 (defmethod g-card (sp (v list) min-card max-card)
-    (var-card sp (vid v) min-card max-card))
+    (val-card sp (vid v) min-card max-card))
+
+(defmethod g-card-var (sp (v1 set-var) (v2 int-var))
+    (val-card sp (vid v1) (vid v2)))
 
 ;CHANNEL
 (defmethod g-channel (sp (v1 list) (v2 list))

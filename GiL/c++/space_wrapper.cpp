@@ -631,10 +631,17 @@ void WSpace::cst_setdom_set(int vid1, int vid2) {
 }
 
 /**
- Post a cardinality constraint on vid1
+ Post a cardinality constraint on vids with 2 bounds min_card max_card
  */
-void WSpace::cst_card_var(int n, int* vids, int min_card, int max_card) {
+void WSpace::cst_card_val(int n, int* vids, int min_card, int max_card) {
     cardinality(*this, set_var_args(n, vids), min_card, max_card);
+}
+
+/**
+ Post a cardinality constraint on vid1 with intvar vid2
+ */
+void WSpace::cst_card_var(int vid1, int vid2) {
+    cardinality(*this, get_set_var(vid1), get_int_var(vid2));
 }
 
 /**
