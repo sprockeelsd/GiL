@@ -346,6 +346,10 @@
 (defmethod g-setmax (sp (v1 set-var))
     (make-instance 'int-var :id (set-max sp (vid v1))))
 
+;SETUNION
+(defmethod g-setunion (sp (v1 set-var) (v2 list))
+    (set-union sp (vid v1) (vid v2)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Methods for exploration ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;

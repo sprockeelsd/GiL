@@ -482,6 +482,13 @@ int set_max(void* sp, int vid1){
 }
 
 /**
+Wraps the WSpace cst_setunion method.
+*/
+void set_union(void* sp, int vid1, int n, int* vids){
+    return static_cast<WSpace*>(sp)->cst_setunion(vid1, n, vids);   
+}
+
+/**
  Wraps the WSpace branch method.
  */
 void branch(void* sp, int n, int* vids, int var_strategy, int val_strategy) {

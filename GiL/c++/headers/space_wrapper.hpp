@@ -486,6 +486,11 @@ public:
     Return an intvar constrained to the maximum of the setvar vid1
     */
     int cst_setmax(int vid1);
+    
+    /**
+    Post a relation constraint beween setvar vid1 and the union of the set in vids
+    */
+    void cst_setunion(int vid1, int n, int* vids);
 
 
     //======================================

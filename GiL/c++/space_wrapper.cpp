@@ -674,6 +674,13 @@ int WSpace::cst_setmax(int vid1){
     return i_size++ ;
 }
 
+/**
+Post a relation constraint beween setvar vid1 and the union of the set in vids
+*/
+void WSpace::cst_setunion(int vid1, int n, int* vids){
+    rel(*this, get_set_var(vid1), (SetRelType) 0, expr(*this, setunion(set_var_args(n, vids))));   
+}
+
 //======================================
 //Branch and bound constraint function =
 //======================================

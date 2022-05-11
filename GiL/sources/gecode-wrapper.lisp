@@ -873,6 +873,20 @@
     (vid1 :int)
 )
 
+(cffi::defcfun ("set_union" set-union-aux) :void
+    "Post setVar cardinality constraint."
+    (sp :pointer)
+    (vid1 :int)
+    (n :int)
+    (vids :pointer)
+)
+
+(defun set-union (sp vid1 vids)
+    "Post cardinality constraint on the SetVars denoted by vids."
+    (let ((x (cffi::foreign-alloc :int :initial-contents vids)))
+        (set-union-aux sp vid1 (length vids) x))
+)
+
 (cffi::defcfun ("branch" branch-aux) :void
     "Post branching on the n IntVars denoted by vids."
     (sp :pointer)

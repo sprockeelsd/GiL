@@ -370,6 +370,11 @@ Wraps the WSpace cst_setmax method.
 int set_max(void* sp, int vid1);
 
 /**
+Wraps the WSpace cst_setunion method.
+*/
+void set_union(void* sp, int vid1, int n, int* vids);
+
+/**
 Wraps the WSpace cst_setmin method.
 */
 void test(void* sp, int max_pitch, int s1, int* push, int s2, int* pushMap);
