@@ -329,7 +329,7 @@
     (val-card sp (vid v) min-card max-card))
 
 (defmethod g-card-var (sp (v1 set-var) (v2 int-var))
-    (val-card sp (vid v1) (vid v2)))
+    (var-card sp (vid v1) (vid v2)))
 
 ;CHANNEL
 (defmethod g-channel (sp (v1 list) (v2 list))
