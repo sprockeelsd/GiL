@@ -552,6 +552,13 @@ void WSpace::cst_boolop_arr_val(int bool_op, int s, int* vids, int val) {
 }
 
 /**
+ Post the constraint that y is the result of bool_op between all element of vids.
+ */
+void WSpace::cst_boolop_arr_var(int bool_op, int s, int* vids, int vid1) {
+    rel(*this, (BoolOpType) bool_op, bool_var_args(s, vids), get_bool_var(vid1));
+}
+
+/**
  Post the constraint that vid1 bool_op vid2 = vid3.
  */
 void WSpace::cst_boolop_var(int vid1, int bool_op, int vid2, int vid3) {

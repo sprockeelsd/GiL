@@ -363,6 +363,13 @@ void val_arr_boolop(void* sp, int bool_op, int s, int* vids, int val) {
 }
 
 /**
+ Wraps the WSpace cst_boolop_arr_var method.
+ */
+void var_arr_boolop(void* sp, int bool_op, int s, int* vids, int vid1) {
+    return static_cast<WSpace*>(sp)->cst_boolop_arr_var(bool_op, s, vids, vid1);
+}
+
+/**
  Wraps the WSpace cst_boolop_var method.
  */
 void var_boolop(void* sp, int vid1, int bool_op, int vid2, int vid3) {

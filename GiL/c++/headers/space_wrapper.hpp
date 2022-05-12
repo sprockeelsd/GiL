@@ -399,6 +399,11 @@ public:
     Post the constraint that elements of vids bool_op val.
     */
     void cst_boolop_arr_val(int bool_op, int s, int* vids, int val);
+    
+    /**
+    Post the constraint that y is the result of bool_op between all element of vids.
+    */
+    void cst_boolop_arr_var(int bool_op, int s, int* vids, int vid1);
 
     /**
      Post the constraint that vid1 bool_op vid2 = vid3.
