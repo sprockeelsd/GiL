@@ -682,6 +682,20 @@ int WSpace::cst_setmax(int vid1){
 }
 
 /**
+Post a constraint between vid2 and the minimum of the setvar vid1 with reification
+*/
+void WSpace::cst_setmin_reify(int vid1, int vid2, int r, int mode){
+    min(*this, get_set_var(vid1), get_int_var(vid2), Reify(get_bool_var(r), (ReifyMode) mode));
+}
+
+/**
+Post a constraint between vid2 and the maximum of the setvar vid1 with reification
+*/
+void WSpace::cst_setmax_reify(int vid1, int vid2, int r, int mode){
+    max(*this, get_set_var(vid1), get_int_var(vid2), Reify(get_bool_var(r), (ReifyMode) mode));
+}
+
+/**
 Post a relation constraint beween setvar vid1 and the union of the set in vids
 */
 void WSpace::cst_setunion(int vid1, int n, int* vids){
@@ -718,6 +732,7 @@ void WSpace::constrain(const Space& _b) {
     - 0 : INT_VAR_SIZE_MIN()
     - 1 : INT_VAR_RND(r)
     - 2 : INT_VAR_DEGREE_MAX()
+    - 3 : INT_VAR_NONE()
  val_strategy:
     - 0 : INT_VAL_MIN()
     - 1 : INT_VAL_RND(r)
@@ -741,6 +756,9 @@ void WSpace::branch(int n, int* vids, int var_strategy, int val_strategy) {
     }
     else if(var_strategy == 2){//INT_VAR_DEGREE_MAX()
         var_strat = INT_VAR_DEGREE_MAX();
+    }
+    else if(var_strategy == 3){//INT_VAR_NONE()
+        var_strat = INT_VAR_NONE();
     }
 
     //determine the value strategy
@@ -775,9 +793,45 @@ void WSpace::branch_b(int n, int* vids, int var_strategy, int val_strategy) {
 /**
  Post a branching strategy on the n SetVars in vids.
  */
-void WSpace::branch_set(int n, int* vids) {
+void WSpace::branch_set(int n, int* vids, int var_strategy, int val_strategy) {
+    SetVarBranch var_strat;
+    SetValBranch val_strat;
+    
+    Rnd r1(1U);
     Rnd r2(3U);
-    Gecode::branch(*this, set_var_args(n, vids), SET_VAL_RND_INC(r2)); //default for now
+    
+    //determine the variable strategy
+    if(var_strategy == 0){//INT_VAR_SIZE_MIN()
+        var_strat = SET_VAR_SIZE_MIN();
+    }
+    else if(var_strategy == 1){//INT_VAR_RND(r1)
+        var_strat = SET_VAR_RND(r1);
+    }
+    else if(var_strategy == 2){//INT_VAR_DEGREE_MAX()
+        var_strat = SET_VAR_DEGREE_MAX();
+    }
+    else if(var_strategy == 3){//INT_VAR_NONE()
+        var_strat = SET_VAR_NONE();
+    }
+    
+    //determine the value strategy
+    if(val_strategy == 0){//INT_VAL_MIN()
+        val_strat = SET_VAL_MIN_INC();
+    }
+    else if(val_strategy == 1){//INT_VAL_RND(r2)
+        val_strat = SET_VAL_RND_INC(r2);
+    }
+    else if(val_strategy == 2){//INT_VAL_SPLIT_MIN()
+        val_strat = SET_VAL_MIN_EXC();
+    }
+    else if(val_strategy == 3){//INT_VAL_SPLIT_MAX()
+        val_strat = SET_VAL_RND_EXC(r2);
+    }
+    else if(val_strategy == 4){//INT_VAL_MED()
+        val_strat = SET_VAL_MED_INC();
+    }
+    
+    Gecode::branch(*this, set_var_args(n, vids), var_strat, val_strat); 
 } 
 
 //==================

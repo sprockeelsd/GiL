@@ -119,7 +119,7 @@
 
 (defmethod g-rel-reify (sp (v1 int-var) rel-type (v2 int-var) (v3 bool-var) &optional mode)
     (if (not mode)
-        ((setf mode gil::RM_EQV)))
+        (setf mode gil::RM_EQV))
     (var-rel-reify sp (vid v1) rel-type (vid v2) (vid v3) mode))
 
 ;DISTINCT
@@ -345,9 +345,19 @@
 (defmethod g-setmin (sp (v1 set-var))
     (make-instance 'int-var :id (set-min sp (vid v1))))
 
+(defmethod g-setmin-reify (sp (v1 set-var) (v2 int-var) (r bool-var) &optional mode)
+    (if (not mode)
+        (setf mode gil::RM_EQV))
+    (set-min-reify sp (vid v1) (vid v2) (vid r) mode))
+
 ;MAXIMUM
 (defmethod g-setmax (sp (v1 set-var))
     (make-instance 'int-var :id (set-max sp (vid v1))))
+
+(defmethod g-setmax-reify (sp (v1 set-var) (v2 int-var) (r bool-var) &optional mode)
+    (if (not mode)
+        (setf mode gil::RM_EQV))
+    (set-max-reify sp (vid v1) (vid v2) (vid r) mode))
 
 ;SETUNION
 (defmethod g-setunion (sp (v1 set-var) (v2 list))
@@ -357,10 +367,13 @@
 ; Methods for exploration ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;INTVARS
+
 ;Variable branching strategies
 (defparameter gil::INT_VAR_SIZE_MIN 0)    ; select first the variable with the smallest domain
 (defparameter gil::INT_VAR_RND 1) ; select first a random variable
 (defparameter gil::INT_VAR_DEGREE_MAX 2); select the variable with the highest degree
+(defparameter gil::INT_VAR_NONE 3) ;select first unassigned
 
 ;Value branching strategies
 (defparameter gil::INT_VAL_MIN 0)    ; select first the smallest value of the domain
@@ -368,6 +381,21 @@
 (defparameter gil::INT_VAL_SPLIT_MIN 2) ; select the values not greater than the (min+max)/2
 (defparameter gil::INT_VAL_SPLIT_MAX 3) ; select the values greater than (min+max)/2
 (defparameter gil::INT_VAL_MED 4) ; selects the greatest value not bigger than the median
+
+;;;SETVARS
+
+;Variable branching strategies
+(defparameter gil::SET_VAR_SIZE_MIN 0)    ; select first the variable with the smallest unknown domain
+(defparameter gil::SET_VAR_RND 1) ; select first a random variable
+(defparameter gil::SET_VAR_DEGREE_MAX 2); select the variable with the highest degree
+(defparameter gil::SET_VAR_NONE 3) ;select first unassigned
+
+;Value branching strategies
+(defparameter gil::SET_VAL_MIN_INC 0)    ; select first the smallest value of the domain
+(defparameter gil::SET_VAL_RND_INC 1) ; select first a random value
+(defparameter gil::SET_VAL_MIN_EXC 2) ; select the values not greater than the (min+max)/2
+(defparameter gil::SET_VAL_RND_EXC 3) ; select the values greater than (min+max)/2
+(defparameter gil::SET_VAL_MED_INC 4) ; selects the greatest value not bigger than the median
 
 (defmethod g-branch (sp (v int-var) var-strat val-strat)
     "Post a branching on v with strategies var-strat and val-strat."
@@ -377,14 +405,14 @@
     (branch-b sp (list (vid v)) var-strat val-strat))
 
 (defmethod g-branch (sp (v set-var) var-strat val-strat)
-    (branch-set sp (list (vid v))))
+    (branch-set sp (list (vid v)) var-strat val-strat))
 
 (defmethod g-branch (sp (v list) var-strat val-strat)
     (if (typep (car v) 'int-var)
         (branch sp (vid v) var-strat val-strat)
         (if (typep (car v) 'bool-var)
             (branch-b sp (vid v) var-strat val-strat)
-            (branch-set sp (vid v)))))
+            (branch-set sp (vid v) var-strat val-strat))))
 
 ;cost
 (defmethod g-cost (sp (v int-var))

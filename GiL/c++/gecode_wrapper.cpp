@@ -482,10 +482,24 @@ int set_min(void* sp, int vid1){
 }
 
 /**
-Wraps the WSpace cst_setmin method.
+Wraps the WSpace cst_setmax method.
 */
 int set_max(void* sp, int vid1){
     return static_cast<WSpace*>(sp)->cst_setmax(vid1);   
+}
+
+/**
+Wraps the WSpace cst_setmin_reify method.
+*/
+void set_min_reify(void* sp, int vid1, int vid2, int r, int mode){
+    return static_cast<WSpace*>(sp)->cst_setmin_reify(vid1, vid2, r, mode);   
+}
+
+/**
+Wraps the WSpace cst_setmax_reify method.
+*/
+void set_max_reify(void* sp, int vid1, int vid2, int r, int mode){
+    return static_cast<WSpace*>(sp)->cst_setmax_reify(vid1, vid2, r, mode);   
 }
 
 /**
@@ -512,8 +526,8 @@ void branch_b(void* sp, int n, int* vids, int var_strategy, int val_strategy) {
 /**
  Wraps the WSpace branch_set method.
  */
-void branch_set(void* sp, int n, int* vids) {
-    return static_cast<WSpace*>(sp)->branch_set(n, vids);
+void branch_set(void* sp, int n, int* vids, int var_strategy, int val_strategy) {
+    return static_cast<WSpace*>(sp)->branch_set(n, vids, var_strategy, val_strategy);
 }
 
 /**

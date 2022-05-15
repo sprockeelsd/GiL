@@ -888,6 +888,24 @@
     (vid1 :int)
 )
 
+(cffi::defcfun ("set_min_reify" set-min-reify) :void
+    "Post minimum of SetVar constraint with reification."
+    (sp :pointer)
+    (vid1 :int)
+    (vid2 :int)
+    (r :int)
+    (mode :int)
+)
+
+(cffi::defcfun ("set_max_reify" set-max-reify) :void
+    "Post maximum of SetVar constraint with reification"
+    (sp :pointer)
+    (vid1 :int)
+    (vid2 :int)
+    (r :int)
+    (mode :int)
+)
+
 (cffi::defcfun ("set_union" set-union-aux) :void
     "Post setVar cardinality constraint."
     (sp :pointer)
@@ -937,12 +955,14 @@
     (sp :pointer)
     (n :int)
     (vids :pointer)
+    (var_strat :int)
+    (val_strat :int)
 )
 
-(defun branch-set (sp vids)
+(defun branch-set (sp vids var_strat val_strat)
     "Post branching on the SetVars denoted by vids."
     (let ((x (cffi::foreign-alloc :int :initial-contents vids)))
-        (branch-set-aux sp (length vids) x))
+        (branch-set-aux sp (length vids) x var_strat val_strat))
 )
 
 (cffi::defcfun ("cost" set-cost) :void

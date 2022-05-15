@@ -375,14 +375,20 @@ Wraps the WSpace cst_setmax method.
 int set_max(void* sp, int vid1);
 
 /**
+Wraps the WSpace cst_setmin_reify method.
+*/
+void set_min_reify(void* sp, int vid1, int vid2, int r, int mode);
+
+/**
+Wraps the WSpace cst_setmax_reify method.
+*/
+void set_max_reify(void* sp, int vid1, int  vid2, int r, int mode);
+
+/**
 Wraps the WSpace cst_setunion method.
 */
 void set_union(void* sp, int vid1, int n, int* vids);
 
-/**
-Wraps the WSpace cst_setmin method.
-*/
-void test(void* sp, int max_pitch, int s1, int* push, int s2, int* pushMap);
 
 /**
  Wraps the WSpace branch method.
@@ -397,7 +403,7 @@ void branch_b(void* sp, int n, int* vids, int var_strategy, int val_strategy);
 /**
  Wraps the WSpace branch_set method.
  */
-void branch_set(void* sp, int n, int* vids);
+void branch_set(void* sp, int n, int* vids, int var_strategy, int val_strategy);
 
 /**
  Wraps the WSpace cost method.

@@ -493,6 +493,16 @@ public:
     int cst_setmax(int vid1);
     
     /**
+    Return an intvar constrained to the minimum of the setvar vid1 with reification
+    */
+    void cst_setmin_reify(int vid1, int vid2, int r, int mode);
+    
+    /**
+    Return an intvar constrained to the maximum of the setvar vid1 with reification
+    */
+    void cst_setmax_reify(int vid1, int vid2, int r, int mode);
+    
+    /**
     Post a relation constraint beween setvar vid1 and the union of the set in vids
     */
     void cst_setunion(int vid1, int n, int* vids);
@@ -528,7 +538,7 @@ public:
      Post a branching strategy on the n SetVars in vids, with strategies denoted by var_strategy and
      val_strategy.
      */
-    void branch_set(int n, int* vids);  
+    void branch_set(int n, int* vids, int var_strategy, int val_strategy);  
     
     //==================
     //= Search support =
