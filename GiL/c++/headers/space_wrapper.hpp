@@ -27,8 +27,10 @@ protected:
     int s_size;
     int cost_id;
 
-    int* solution_variable_indexes;// to know what variables will hold the solution, useful for bab
+    //int* solution_variable_indexes;// to know what variables will hold the solution, useful for bab
+    int* solution_variable_indexes;
     int var_sol_size;
+    int percent_diff;
     
     //======================
     //= Variables from idx =
@@ -128,7 +130,12 @@ public:
     /**
      Define which variables are to be the solution so they can be accessed to add a constraint with bab
     */
-    int* set_as_solution_variables(int n, int* vids);
+    void set_as_solution_variables(int n, int* vids);
+    
+    /**
+    Define the percentage of the solution that should change when searching for the next solution with BAB
+    */
+    void set_percent_diff(int diff);
         
     /**
      Return the number of IntVars in the space.

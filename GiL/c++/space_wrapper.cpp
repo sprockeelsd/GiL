@@ -182,9 +182,19 @@ int* WSpace::add_intVarArrayWithDom(int n, int s, int* dom) {
 /**
  Define which variables are to be the solution so they can be accessed to add a constraint with bab
  */
-int* WSpace::set_as_solution_variables(int n, int* vids){
-    solution_variable_indexes = vids;
-    return solution_variable_indexes;
+void WSpace::set_as_solution_variables(int n, int* vids){
+    solution_variable_indexes = new int[n];
+    for (int i=0; i<n; i++) {
+        solution_variable_indexes[i]=vids[i];
+    }
+    var_sol_size = n;
+}
+
+/**
+ Define the percentage of the solution that should change when searching for the next solution with BAB
+ */
+void WSpace::set_percent_diff(int diff){
+    percent_diff = diff;
 }
 
 /**
@@ -719,7 +729,36 @@ void WSpace::constrain(const Space& _b) {
     //    rel(*this, vars[i], IRT_NQ, 2);
     //    b.vars[i].val()
     //}
-}
+    const WSpace& b = static_cast<const WSpace&>(_b);
+    
+    SetVarArgs bvars(b.var_sol_size);
+    for(int i = 0; i < b.var_sol_size; i++)
+        bvars[i] = (b.set_vars).at((b.solution_variable_indexes)[i]);
+    
+    SetVarArgs vars(b.var_sol_size);
+    for(int i = 0; i < b.var_sol_size; i++)
+        vars[i] = (set_vars).at((b.solution_variable_indexes)[i]);
+    
+    for(int i=0; i<b.var_sol_size; i++){
+      if((rand()%100)< b.percent_diff){
+	    SetVar tmp(bvars[i]);
+	    rel(*this, (tmp!=IntSet::empty) >> (vars[i] != tmp) ); 
+          
+        //int* vals = new int[vars[i].glbSize()];
+        //int j = 0;
+        //for (SetVarGlbValues d(vars[i]);d();++d){
+        //    vals[j] = d.val() ;
+        //    j++ ;
+        //}
+          
+        //dom(*this, vars[i], (SetRelType) 4, IntSet(vals, i));
+        //myfile << j << endl;
+        //rel(*this, (vars[i]!=IntSet::empty) >> (vars[i] != IntSet(vals, j)));
+      }
+      //rel(*this, (tmp!=IntSet::empty) >> (push[i] != tmp) ); si on veut que ca change que quand tmp n'est pas nul
+    }
+      //rel(this, cardinality(b.push)>cardinality(push));
+  }
 
 //==========================
 //= Exploration strategies =
@@ -849,7 +888,8 @@ IntVar WSpace::cost(void) const {
     return int_vars.at(cost_id);
 }
 
-WSpace::WSpace(WSpace& s): IntMinimizeSpace(s), int_vars(s.i_size), bool_vars(s.b_size), set_vars(s.s_size), i_size(s.i_size), b_size(s.b_size), s_size(s.s_size), cost_id(s.cost_id) {
+WSpace::WSpace(WSpace& s): IntMinimizeSpace(s), int_vars(s.i_size), bool_vars(s.b_size), set_vars(s.s_size), i_size(s.i_size), b_size(s.b_size), s_size(s.s_size), cost_id(s.cost_id), 
+                           var_sol_size(s.var_sol_size), solution_variable_indexes(s.solution_variable_indexes), percent_diff(s.percent_diff) {
     //IntVars update
     vector<IntVar>::iterator itd, its;
     for(itd = int_vars.begin(), its = s.int_vars.begin(); itd != int_vars.end(); ++itd, ++its)
@@ -864,6 +904,11 @@ WSpace::WSpace(WSpace& s): IntMinimizeSpace(s), int_vars(s.i_size), bool_vars(s.
     vector<SetVar>::iterator std, sts;
     for(std = set_vars.begin(), sts = s.set_vars.begin(); std != set_vars.end(); ++std, ++sts)
         std->update(*this, *sts);
+     
+    //Solutions for BAB
+    for(int i=0; i<var_sol_size; i++)
+        s.solution_variable_indexes[i]=solution_variable_indexes[i];
+                           
 }
 
 Space* WSpace::copy(void) {

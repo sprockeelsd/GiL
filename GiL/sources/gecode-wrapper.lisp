@@ -75,19 +75,22 @@
             collect (cffi::mem-aref p :int i)))
 )
 
-(cffi::defcfun ("set_solution_vars" set-solution-vars-aux) :pointer
+(cffi::defcfun ("set_solution_vars" set-solution-vars-aux) :void
     (sp :pointer)
     (n :int)
     (vids :pointer)
 )
 
 (defun set-solution-vars (sp vids)
-    (let ((x (cffi::foreign-alloc :int :initial-contents vids))
-        p)
-        (setq p (set-solution-vars-aux sp (length vids) x))
-        (loop for i from 0 below (length vids)
-            collect (cffi::mem-aref p :int i))
+    (let ((x (cffi::foreign-alloc :int :initial-contents vids)))
+        (print "inside specify")
+        (set-solution-vars-aux sp (length vids) x)
     )
+)
+
+(cffi::defcfun ("set_percent_diff" set-percent-diff) :void
+    (sp :pointer)
+    (diff :int)
 )
 
 (cffi::defcfun ("nvars" nvars) :int

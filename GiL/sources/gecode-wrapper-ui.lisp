@@ -31,8 +31,11 @@
 
 (defmethod g-specify-sol-variables (sp vids)
     "Specifies the variables that will contain the solution"
-    (set-solution-vars sp vids)
-)
+    (set-solution-vars sp (vid vids)))
+
+(defmethod g-specify-percent-diff (sp diff)
+    "Specifies the percent of modification when searching the next solution"
+    (set-percent-diff sp diff))
 
 ;id getter
 (defmethod vid ((self int-var))

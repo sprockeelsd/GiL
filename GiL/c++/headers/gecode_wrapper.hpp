@@ -52,7 +52,12 @@ int* add_intVarArrayWithDom(void* sp, int n, int s, int* dom);
 /**
  Wraps the WSpace set_as_solution_variables method.
  */
-int* set_solution_vars(void* sp, int n, int* vids);
+void set_solution_vars(void* sp, int n, int* vids);
+
+/**
+ Wraps the WSpace set_percent_diff method.
+ */
+void set_percent_diff(void* sp, int diff);
 
 /**
  Wraps the WSpace nvars method.
