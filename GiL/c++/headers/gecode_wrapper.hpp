@@ -270,6 +270,11 @@ void count_var_set_val(void*sp, int n, int* vids, int s, int* set, int rel_type,
 void count_array_val(void* sp, int n, int* vids, int* c, int rel_type, int val);
 
 /**
+ Wraps the WSpace cst_sequence_var method.
+ */
+void sequence_var(void*sp, int n, int* vids, int s, int* set, int val1, int val2, int val3);
+
+/**
  Wraps the WSpace cst_nvalues method.
  */
 void nvalues(void* sp, int n, int* vids, int rel_type, int vid);

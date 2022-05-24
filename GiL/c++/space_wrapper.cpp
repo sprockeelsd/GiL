@@ -527,6 +527,15 @@ void WSpace::cst_count_array_val(int n, int*vids, int* c, int rel_type, int val)
 }
 
 /**
+  Post the constraint that the number of occurences of s-set in every subsequence of length
+  val1 in vids must be higher than val2 and lower than val3
+ */
+void WSpace::cst_sequence_var(int n, int*vids, int s, int* set, int val1, int val2, int val3){// ajouté
+    sequence(*this, int_var_args(n, vids), IntSet(set, s), val1, val2, val3);
+}
+
+
+/**
  Post the constraint that the number of distinct values in the n variables denoted by vids
  has the given rel_type relation with the variable vid.
  */

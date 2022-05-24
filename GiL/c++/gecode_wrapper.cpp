@@ -342,6 +342,13 @@ void count_array_val(void* sp, int n, int* vids, int* c, int rel_type, int val){
 }
 
 /**
+ Wraps the WSpace cst_sequence_var method.
+ */
+void sequence_var(void*sp, int n, int* vids, int s, int* set, int val1, int val2, int val3){
+    return static_cast<WSpace*>(sp)->cst_sequence_var(n, vids, s, set, val1, val2, val3);
+}
+
+/**
  Wraps the WSpace cst_nvalues method.
  */
 void nvalues(void* sp, int n, int* vids, int rel_type, int vid) {

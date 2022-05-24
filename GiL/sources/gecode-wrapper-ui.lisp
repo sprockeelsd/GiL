@@ -245,6 +245,11 @@
     (count-array-val sp (vid vars) c rel-type val)
 )
 
+;SEQUENCE
+(defmethod g-sequence (sp vars (s-set list) (v1 fixnum) (v2 fixnum) (v3 fixnum))
+    (sequence-var sp (vid vars) s-set v1 v2 v3)
+)
+
 ;NUMBER OF VALUES
 (defmethod g-nvalues (sp vars rel-type (v int-var))
     "Post the constraints that v is the number of distinct values in vars."
