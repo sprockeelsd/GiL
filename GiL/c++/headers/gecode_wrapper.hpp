@@ -105,6 +105,11 @@ void var_rel(void* sp, int vid1, int rel_type, int vid2);
 void var_rel_reify(void* sp, int vid1, int rel_type, int vid2, int vid3, int mode);
 
 /**
+ Wraps the WSpace cst_val_rel_reify method.
+ */
+void val_rel_reify(void* sp, int vid1, int rel_type, int val, int vid2, int mode);
+
+/**
  Wraps the WSpace cst_val_rel method.
  */
 void val_rel(void* sp, int vid, int rel_type, int val);
@@ -265,6 +270,11 @@ void count_var_set_val(void*sp, int n, int* vids, int s, int* set, int rel_type,
 void count_array_val(void* sp, int n, int* vids, int* c, int rel_type, int val);
 
 /**
+ Wraps the WSpace cst_sequence_var method.
+ */
+void sequence_var(void*sp, int n, int* vids, int s, int* set, int val1, int val2, int val3);
+
+/**
  Wraps the WSpace cst_nvalues method.
  */
 void nvalues(void* sp, int n, int* vids, int rel_type, int vid);
@@ -275,7 +285,7 @@ void nvalues(void* sp, int n, int* vids, int rel_type, int vid);
 void circuit(void* sp, int n, int* c, int* vids1, int* vids2, int vid);
 
 /**
- Wraps the WSpace cst_precede method 
+ Wraps the WSpace cst_precede method
 */
 void precede(void* sp, int n, int* vids, int s, int u);
 

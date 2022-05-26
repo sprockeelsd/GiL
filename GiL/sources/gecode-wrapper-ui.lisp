@@ -11,7 +11,7 @@
     ((id :initarg :id :accessor id))
 )
 
-(defmethod add-int-var (sp l h) 
+(defmethod add-int-var (sp l h)
     "Adds a integer variable with domain [l,h] to sp"
     (make-instance 'int-var :id (add-int-var-low sp l h)))
 
@@ -64,13 +64,13 @@
         (make-instance 'bool-var :id v)))
 
 (defmethod add-bool-var-expr (sp (v1 int-var) rel-type (v2 fixnum))
-    "Adds a boolean variable representing the expression 
+    "Adds a boolean variable representing the expression
     v1 rel-type v2 to sp"
-    (make-instance 'bool-var 
+    (make-instance 'bool-var
         :id (add-bool-var-expr-val sp (vid v1) rel-type v2)))
 
 (defmethod add-bool-var-expr (sp (v1 int-var) rel-type (v2 int-var))
-    (make-instance 'bool-var 
+    (make-instance 'bool-var
         :id (add-bool-var-expr-var sp (vid v1) rel-type (vid v2))))
 
 ;id getter
@@ -87,12 +87,12 @@
 (defmethod add-set-var (sp lub-min lub-max card-min card-max)
     "Adds a set variable with minimum cardinality card-min and max card-max"
     (make-instance 'set-var :id (add-set-var-card sp lub-min lub-max card-min card-max)))
-    
+
 (defmethod add-set-var-array (sp n lub-min lub-max card-min card-max)
     "Adds an array of n set variables with cardinality card-min to card-max to sp"
     (loop for v in (add-set-var-array-card sp n lub-min lub-max card-min card-max) collect
         (make-instance 'set-var :id v)))
-    
+
 ;id getter
 (defmethod vid ((self set-var)) (id self))
 
@@ -105,19 +105,19 @@
     "Post the constraint that v1 rel-type v2."
     (val-rel sp (vid v1) rel-type v2))
 
-(defmethod g-rel (sp (v1 int-var) rel-type (v2 int-var)) 
+(defmethod g-rel (sp (v1 int-var) rel-type (v2 int-var))
     (var-rel sp (vid v1) rel-type (vid v2)))
 
-(defmethod g-rel (sp (v1 list) rel-type (v2 null)) 
+(defmethod g-rel (sp (v1 list) rel-type (v2 null))
     (arr-rel sp (vid v1) rel-type))
 
-(defmethod g-rel (sp (v1 list) rel-type (v2 fixnum)) 
+(defmethod g-rel (sp (v1 list) rel-type (v2 fixnum))
     (arr-val-rel sp (vid v1) rel-type v2))
 
-(defmethod g-rel (sp (v1 list) rel-type (v2 int-var)) 
+(defmethod g-rel (sp (v1 list) rel-type (v2 int-var))
     (arr-var-rel sp (vid v1) rel-type (vid v2)))
 
-(defmethod g-rel (sp (v1 list) rel-type (v2 list)) 
+(defmethod g-rel (sp (v1 list) rel-type (v2 list))
     (arr-arr-rel sp (vid v1) rel-type (vid v2)))
 
 (defmethod g-rel-reify (sp (v1 int-var) rel-type (v2 int-var) (v3 bool-var) &optional mode)
@@ -125,8 +125,13 @@
         (setf mode gil::RM_EQV))
     (var-rel-reify sp (vid v1) rel-type (vid v2) (vid v3) mode))
 
+(defmethod g-rel-reify (sp (v1 int-var) rel-type (v2 fixnum) (v3 bool-var) &optional mode)
+    (if (not mode)
+        (setf mode gil::RM_EQV))
+    (val-rel-reify sp (vid v1) rel-type v2 (vid v3) mode))
+
 ;DISTINCT
-(defmethod g-distinct (sp vars) 
+(defmethod g-distinct (sp vars)
     "Post the constraint that the given vars are distinct."
     (distinct sp (vid vars)))
 
@@ -157,10 +162,10 @@
 
 (defmethod g-min (sp (v1 int-var) (v2 int-var) (v3 int-var) &rest vars)
     "Post the constraints that v1 = min(v2, v3, ...)."
-    (cond 
-        ((null vars) 
+    (cond
+        ((null vars)
             (ge-min sp (vid v2) (vid v3) (vid v1)))
-        (t (ge-arr-min sp (vid v1) 
+        (t (ge-arr-min sp (vid v1)
             (append (list (vid v2) (vid v3)) (vid vars))))))
 
 (defmethod g-lmin (sp (v int-var) vars)
@@ -229,7 +234,7 @@
 (defmethod g-count (sp vars (v1 int-var) rel-type (v2 fixnum))
     (count-var-val sp (vid vars) (vid v1) rel-type v2))
 
-(defmethod g-count (sp vars (v1 int-var) rel-type (v2 int-var)) 
+(defmethod g-count (sp vars (v1 int-var) rel-type (v2 int-var))
     (count-var-var sp (vid vars) (vid v1) rel-type (vid v2)))
 
 (defmethod g-count (sp vars (s-set list) rel-type (val fixnum)); ajouté
@@ -240,6 +245,11 @@
     (count-array-val sp (vid vars) c rel-type val)
 )
 
+;SEQUENCE
+(defmethod g-sequence (sp vars (s-set list) (v1 fixnum) (v2 fixnum) (v3 fixnum))
+    (sequence-var sp (vid vars) s-set v1 v2 v3)
+)
+
 ;NUMBER OF VALUES
 (defmethod g-nvalues (sp vars rel-type (v int-var))
     "Post the constraints that v is the number of distinct values in vars."
@@ -247,14 +257,14 @@
 
 ;HAMILTONIAN PATH/CIRCUIT
 (defmethod g-circuit (sp costs vars1 vars2 v)
-    "Post the constraint that values of vars1 are the edges of an hamiltonian circuit in 
+    "Post the constraint that values of vars1 are the edges of an hamiltonian circuit in
     the graph formed by the n variables in vars1, vars2 are the costs of these edges described
     by costs, and v is the total cost of the circuit, i.e. sum(vars2)."
     (hcircuit sp costs (vid vars1) (vid vars2) (vid v)))
 
 ;VALUE PRECEDENCE
 (defmethod g-precede (sp vars s u)
-    "Post the constraint that if there exists j (0 ≤ j < |x|) such that x[j] = u, 
+    "Post the constraint that if there exists j (0 ≤ j < |x|) such that x[j] = u,
     then there must exist i with i < j such that x[i] = s"
     (precede sp (vid vars) s u)
 )

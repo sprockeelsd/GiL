@@ -107,7 +107,7 @@ BoolVar WSpace::bool_expr_val(int vid, int int_rel, int val) {
         case B_LQ: return expr(*this, get_int_var(vid) <= val);
         case B_GQ: return expr(*this, get_int_var(vid) >= val);
         case B_GR: return expr(*this, get_int_var(vid) > val);
-        default: 
+        default:
             cout << "Wrong expression type in BoolVar creation." << endl;
             return BoolVar();
     }
@@ -115,7 +115,7 @@ BoolVar WSpace::bool_expr_val(int vid, int int_rel, int val) {
 
 /**
  Return the expression int_rel(vid1, vid2)
-*/    
+*/
 BoolVar WSpace::bool_expr_var(int vid1, int int_rel, int vid2) {
     switch(int_rel) {
         case B_EQ: return expr(*this, get_int_var(vid1) == get_int_var(vid2));
@@ -124,7 +124,7 @@ BoolVar WSpace::bool_expr_var(int vid1, int int_rel, int vid2) {
         case B_LQ: return expr(*this, get_int_var(vid1) <= get_int_var(vid2));
         case B_GQ: return expr(*this, get_int_var(vid1) >= get_int_var(vid2));
         case B_GR: return expr(*this, get_int_var(vid1) > get_int_var(vid2));
-        default: 
+        default:
             cout << "Wrong expression type in BoolVar creation." << endl;
             return BoolVar();
     }
@@ -297,6 +297,13 @@ void WSpace::cst_var_rel_reify(int vid1, int rel_type, int vid2, int vid3, int m
 }
 
 /**
+ Post a relation constraint between the IntVars denoted by vid1 and vid2 with reification.
+*/
+void WSpace::cst_val_rel_reify(int vid1, int rel_type, int val, int vid2, int mode) {
+    rel(*this, get_int_var(vid1), (IntRelType) rel_type, val, Reify(get_bool_var(vid2), (ReifyMode) mode));
+}
+
+/**
  Post a relation constraint between the n IntVars denoted by vids and the val.
 */
 void WSpace::cst_arr_val_rel(int n, int* vids, int rel_type, int val) {
@@ -382,7 +389,7 @@ void WSpace::cst_mod(int vid1, int vid2, int vid3) {
 }
 
 /**
- Post the constraint that vid1 / vid2 = vid3 
+ Post the constraint that vid1 / vid2 = vid3
  and vid1 % vid2 = div4
  */
 void WSpace::cst_divmod(int vid1, int vid2, int vid3, int vid4) {
@@ -457,7 +464,7 @@ void WSpace::cst_sqrt(int vid1, int vid2) {
  */
 void WSpace::cst_pow(int vid1, int n, int vid2) {
     Gecode::pow(*this, get_int_var(vid1), n, get_int_var(vid2));
-}   
+}
 
 /**
  Post the constraint that nroot(vid1, n) = vid2.
@@ -474,7 +481,7 @@ void WSpace::cst_sum(int vid, int n, int* vids) {
 }
 
 /**
- Post the constraint that the number of variables in vids equal to val1 has relation rel_type 
+ Post the constraint that the number of variables in vids equal to val1 has relation rel_type
  with val2.
  */
 void WSpace::cst_count_val_val(int n, int* vids, int val1, int rel_type, int val2) {
@@ -482,7 +489,7 @@ void WSpace::cst_count_val_val(int n, int* vids, int val1, int rel_type, int val
 }
 
 /**
- Post the constraint that the number of variables in vids equal to val has relation rel_type 
+ Post the constraint that the number of variables in vids equal to val has relation rel_type
  with vid.
  */
 void WSpace::cst_count_val_var(int n, int* vids, int val, int rel_type, int vid) {
@@ -490,7 +497,7 @@ void WSpace::cst_count_val_var(int n, int* vids, int val, int rel_type, int vid)
 }
 
 /**
- Post the constraint that the number of variables in vids equal to vid has relation rel_type 
+ Post the constraint that the number of variables in vids equal to vid has relation rel_type
  with val.
  */
 void WSpace::cst_count_var_val(int n, int* vids, int vid, int rel_type, int val) {// corrigé
@@ -498,7 +505,7 @@ void WSpace::cst_count_var_val(int n, int* vids, int vid, int rel_type, int val)
 }
 
 /**
- Post the constraint that the number of variables in vids equal to vid1 has relation rel_type 
+ Post the constraint that the number of variables in vids equal to vid1 has relation rel_type
  with vid2.
  */
 void WSpace::cst_count_var_var(int n, int* vids, int vid1, int rel_type, int vid2) {
@@ -512,12 +519,21 @@ void WSpace::cst_count_var_set_val(int n, int*vids, int s, int* set, int rel_typ
     count(*this, int_var_args(n, vids), IntSet(set, s), (IntRelType) rel_type, val);
 }
 
-/** 
+/**
  Post the constraint that the number of variables in vids where vars[i] = c[i] and c is an array of integers has rel_type to val
  */
 void WSpace::cst_count_array_val(int n, int*vids, int* c, int rel_type, int val){
     count(*this, int_var_args(n, vids), int_args(n, c), (IntRelType) rel_type, val);
 }
+
+/**
+  Post the constraint that the number of occurences of s-set in every subsequence of length
+  val1 in vids must be higher than val2 and lower than val3
+ */
+void WSpace::cst_sequence_var(int n, int*vids, int s, int* set, int val1, int val2, int val3){// ajouté
+    sequence(*this, int_var_args(n, vids), IntSet(set, s), val1, val2, val3);
+}
+
 
 /**
  Post the constraint that the number of distinct values in the n variables denoted by vids
@@ -528,7 +544,7 @@ void WSpace::cst_nvalues(int n, int* vids, int rel_type, int vid) {
 }
 
 /**
- Post the constraint that values of vids1 are the edges of an hamiltonian circuit in 
+ Post the constraint that values of vids1 are the edges of an hamiltonian circuit in
  the graph formed by the n variables in vids1, vids2 are the costs of these edges described
  by c, and vid is the total cost of the circuit, i.e. sum(vids2).
  */
@@ -537,9 +553,9 @@ void WSpace::cst_circuit(int n, int* c, int* vids1, int* vids2, int vid) {
 }
 
 /**
- Post the constraint that if there exists j (0 ≤ j < |x|) such that x[j] = u, 
+ Post the constraint that if there exists j (0 ≤ j < |x|) such that x[j] = u,
  then there must exist i with i < j such that x[i] = s
-*/ 
+*/
 void WSpace::cst_precede(int n, int* vids, int s, int u){
     precede(*this, int_var_args(n, vids), s, u);
 }
@@ -716,7 +732,7 @@ void WSpace::cst_setmax_reify(int vid1, int vid2, int r, int mode){
 Post a relation constraint beween setvar vid1 and the union of the set in vids
 */
 void WSpace::cst_setunion(int vid1, int n, int* vids){
-    rel(*this, get_set_var(vid1), (SetRelType) 0, expr(*this, setunion(set_var_args(n, vids))));   
+    rel(*this, get_set_var(vid1), (SetRelType) 0, expr(*this, setunion(set_var_args(n, vids))));
 }
 
 //======================================
@@ -737,27 +753,27 @@ void WSpace::constrain(const Space& _b) {
     //    b.vars[i].val()
     //}
     const WSpace& b = static_cast<const WSpace&>(_b);
-    
+
     SetVarArgs bvars(b.var_sol_size);
     for(int i = 0; i < b.var_sol_size; i++)
         bvars[i] = (b.set_vars).at((b.solution_variable_indexes)[i]);
-    
+
     SetVarArgs vars(b.var_sol_size);
     for(int i = 0; i < b.var_sol_size; i++)
         vars[i] = (set_vars).at((b.solution_variable_indexes)[i]);
-    
+
     for(int i=0; i<b.var_sol_size; i++){
       if((rand()%100)< b.percent_diff){
 	    SetVar tmp(bvars[i]);
-	    rel(*this, (tmp!=IntSet::empty) >> (vars[i] != tmp) ); 
-          
+	    rel(*this, (tmp!=IntSet::empty) >> (vars[i] != tmp) );
+
         //int* vals = new int[vars[i].glbSize()];
         //int j = 0;
         //for (SetVarGlbValues d(vars[i]);d();++d){
         //    vals[j] = d.val() ;
         //    j++ ;
         //}
-          
+
         //dom(*this, vars[i], (SetRelType) 4, IntSet(vals, i));
         //myfile << j << endl;
         //rel(*this, (vars[i]!=IntSet::empty) >> (vars[i] != IntSet(vals, j)));
@@ -834,7 +850,7 @@ void WSpace::branch(int n, int* vids, int var_strategy, int val_strategy) {
  */
 void WSpace::branch_b(int n, int* vids, int var_strategy, int val_strategy) {
     Gecode::branch(*this, bool_var_args(n, vids), BOOL_VAR_NONE(), BOOL_VAL_MIN()); //default for now
-} 
+}
 
 /**
  Post a branching strategy on the n SetVars in vids.
@@ -842,10 +858,10 @@ void WSpace::branch_b(int n, int* vids, int var_strategy, int val_strategy) {
 void WSpace::branch_set(int n, int* vids, int var_strategy, int val_strategy) {
     SetVarBranch var_strat;
     SetValBranch val_strat;
-    
+
     Rnd r1(1U);
     Rnd r2(3U);
-    
+
     //determine the variable strategy
     if(var_strategy == 0){//INT_VAR_SIZE_MIN()
         var_strat = SET_VAR_SIZE_MIN();
@@ -859,7 +875,7 @@ void WSpace::branch_set(int n, int* vids, int var_strategy, int val_strategy) {
     else if(var_strategy == 3){//INT_VAR_NONE()
         var_strat = SET_VAR_NONE();
     }
-    
+
     //determine the value strategy
     if(val_strategy == 0){//INT_VAL_MIN()
         val_strat = SET_VAL_MIN_INC();
@@ -876,9 +892,9 @@ void WSpace::branch_set(int n, int* vids, int var_strategy, int val_strategy) {
     else if(val_strategy == 4){//INT_VAL_MED()
         val_strat = SET_VAL_MED_INC();
     }
-    
-    Gecode::branch(*this, set_var_args(n, vids), var_strat, val_strat); 
-} 
+
+    Gecode::branch(*this, set_var_args(n, vids), var_strat, val_strat);
+}
 
 //==================
 //= Search support =
@@ -895,27 +911,27 @@ IntVar WSpace::cost(void) const {
     return int_vars.at(cost_id);
 }
 
-WSpace::WSpace(WSpace& s): IntMinimizeSpace(s), int_vars(s.i_size), bool_vars(s.b_size), set_vars(s.s_size), i_size(s.i_size), b_size(s.b_size), s_size(s.s_size), cost_id(s.cost_id), 
+WSpace::WSpace(WSpace& s): IntMinimizeSpace(s), int_vars(s.i_size), bool_vars(s.b_size), set_vars(s.s_size), i_size(s.i_size), b_size(s.b_size), s_size(s.s_size), cost_id(s.cost_id),
                            var_sol_size(s.var_sol_size), solution_variable_indexes(s.solution_variable_indexes), percent_diff(s.percent_diff) {
     //IntVars update
     vector<IntVar>::iterator itd, its;
     for(itd = int_vars.begin(), its = s.int_vars.begin(); itd != int_vars.end(); ++itd, ++its)
         itd->update(*this, *its);
-    
+
     //BoolVars update
     vector<BoolVar>::iterator btd, bts;
     for(btd = bool_vars.begin(), bts = s.bool_vars.begin(); btd != bool_vars.end(); ++btd, ++bts)
         btd->update(*this, *bts);
-    
+
     //SetVars update
     vector<SetVar>::iterator std, sts;
     for(std = set_vars.begin(), sts = s.set_vars.begin(); std != set_vars.end(); ++std, ++sts)
         std->update(*this, *sts);
-     
+
     //Solutions for BAB
     for(int i=0; i<var_sol_size; i++)
         s.solution_variable_indexes[i]=solution_variable_indexes[i];
-                           
+
 }
 
 Space* WSpace::copy(void) {
@@ -1012,7 +1028,7 @@ void WTimeStop::reset(){
  Default constructor
  */
 WSearchOptions::WSearchOptions(){
-    
+
 }
 
 WSearchOptions::~WSearchOptions(){
@@ -1094,6 +1110,3 @@ WSpace* WdfsEngine::next() {
 int WdfsEngine::stopped(){
     return dfs->stopped();
 }
-
-
-

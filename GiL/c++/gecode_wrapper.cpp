@@ -118,6 +118,13 @@ void var_rel_reify(void* sp, int vid1, int rel_type, int vid2, int vid3, int mod
 }
 
 /**
+ Wraps the WSpace cst_val_rel_reify method.
+ */
+void val_rel_reify(void* sp, int vid1, int rel_type, int val, int vid2, int mode) {
+    return static_cast<WSpace*>(sp)->cst_val_rel_reify(vid1, rel_type, val, vid2, mode);
+}
+
+/**
  Wraps the WSpace cst_arr_val_rel method.
  */
 void arr_val_rel(void* sp, int n, int* vids, int rel_type, int val) {
@@ -335,6 +342,13 @@ void count_array_val(void* sp, int n, int* vids, int* c, int rel_type, int val){
 }
 
 /**
+ Wraps the WSpace cst_sequence_var method.
+ */
+void sequence_var(void*sp, int n, int* vids, int s, int* set, int val1, int val2, int val3){
+    return static_cast<WSpace*>(sp)->cst_sequence_var(n, vids, s, set, val1, val2, val3);
+}
+
+/**
  Wraps the WSpace cst_nvalues method.
  */
 void nvalues(void* sp, int n, int* vids, int rel_type, int vid) {
@@ -349,7 +363,7 @@ void circuit(void* sp, int n, int* c, int* vids1, int* vids2, int vid) {
 }
 
 /**
- Wraps the WSpace cst_precede method 
+ Wraps the WSpace cst_precede method
 */
 void precede(void* sp, int n, int* vids, int s, int u){
     return static_cast<WSpace*>(sp)->cst_precede(n, vids, s, u);
@@ -492,35 +506,35 @@ void channel_set_bool(void* sp, int n1, int* vids1, int vid2) {
 Wraps the WSpace cst_setmin method.
 */
 int set_min(void* sp, int vid1){
-    return static_cast<WSpace*>(sp)->cst_setmin(vid1);   
+    return static_cast<WSpace*>(sp)->cst_setmin(vid1);
 }
 
 /**
 Wraps the WSpace cst_setmax method.
 */
 int set_max(void* sp, int vid1){
-    return static_cast<WSpace*>(sp)->cst_setmax(vid1);   
+    return static_cast<WSpace*>(sp)->cst_setmax(vid1);
 }
 
 /**
 Wraps the WSpace cst_setmin_reify method.
 */
 void set_min_reify(void* sp, int vid1, int vid2, int r, int mode){
-    return static_cast<WSpace*>(sp)->cst_setmin_reify(vid1, vid2, r, mode);   
+    return static_cast<WSpace*>(sp)->cst_setmin_reify(vid1, vid2, r, mode);
 }
 
 /**
 Wraps the WSpace cst_setmax_reify method.
 */
 void set_max_reify(void* sp, int vid1, int vid2, int r, int mode){
-    return static_cast<WSpace*>(sp)->cst_setmax_reify(vid1, vid2, r, mode);   
+    return static_cast<WSpace*>(sp)->cst_setmax_reify(vid1, vid2, r, mode);
 }
 
 /**
 Wraps the WSpace cst_setunion method.
 */
 void set_union(void* sp, int vid1, int n, int* vids){
-    return static_cast<WSpace*>(sp)->cst_setunion(vid1, n, vids);   
+    return static_cast<WSpace*>(sp)->cst_setunion(vid1, n, vids);
 }
 
 /**

@@ -39,7 +39,7 @@
 (defun add-int-var-array-low (sp n min max)
     "Add n IntVar ranging from min to max to the specified space. Return the references of those variables for this space"
     (let ((p (add-int-var-array-aux sp n min max)))
-        (loop for i from 0 below n 
+        (loop for i from 0 below n
             collect (cffi::mem-aref p :int i)))
 )
 
@@ -54,7 +54,7 @@
 (defun add-bool-var-array-low (sp n min max)
     "Add n BoolVar ranging from min to max to the specified space. Return the references of those variables for this space"
     (let ((p (add-bool-var-array-aux sp n min max)))
-        (loop for i from 0 below n 
+        (loop for i from 0 below n
             collect (cffi::mem-aref p :int i)))
 )
 
@@ -71,7 +71,7 @@
     (let ((x (cffi::foreign-alloc :int :initial-contents dom))
            p)
         (setq p (add-int-var-array-dom-aux sp n (length dom) x))
-        (loop for i from 0 below n 
+        (loop for i from 0 below n
             collect (cffi::mem-aref p :int i)))
 )
 
@@ -102,7 +102,7 @@
 (defparameter gil::IRT_EQ 0)    ; equality relation
 (defparameter gil::IRT_NQ 1)    ; inequality
 (defparameter gil::IRT_LQ 2)    ; Less or equal
-(defparameter gil::IRT_LE 3)    ; Strictly lower 
+(defparameter gil::IRT_LE 3)    ; Strictly lower
 (defparameter gil::IRT_GQ 4)    ; Greater or equal
 (defparameter gil::IRT_GR 5)    ; Strictly greater
 
@@ -147,11 +147,11 @@
     (card-min :int)
     (card-max :int)
 )
-    
+
 (defun add-set-var-array-card (sp n lub-min lub-max card-min card-max)
     "Add n SetVar ranging cardinality from card-min to card-max to the specified space. Return the references of those variables for this space"
     (let ((p (add-set-var-array-aux sp n lub-min lub-max card-min card-max)))
-        (loop for i from 0 below n 
+        (loop for i from 0 below n
             collect (cffi::mem-aref p :int i)))
 )
 
@@ -178,6 +178,16 @@
     (rel-type :int)
     (vid2 :int)
     (vid3 :int)
+    (mode :int)
+)
+
+(cffi::defcfun ("val_rel_reify" val-rel-reify) :void
+    "Post a variable/value rel constraint with reification."
+    (sp :pointer)
+    (vid1 :int)
+    (rel-type :int)
+    (val :int)
+    (vid2 :int)
     (mode :int)
 )
 
@@ -579,6 +589,25 @@
             (count-array-val-aux sp (length vids) x y rel-type val))
 )
 
+(cffi::defcfun ("sequence_var" sequence-var-aux) :void
+    "Post the constraint that the number of occurences of s-set in every subsequence of length
+    val1 in vids must be higher than val2 and lower than val3"
+    (sp :pointer)
+    (n :int)
+    (vids :pointer)
+    (s :int)
+    (s-set :pointer)
+    (val1 :int)
+    (val2 :int)
+    (val3 :int)
+)
+
+(defun sequence-var (sp vids s-set val1 val2 val3)
+    (let ((x (cffi::foreign-alloc :int :initial-contents vids))
+            (y (cffi::foreign-alloc :int :initial-contents s-set)))
+        (sequence-var-aux sp (length vids) x (length s-set) y val1 val2 val3))
+)
+
 (cffi::defcfun ("nvalues" nvalues-aux) :void
     "Post the constraint the number of distinct values in the n variables denoted by vids
      has the given rel-type relation with the variable vid."
@@ -597,7 +626,7 @@
 )
 
 (cffi::defcfun ("circuit" hcircuit-aux) :void
-    "Post the constraint that values of vids1 are the edges of an hamiltonian circuit in 
+    "Post the constraint that values of vids1 are the edges of an hamiltonian circuit in
     the graph formed by the n variables in vids1, vids2 are the costs of these edges described
     by c, and vid is the total cost of the circuit, i.e. sum(vids2)."
     (sp :pointer)
@@ -605,11 +634,11 @@
     (c :pointer)
     (vids1 :pointer)
     (vids2 :pointer)
-    (vid :int)    
+    (vid :int)
 )
 
 (defun hcircuit (sp c vids1 vids2 vid)
-    "Post the constraint that values of vids1 are the edges of an hamiltonian circuit in 
+    "Post the constraint that values of vids1 are the edges of an hamiltonian circuit in
     the graph formed by the variables in vids1, vids2 are the costs of these edges described
     by c, and vid is the total cost of the circuit, i.e. sum(vids2)."
     (let ((costs (cffi::foreign-alloc :int :initial-contents c))
@@ -619,7 +648,7 @@
 )
 
 (cffi::defcfun ("precede" precede-aux) :void
-    "Post the constraint that if there exists j (0 ≤ j < |x|) such that x[j] = u, 
+    "Post the constraint that if there exists j (0 ≤ j < |x|) such that x[j] = u,
     then there must exist i with i < j such that x[i] = s"
     (sp :pointer)
     (n :int)
@@ -629,7 +658,7 @@
 )
 
 (defun precede (sp vids s u)
-    "Post the constraint that if there exists j (0 ≤ j < |x|) such that x[j] = u, 
+    "Post the constraint that if there exists j (0 ≤ j < |x|) such that x[j] = u,
     then there must exist i with i < j such that x[i] = s"
     (let ((x (cffi::foreign-alloc :int :initial-contents vids)))
         (precede-aux sp (length vids) x s u)
@@ -722,7 +751,7 @@
 (defparameter gil::SRT_DISJ 4)  ; Disjoint
 (defparameter gil::SRT_CMPL 5)  ; Complement
 (defparameter gil::SRT_LQ 6)    ; Less or equal
-(defparameter gil::SRT_LE 7)    ; Strictly lower 
+(defparameter gil::SRT_LE 7)    ; Strictly lower
 (defparameter gil::SRT_GQ 8)    ; Greater or equal
 (defparameter gil::SRT_GR 9)    ; Strictly greater
 
@@ -1058,7 +1087,7 @@
 (defun get-value-set (sp vid n)
     "get all the values of a SetVar"
     (let ((p (get-value-set-aux sp vid n)))
-        (loop for i from 0 below n 
+        (loop for i from 0 below n
             collect (cffi::mem-aref p :int i)))
 )
 
@@ -1080,7 +1109,7 @@
     (let ((x (cffi::foreign-alloc :int :initial-contents vids))
            p)
         (setq p (get-values-aux sp (length vids) x))
-        (loop for i from 0 below (length vids) 
+        (loop for i from 0 below (length vids)
             collect (cffi::mem-aref p :int i)))
 )
 
