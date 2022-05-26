@@ -627,6 +627,13 @@ void WSpace::cst_setrel_val_reify(int vid1, int rel_type, int* domain, int s, in
 }
 
 /**
+ Post a relation constraint between vid1 and vid2 with a reify variable
+ */
+void WSpace::cst_setrel_var_reify(int vid1, int rel_type, int vid2, int r, int mode) {
+    rel(*this, get_set_var(vid1), (SetRelType) rel_type, get_set_var(vid2), Reify(get_bool_var(r), (ReifyMode) mode));
+}
+
+/**
  Post a constraint that SetVar vid1 has to be empty
  */
 void WSpace::cst_set_empty(int vid1) {

@@ -308,11 +308,17 @@
     "Post the constraints that v1 rel-type domain dom."
     (val-set-rel sp (vid v1) rel-type dom))
 
-(defmethod g-rel-reify (sp (v1 set-var) rel-type dom r &optional mode)
+(defmethod g-rel-reify (sp (v1 set-var) rel-type (dom list) r &optional mode)
     "Post the constraints that v1 rel-type domain dom."
     (if (not mode)
         (setf mode gil::RM_EQV))
     (val-set-rel-reify sp (vid v1) rel-type dom (vid r) mode))
+
+(defmethod g-rel-reify (sp (v1 set-var) rel-type (v2 set-var) r &optional mode)
+    "Post the constraints that v1 rel-type domain dom."
+    (if (not mode)
+        (setf mode gil::RM_EQV))
+    (var-set-rel-reify sp (vid v1) rel-type (vid v2) (vid r) mode))
 
 ;DOM
 (defmethod g-dom (sp (v1 set-var) (v2 set-var))

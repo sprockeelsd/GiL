@@ -803,6 +803,16 @@
         (val-set-rel-reify-aux sp vid1 rel-type x (length dom) r mode))
 )
 
+(cffi::defcfun ("var_setrel_reify" var-set-rel-reify) :void
+    "Post setVar rel constraint with reify."
+    (sp :pointer)
+    (vid1 :int)
+    (rel-type :int)
+    (vid2 :int)
+    (r :int)
+    (mode :int)
+)
+
 (cffi::defcfun ("ints_setdom" ints-set-dom) :void
     "Post setVar dom constraint."
     (sp :pointer)
