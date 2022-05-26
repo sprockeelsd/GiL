@@ -760,12 +760,12 @@ void WSpace::constrain(const Space& _b) {
 
     SetVarArgs vars(b.var_sol_size);
     for(int i = 0; i < b.var_sol_size; i++)
-        vars[i] = (set_vars).at((b.solution_variable_indexes)[i]);
+        vars[i] = (set_vars).at((solution_variable_indexes)[i]);
 
     for(int i=0; i<b.var_sol_size; i++){
       if((rand()%100)< b.percent_diff){
 	    SetVar tmp(bvars[i]);
-	    rel(*this, (tmp!=IntSet::empty) >> (vars[i] != tmp) );
+	    rel(*this,(vars[i] != tmp) );
 
         //int* vals = new int[vars[i].glbSize()];
         //int j = 0;
