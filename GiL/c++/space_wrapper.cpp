@@ -732,7 +732,7 @@ void WSpace::cst_setmax_reify(int vid1, int vid2, int r, int mode){
 Post a relation constraint beween setvar vid1 and the union of the set in vids
 */
 void WSpace::cst_setunion(int vid1, int n, int* vids){
-    rel(*this, get_set_var(vid1), (SetRelType) 0, expr(*this, setunion(set_var_args(n, vids))));
+    rel(*this, SOT_UNION, set_var_args(n, vids), get_set_var(vid1));
 }
 
 //======================================
