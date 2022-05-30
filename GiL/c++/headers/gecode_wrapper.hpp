@@ -409,6 +409,11 @@ Wraps the WSpace cst_setunion method.
 */
 void set_union(void* sp, int vid1, int n, int* vids);
 
+/**
+Wraps the WSpace cst_element method.
+*/
+void element(void* sp, int set_op, int n, int* vids, int vid1, int vid2);
+
 
 /**
  Wraps the WSpace branch method.
@@ -495,6 +500,11 @@ void release(void* sp);
  Wraps the WSpace value method.
  */
 int get_value(void* sp, int vid);
+
+/**
+ Wraps the WSpace value method.
+ */
+int get_value_bool(void* sp, int vid);
 
 /**
  Wraps the WSpace value method.

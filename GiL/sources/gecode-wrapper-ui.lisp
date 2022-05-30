@@ -250,6 +250,7 @@
     (sequence-var sp (vid vars) s-set v1 v2 v3)
 )
 
+
 ;NUMBER OF VALUES
 (defmethod g-nvalues (sp vars rel-type (v int-var))
     "Post the constraints that v is the number of distinct values in vars."
@@ -381,6 +382,11 @@
 ;SETUNION
 (defmethod g-setunion (sp (v1 set-var) (v2 list))
     (set-union sp (vid v1) (vid v2)))
+
+;ELEMENT
+(defmethod g-element (sp set-op (v1 list) (v2 set-var) (v3 set-var))
+    (element sp set-op (vid v1) (vid v2) (vid v3))
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Methods for exploration ;
@@ -534,6 +540,10 @@
 (defmethod g-values (sp (v int-var))
     "Get the values assigned to v."
     (get-value sp (vid v)))
+
+(defmethod g-values (sp (v bool-var))
+    "Get the values assigned to v."
+    (get-value-bool sp (vid v)))
 
 (defmethod g-values (sp (v set-var))
     "Get the values assigned to v."

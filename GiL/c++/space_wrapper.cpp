@@ -735,6 +735,13 @@ void WSpace::cst_setunion(int vid1, int n, int* vids){
     rel(*this, SOT_UNION, set_var_args(n, vids), get_set_var(vid1));
 }
 
+/**
+Post an element constraints
+*/
+void WSpace::cst_element(int set_op, int n, int* vids, int vid1, int vid2){
+    element(*this, (SetOpType) set_op, set_var_args(n, vids), get_set_var(vid1), get_set_var(vid2));
+}
+
 //======================================
 //Branch and bound constraint function =
 //======================================
@@ -948,6 +955,14 @@ Space* WSpace::copy(void) {
 int WSpace::value(int vid) {
     return get_int_var(vid).val();
 }
+
+/**
+ Return the current values of the variable denoted by vid.
+ */
+int WSpace::value_bool(int vid) {
+    return get_bool_var(vid).val();
+}
+
 
 /**
  Return the current values of the variable denoted by vid.

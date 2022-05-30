@@ -464,12 +464,12 @@ public:
     Post a relation constraint between vid1 and domain dom with reify.
     */
     void cst_setrel_val_reify(int vid1, int rel_type, int* dom, int s, int r, int mode);
-    
+
     /**
     Post a relation constraint between vid1 and vid2 with reify.
     */
     void cst_setrel_var_reify(int vid1, int rel_type, int vid2, int r, int mode);
-    
+
     /**
     Post a dom constraint between vid1 and dom {i,..., j}.
     */
@@ -530,6 +530,11 @@ public:
     */
     void cst_setunion(int vid1, int n, int* vids);
 
+    /**
+    Post a relation constraint beween setvar vid1 and the union of the set in vids
+    */
+    void cst_element(int set_op, int n, int* vids, int vid1, int vid2);
+
 
     //======================================
     //Branch and bound constraint function =
@@ -583,6 +588,11 @@ public:
      Return the current values of the variable denoted by vid.
      */
     int value(int vid);
+
+    /**
+     Return the current values of the variable denoted by vid.
+     */
+    int value_bool(int vid);
 
      /**
      Return the current values of the SetVar denoted by vid.

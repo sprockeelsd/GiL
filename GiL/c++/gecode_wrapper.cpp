@@ -538,6 +538,13 @@ void set_union(void* sp, int vid1, int n, int* vids){
 }
 
 /**
+Wraps the WSpace cst_element method.
+*/
+void element(void* sp, int set_op, int n, int* vids, int vid1, int vid2){
+    return static_cast<WSpace*>(sp)->cst_element(set_op, n, vids, vid1, vid2);
+}
+
+/**
  Wraps the WSpace branch method.
  */
 void branch(void* sp, int n, int* vids, int var_strategy, int val_strategy) {
@@ -664,6 +671,13 @@ void release(void* sp) {
  */
 int get_value(void* sp, int vid) {
     return static_cast<WSpace*>(sp)->value(vid);
+}
+
+/**
+ Wraps the WSpace value method.
+ */
+int get_value_bool(void* sp, int vid) {
+    return static_cast<WSpace*>(sp)->value_bool(vid);
 }
 
 /**

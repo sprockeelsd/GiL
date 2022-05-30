@@ -962,6 +962,22 @@
         (set-union-aux sp vid1 (length vids) x))
 )
 
+(cffi::defcfun ("element" element-aux) :void
+    "Post setVar element constraint."
+    (sp :pointer)
+    (set-op :int)
+    (n :int)
+    (vids :pointer)
+    (vid1 :int)
+    (vid2 :int)
+)
+
+(defun element (sp set-op vids vid1 vid2)
+    "Post cardinality constraint on the SetVars denoted by vids."
+    (let ((x (cffi::foreign-alloc :int :initial-contents vids)))
+        (element-aux sp set-op (length vids) x vid1 vid2))
+)
+
 (cffi::defcfun ("branch" branch-aux) :void
     "Post branching on the n IntVars denoted by vids."
     (sp :pointer)
@@ -1072,6 +1088,12 @@
 )
 
 (cffi::defcfun ("get_value" get-value) :int
+    "Get the value of the variable denoted by vid."
+    (sp :pointer)
+    (vid :int)
+)
+
+(cffi::defcfun ("get_value_bool" get-value-bool) :int
     "Get the value of the variable denoted by vid."
     (sp :pointer)
     (vid :int)
