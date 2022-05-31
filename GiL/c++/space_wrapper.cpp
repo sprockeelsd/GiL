@@ -11,7 +11,7 @@ using namespace std;
 To Print value to a file :
     ofstream myfile;
     myfile.open ("/home/amdiels/Bureau/example.txt", ios::app);
-    myfile << set_vars.size() << endl;
+    myfile << value << endl;
     myfile.close();
 */
 
@@ -752,13 +752,6 @@ void WSpace::cst_element(int set_op, int n, int* vids, int vid1, int vid2){
  This is a virtual method as declared in space_wrapper.h
 */
 void WSpace::constrain(const Space& _b) {
-    // right now, do nothing
-    //const WSpace& b = static_cast<const WSpace&>(_b);// cast the space
-    //IntVarArgs vars(int_var_args(var_sol_size, solution_variable_indexes));
-    //for(int i = 0; i < var_sol_size; ++i){
-    //    rel(*this, vars[i], IRT_NQ, 2);
-    //    b.vars[i].val()
-    //}
     const WSpace& b = static_cast<const WSpace&>(_b);
 
     SetVarArgs bvars(b.var_sol_size);
@@ -773,21 +766,8 @@ void WSpace::constrain(const Space& _b) {
       if((rand()%100)< b.percent_diff){
 	    SetVar tmp(bvars[i]);
 	    rel(*this,(vars[i] != tmp) );
-
-        //int* vals = new int[vars[i].glbSize()];
-        //int j = 0;
-        //for (SetVarGlbValues d(vars[i]);d();++d){
-        //    vals[j] = d.val() ;
-        //    j++ ;
-        //}
-
-        //dom(*this, vars[i], (SetRelType) 4, IntSet(vals, i));
-        //myfile << j << endl;
-        //rel(*this, (vars[i]!=IntSet::empty) >> (vars[i] != IntSet(vals, j)));
       }
-      //rel(*this, (tmp!=IntSet::empty) >> (push[i] != tmp) ); si on veut que ca change que quand tmp n'est pas nul
     }
-      //rel(this, cardinality(b.push)>cardinality(push));
   }
 
 //==========================
@@ -870,33 +850,33 @@ void WSpace::branch_set(int n, int* vids, int var_strategy, int val_strategy) {
     Rnd r2(3U);
 
     //determine the variable strategy
-    if(var_strategy == 0){//INT_VAR_SIZE_MIN()
+    if(var_strategy == 0){//SET_VAR_SIZE_MIN()
         var_strat = SET_VAR_SIZE_MIN();
     }
-    else if(var_strategy == 1){//INT_VAR_RND(r1)
+    else if(var_strategy == 1){//SET_VAR_RND(r1)
         var_strat = SET_VAR_RND(r1);
     }
-    else if(var_strategy == 2){//INT_VAR_DEGREE_MAX()
+    else if(var_strategy == 2){//SET_VAR_DEGREE_MAX()
         var_strat = SET_VAR_DEGREE_MAX();
     }
-    else if(var_strategy == 3){//INT_VAR_NONE()
+    else if(var_strategy == 3){//SET_VAR_NONE()
         var_strat = SET_VAR_NONE();
     }
 
     //determine the value strategy
-    if(val_strategy == 0){//INT_VAL_MIN()
+    if(val_strategy == 0){//SET_VAL_MIN()
         val_strat = SET_VAL_MIN_INC();
     }
-    else if(val_strategy == 1){//INT_VAL_RND(r2)
+    else if(val_strategy == 1){//SET_VAL_RND(r2)
         val_strat = SET_VAL_RND_INC(r2);
     }
-    else if(val_strategy == 2){//INT_VAL_SPLIT_MIN()
+    else if(val_strategy == 2){//SET_VAL_SPLIT_MIN()
         val_strat = SET_VAL_MIN_EXC();
     }
-    else if(val_strategy == 3){//INT_VAL_SPLIT_MAX()
+    else if(val_strategy == 3){//SET_VAL_SPLIT_MAX()
         val_strat = SET_VAL_RND_EXC(r2);
     }
-    else if(val_strategy == 4){//INT_VAL_MED()
+    else if(val_strategy == 4){//SET_VAL_MED()
         val_strat = SET_VAL_MED_INC();
     }
 

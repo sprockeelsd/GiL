@@ -83,7 +83,6 @@
 
 (defun set-solution-vars (sp vids)
     (let ((x (cffi::foreign-alloc :int :initial-contents vids)))
-        (print "inside specify")
         (set-solution-vars-aux sp (length vids) x)
     )
 )
