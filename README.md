@@ -1,6 +1,9 @@
 # GiLv2.0
 
-GiL (Gecode interface Lisp) is a wrapper that allows to use Gecode functions in Lisp program. It is far for complete but still provides enough tools to generate interesting CSPs in Common Lisp. It is the continuation of Baptiste Lapière's work (https://github.com/blapiere/GiL) and any contribution is welcomed.
+GiL (Gecode interface Lisp) is a wrapper that allows to use Gecode functions in Lisp programs. It is far from complete but does provides enough tools to generate interesting CSPs in Common Lisp. It is the continuation of Baptiste Lapière's work (https://github.com/blapiere/GiL) and any contribution is welcomed. 
+Features supported include Integer, boolean and Set variables along with a variety of constraints for those types of variables, various branching strategies, depth-first-search and branch-and-bound search engines, several search options,...
+
+GiL is an open-source project, therefor any contributions are welcome. Please email me at @damien.sprockeels@uclouvain.be if you wish to contribute.
 
 ## How to use
 **Disclaimer : GiL currently only works on MacOS And Ubuntu.**
@@ -9,7 +12,7 @@ GiL (Gecode interface Lisp) is a wrapper that allows to use Gecode functions in 
 Install Gecode, a Common Lisp implementation and CFFI. Depending on what MacOS version you are using, you might run into a problem with the dynamic library not finding Gecode due to a relative path problem. If this is the case, there is a script **script.sh** in the c++ folder that should solve the problem. You should update the value for the relative and full path in the script, then run it. The problem should be gone after that.
 
 *For Linux Users*
-Install Gecode, a Common Lisp implementation and CFFI. Add the path to your gecode installation folder (looks like gecode-release-x.x.x) to LD_LIBRARY_PATH (help [here](https://stackoverflow.com/questions/13428910/how-to-set-the-environmental-variable-ld-library-path-in-linux)). That's it.
+Install Gecode, a Common Lisp implementation and CFFI. Add the path to your gecode installation folder (it looks like gecode-release-x.x.x) to LD_LIBRARY_PATH (help [here](https://stackoverflow.com/questions/13428910/how-to-set-the-environmental-variable-ld-library-path-in-linux)). That's it.
 
 You are ready to load the library and use it! A small example problem is shown in the **Gil** pdf. The exact same problem is given in C++ and in Lisp.
 
