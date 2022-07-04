@@ -1,9 +1,9 @@
 # GiLv2.0
 
-GiL (Gecode interface Lisp) is a wrapper that allows to use Gecode functions in Lisp programs. It is far from complete but does provides enough tools to generate interesting CSPs in Common Lisp. It is the continuation of Baptiste Lapière's work (https://github.com/blapiere/GiL) and any contribution is welcomed. 
-Features supported include Integer, boolean and Set variables along with a variety of constraints for those types of variables, various branching strategies, depth-first-search and branch-and-bound search engines, several search options,...
+GiL (Gecode interface Lisp) is a wrapper that allows to use Gecode functions in Lisp programs. It is far from complete but does provides enough tools to generate interesting CSPs in Common Lisp. It is the continuation of Baptiste Lapière's work (https://github.com/blapiere/GiL). 
+Features supported include Integer, Boolean and Set variables and arrays along with a variety of constraints for those types of variables, various branching strategies, depth-first-search and branch-and-bound search engines, several search options,...
 
-GiL is an open-source project, therefor any contributions are welcome. Please email me at @damien.sprockeels@uclouvain.be if you wish to contribute.
+GiL is an open-source project, therefore any contributions are welcome. Please email me at @damien.sprockeels@uclouvain.be if you wish to contribute.
 
 ## How to use
 **Disclaimer : GiL currently only works on MacOS And Ubuntu.**
