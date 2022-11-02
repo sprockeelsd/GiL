@@ -28,3 +28,7 @@ The **Gil** pdf provides explanation on how to add features to GiL. Here is a (n
 
 Basically the long term goal is to support all Gecode features in GiL.
 
+## Known issues
+- the g-value function currently only works for displaying integer variables
+- the Args variables are not supported which hurts the efficiency of the search for complex problems
+
