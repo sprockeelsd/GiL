@@ -50,6 +50,16 @@ int* add_intVarArray(void* sp, int n, int min, int max);
 int* add_intVarArrayWithDom(void* sp, int n, int s, int* dom);
 
 /**
+ Wraps the WSpace add_intVar_expr_val method.
+ */
+int add_intVar_expr_val(void *sp, int vid, int op, int val);
+
+/**
+ Wraps the WSpace add_intVar_expr_var method.
+ */
+int add_intVar_expr_var(void *sp, int vid1, int op, int vid2);
+
+/**
  Wraps the WSpace set_as_solution_variables method.
  */
 void set_solution_vars(void* sp, int n, int* vids);
@@ -150,12 +160,17 @@ void val_linear(void* sp, int n, int* c, int* vids, int rel_type, int value);
 void var_linear(void* sp, int n, int* c, int* vids, int rel_type, int vid);
 
 /**
+ Wraps the WSpace ite_rel method.
+ */
+void ite_rel(void* sp, int vid1, int vid2, int vid3, int vid4);
+
+/**
  Wraps the WSpace cst_abs method.
  */
 void arithmetics_abs(void* sp, int vid1, int vid2);
 
 /**
- Wraps the WSpace acst_div method.
+ Wraps the WSpace cst_div method.
  */
 void arithmetics_div(void* sp, int vid1, int vid2, int vid3);
 
@@ -520,6 +535,11 @@ int get_value_size(void* sp, int vid);
  Wraps the WSpace values method.
  */
 int* get_values(void* sp, int n, int* vids);
+
+/**
+ Wraps the WSpace values_bool method.
+ */
+int* get_values_bool(void* sp, int n, int* vids);
 
 /**
  Wraps the WSpace print method.

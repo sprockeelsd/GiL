@@ -3,6 +3,9 @@
    (:use common-lisp :cl-user :cl :cffi))
 
 (in-package :gil)
+
+(print "Loading gecode-wrapper-ui...")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Creating int variables ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -28,6 +31,11 @@
     "Adds an array of n integer variables with domain dom to sp"
     (loop for v in (add-int-var-array-dom-low sp n dom) collect
         (make-instance 'int-var :id v)))
+
+(defmethod add-int-var-const-array (sp dom)
+    "Adds a domain respresented by a list of integers to sp"
+    (loop for v in dom collect
+        (add-int-var-dom sp (list v))))
 
 (defmethod g-specify-sol-variables (sp vids)
     "Specifies the variables that will contain the solution"
@@ -62,16 +70,6 @@
     "Adds an array of n boolean variables with domain [l,h] to sp"
     (loop for v in (add-bool-var-array-low sp n l h) collect
         (make-instance 'bool-var :id v)))
-
-(defmethod add-bool-var-expr (sp (v1 int-var) rel-type (v2 fixnum))
-    "Adds a boolean variable representing the expression
-    v1 rel-type v2 to sp"
-    (make-instance 'bool-var
-        :id (add-bool-var-expr-val sp (vid v1) rel-type v2)))
-
-(defmethod add-bool-var-expr (sp (v1 int-var) rel-type (v2 int-var))
-    (make-instance 'bool-var
-        :id (add-bool-var-expr-var sp (vid v1) rel-type (vid v2))))
 
 ;id getter
 (defmethod vid ((self bool-var)) (id self))
@@ -120,15 +118,21 @@
 (defmethod g-rel (sp (v1 list) rel-type (v2 list))
     (arr-arr-rel sp (vid v1) rel-type (vid v2)))
 
-(defmethod g-rel-reify (sp (v1 int-var) rel-type (v2 int-var) (v3 bool-var) &optional mode)
-    (if (not mode)
-        (setf mode gil::RM_EQV))
+(defmethod g-rel-reify (sp (v1 int-var) rel-type (v2 int-var) (v3 bool-var) &optional (mode gil::RM_EQV))
+    "Post the constraint that b [<->, ->, <-] (v1 rel-type v2)"
+    #| (if (not mode)
+        (setf mode gil::RM_EQV)) |#
     (var-rel-reify sp (vid v1) rel-type (vid v2) (vid v3) mode))
 
-(defmethod g-rel-reify (sp (v1 int-var) rel-type (v2 fixnum) (v3 bool-var) &optional mode)
-    (if (not mode)
-        (setf mode gil::RM_EQV))
+(defmethod g-rel-reify (sp (v1 int-var) rel-type (v2 fixnum) (v3 bool-var) &optional (mode gil::RM_EQV))
+    #| (if (not mode)
+        (setf mode gil::RM_EQV)) |#
     (val-rel-reify sp (vid v1) rel-type v2 (vid v3) mode))
+
+; IF-THEN-ELSE
+(defmethod g-ite (sp (b-v1 bool-var) t-v2 e-v3 x-v4)
+    "Post the constraints if b-v1 then x-v4 = t-v2 else x-v4 = e-v3."
+    (ite-rel sp (vid b-v1) (vid t-v2) (vid e-v3) (vid x-v4)))
 
 ;DISTINCT
 (defmethod g-distinct (sp vars)
@@ -136,7 +140,7 @@
     (distinct sp (vid vars)))
 
 ;LINEAR
-(defmethod g-linear (sp coeffs vars rel-type (v fixnum))
+(defmethod g-linear (sp coeffs vars rel-type (v fixnum)) ; 
     "Post the linear relation coeffs*vars rel-type v."
     (val-linear sp coeffs (vid vars) rel-type v))
 
@@ -319,16 +323,16 @@
     "Post the constraints that v1 rel-type domain dom."
     (val-set-rel sp (vid v1) rel-type dom))
 
-(defmethod g-rel-reify (sp (v1 set-var) rel-type (dom list) r &optional mode)
+(defmethod g-rel-reify (sp (v1 set-var) rel-type (dom list) r &optional (mode gil::RM_EQV))
     "Post the constraints that v1 rel-type domain dom."
-    (if (not mode)
-        (setf mode gil::RM_EQV))
+    #| (if (not mode)
+        (setf mode gil::RM_EQV)) |#
     (val-set-rel-reify sp (vid v1) rel-type dom (vid r) mode))
 
-(defmethod g-rel-reify (sp (v1 set-var) rel-type (v2 set-var) r &optional mode)
+(defmethod g-rel-reify (sp (v1 set-var) rel-type (v2 set-var) r &optional (mode gil::RM_EQV))
     "Post the constraints that v1 rel-type domain dom."
-    (if (not mode)
-        (setf mode gil::RM_EQV))
+    #| (if (not mode)
+        (setf mode gil::RM_EQV)) |#
     (var-set-rel-reify sp (vid v1) rel-type (vid v2) (vid r) mode))
 
 ;DOM
@@ -365,18 +369,18 @@
 (defmethod g-setmin (sp (v1 set-var))
     (make-instance 'int-var :id (set-min sp (vid v1))))
 
-(defmethod g-setmin-reify (sp (v1 set-var) (v2 int-var) (r bool-var) &optional mode)
-    (if (not mode)
-        (setf mode gil::RM_EQV))
+(defmethod g-setmin-reify (sp (v1 set-var) (v2 int-var) (r bool-var) &optional (mode gil::RM_EQV))
+    #| (if (not mode)
+        (setf mode gil::RM_EQV)) |#
     (set-min-reify sp (vid v1) (vid v2) (vid r) mode))
 
 ;MAXIMUM
 (defmethod g-setmax (sp (v1 set-var))
     (make-instance 'int-var :id (set-max sp (vid v1))))
 
-(defmethod g-setmax-reify (sp (v1 set-var) (v2 int-var) (r bool-var) &optional mode)
-    (if (not mode)
-        (setf mode gil::RM_EQV))
+(defmethod g-setmax-reify (sp (v1 set-var) (v2 int-var) (r bool-var) &optional (mode gil::RM_EQV))
+    #| (if (not mode)
+        (setf mode gil::RM_EQV)) |#
     (set-max-reify sp (vid v1) (vid v2) (vid r) mode))
 
 ;SETUNION
@@ -387,6 +391,38 @@
 (defmethod g-element (sp set-op (v1 list) (v2 set-var) (v3 set-var))
     (element sp set-op (vid v1) (vid v2) (vid v3))
 )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Modeling convenience methods ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; These methods stands for the MiniModel functions of Gecode
+
+;; Boolean expressions
+; Returns BoolVar for logic expressions
+
+(defmethod add-bool-var-expr (sp (v1 int-var) rel-type (v2 fixnum))
+    "Adds a boolean variable representing the expression
+    v1 rel-type v2 to sp"
+    (make-instance 'bool-var
+        :id (add-bool-var-expr-val sp (vid v1) rel-type v2)))
+
+(defmethod add-bool-var-expr (sp (v1 int-var) rel-type (v2 int-var))
+    (make-instance 'bool-var
+        :id (add-bool-var-expr-var sp (vid v1) rel-type (vid v2))))
+
+;; Integer expressions
+; Returns IntVar for arithmetic expressions
+
+(defmethod add-int-var-expr (sp (v1 int-var) op (v2 int-var))
+    "Adds an integer variable representing the expression
+    v1 op v2 to sp"
+    (make-instance 'int-var
+        :id (add-int-var-expr-var sp (vid v1) op (vid v2))))
+
+(defmethod add-int-var-expr (sp (v1 int-var) op (v2 fixnum))
+    (make-instance 'int-var
+        :id (add-int-var-expr-val sp (vid v1) op v2)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Methods for exploration ;
@@ -553,8 +589,14 @@
     "Get the size of a SetVar"
     (get-value-size sp (vid v)))
 
+; Returns computed values of the list v in the space sp
+; Boolean values don't work properly but the error should be in the C++ code
 (defmethod g-values (sp (v list))
-    (get-values sp (vid v)))
+    (if (typep (first v) 'bool-var)
+        (get-values-bool sp (vid v))
+        (get-values sp (vid v))
+    )
+)
 
 (defmethod g-values ((sp null) v)
     nil)

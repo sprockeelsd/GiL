@@ -89,6 +89,16 @@ protected:
     */
     BoolVar bool_expr_var(int vid1, int int_rel, int vid2);
 
+    /**
+     Return the expression int_rel(vid, val)
+    */
+    IntVar int_expr_val(int vid, int int_op, int val);
+
+    /**
+     Return the expression int_rel(vid1, vid2)
+    */
+    IntVar int_expr_var(int vid1, int int_op, int vid2);    
+
 public:
     /**
      Default constructor
@@ -128,6 +138,20 @@ public:
     int* add_intVarArrayWithDom(int n, int s, int* dom);
 
     /**
+     Add a IntVar to the WSpace corresponding to the evaluation of int_rel(vid, val).
+     In practice, push a new IntVar at the end of the vector int_vars.
+     Return the index of the IntVar in int_vars
+     */
+    int add_intVar_expr_val(int vid, int int_op, int val);
+
+    /**
+     Add a IntVar to the WSpace corresponding to the evaluation of int_rel(vid1, vid2).
+     In practice, push a new IntVar at the end of the vector int_vars.
+     Return the index of the IntVar in int_vars
+     */
+    int add_intVar_expr_var(int vid1, int int_op, int vid2);
+
+    /**
      Define which variables are to be the solution so they can be accessed to add a constraint with bab
     */
     void set_as_solution_variables(int n, int* vids);
@@ -150,6 +174,17 @@ public:
         B_LQ,
         B_GQ,
         B_GR
+    };
+
+    /**
+     * Enumerates the possible operations for add_intVar_expr_val and add_intVar_expr_var
+    */
+    enum {
+        IOP_ADD,
+        IOP_SUB,
+        IOP_MUL,
+        IOP_DIV,
+        IOP_MOD
     };
 
     /**
@@ -240,6 +275,11 @@ public:
      the n2 IntVars denoted by vids2.
     */
     void cst_arr_arr_rel(int n1, int* vids1, int rel_type, int n2, int* vids2);
+
+    /**
+     Post a if-then-else relation constraint between the IntVars denoted by the vids.
+    */
+    void cst_ite_rel(int vid1, int vid2, int vid3, int vid4);
 
     /**
      Post the constraint that the n IntVars denoted by vids are distinct
@@ -609,6 +649,11 @@ public:
      Return the current values of the n variables denoted by vids.
      */
     int* values(int n, int* vids);
+
+    /**
+     Return the current values of the n variables denoted by vids.
+     */
+    int* values_bool(int n, int* vids);
 
     //======================
     //= Printing solutions =

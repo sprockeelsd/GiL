@@ -4,6 +4,8 @@
 
 (in-package :gil)
 
+(print "Loading gecode-wrapper...")
+
 (cffi::defcfun ("computation_space" new-space) :pointer
     "Create a new computation space."
 )
@@ -75,6 +77,22 @@
             collect (cffi::mem-aref p :int i)))
 )
 
+(cffi::defcfun ("add_intVar_expr_val" add-int-var-expr-val) :int
+    "Add a IntVar representing the expression vid op val."
+    (sp :pointer)
+    (vid :int)
+    (op :int)
+    (val :int)
+)
+
+(cffi::defcfun ("add_intVar_expr_var" add-int-var-expr-var) :int
+    "Add a IntVar representing the expression vid1 op vid2."
+    (sp :pointer)
+    (vid1 :int)
+    (op :int)
+    (vid2 :int)
+)
+
 (cffi::defcfun ("set_solution_vars" set-solution-vars-aux) :void
     (sp :pointer)
     (n :int)
@@ -104,6 +122,14 @@
 (defparameter gil::IRT_LE 3)    ; Strictly lower
 (defparameter gil::IRT_GQ 4)    ; Greater or equal
 (defparameter gil::IRT_GR 5)    ; Strictly greater
+
+;IntVar operation flags
+(defparameter gil::IOP_ADD 0)   ; Addition
+(defparameter gil::IOP_SUB 1)   ; Substraction
+(defparameter gil::IOP_MUL 2)   ; Multiplication
+(defparameter gil::IOP_DIV 3)   ; Division
+(defparameter gil::IOP_MOD 4)   ; Modulo
+
 
 (cffi::defcfun ("add_boolVar" add-bool-var-range) :int
     "Add a BoolVar ranging from l to h. Return the index to this BoolVar."
@@ -249,6 +275,15 @@
     (let ((x (cffi::foreign-alloc :int :initial-contents vids1))
           (y (cffi::foreign-alloc :int :initial-contents vids2)))
         (arr-arr-rel-aux sp (length vids1) x rel-type (length vids2) y))
+)
+
+(cffi::defcfun ("ite_rel" ite-rel) :void
+    "Post a if-then-else constraint."
+    (sp :pointer)
+    (vid1 :int)
+    (vid2 :int)
+    (vid3 :int)
+    (vid4 :int)
 )
 
 (cffi::defcfun ("distinct" distinct-aux) :void
@@ -1125,11 +1160,30 @@
     (vids :pointer)
 )
 
+
+(cffi::defcfun ("get_values_bool" get-values-bool-aux) :pointer
+    "Get the boolean values of the n variables denoted by vids."
+    (sp :pointer)
+    (n :int)
+    (vids :pointer)
+)
+
 (defun get-values (sp vids)
     "Print the values of the variables denoted by vids."
     (let ((x (cffi::foreign-alloc :int :initial-contents vids))
            p)
         (setq p (get-values-aux sp (length vids) x))
+        (loop for i from 0 below (length vids)
+            collect (cffi::mem-aref p :int i)))
+)
+
+(defun get-values-bool (sp vids)
+    "Print the boolean values of the variables denoted by vids."
+    (let (
+        (x (cffi::foreign-alloc :int :initial-contents vids))
+        p
+        )
+        (setq p (get-values-bool-aux sp (length vids) x))
         (loop for i from 0 below (length vids)
             collect (cffi::mem-aref p :int i)))
 )

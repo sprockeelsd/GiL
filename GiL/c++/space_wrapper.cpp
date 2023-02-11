@@ -101,12 +101,12 @@ IntArgs WSpace::int_args(int n, int* vals) {
 */
 BoolVar WSpace::bool_expr_val(int vid, int int_rel, int val) {
     switch(int_rel) {
-        case B_EQ: return expr(*this, get_int_var(vid) == val);
-        case B_NQ: return expr(*this, get_int_var(vid) != val);
-        case B_LE: return expr(*this, get_int_var(vid) < val);
-        case B_LQ: return expr(*this, get_int_var(vid) <= val);
-        case B_GQ: return expr(*this, get_int_var(vid) >= val);
-        case B_GR: return expr(*this, get_int_var(vid) > val);
+        case IRT_EQ: return expr(*this, get_int_var(vid) == val);
+        case IRT_NQ: return expr(*this, get_int_var(vid) != val);
+        case IRT_LE: return expr(*this, get_int_var(vid) < val);
+        case IRT_LQ: return expr(*this, get_int_var(vid) <= val);
+        case IRT_GQ: return expr(*this, get_int_var(vid) >= val);
+        case IRT_GR: return expr(*this, get_int_var(vid) > val);
         default:
             cout << "Wrong expression type in BoolVar creation." << endl;
             return BoolVar();
@@ -118,15 +118,48 @@ BoolVar WSpace::bool_expr_val(int vid, int int_rel, int val) {
 */
 BoolVar WSpace::bool_expr_var(int vid1, int int_rel, int vid2) {
     switch(int_rel) {
-        case B_EQ: return expr(*this, get_int_var(vid1) == get_int_var(vid2));
-        case B_NQ: return expr(*this, get_int_var(vid1) != get_int_var(vid2));
-        case B_LE: return expr(*this, get_int_var(vid1) < get_int_var(vid2));
-        case B_LQ: return expr(*this, get_int_var(vid1) <= get_int_var(vid2));
-        case B_GQ: return expr(*this, get_int_var(vid1) >= get_int_var(vid2));
-        case B_GR: return expr(*this, get_int_var(vid1) > get_int_var(vid2));
+        case IRT_EQ: return expr(*this, get_int_var(vid1) == get_int_var(vid2));
+        case IRT_NQ: return expr(*this, get_int_var(vid1) != get_int_var(vid2));
+        case IRT_LE: return expr(*this, get_int_var(vid1) < get_int_var(vid2));
+        case IRT_LQ: return expr(*this, get_int_var(vid1) <= get_int_var(vid2));
+        case IRT_GQ: return expr(*this, get_int_var(vid1) >= get_int_var(vid2));
+        case IRT_GR: return expr(*this, get_int_var(vid1) > get_int_var(vid2));
         default:
             cout << "Wrong expression type in BoolVar creation." << endl;
             return BoolVar();
+    }
+}
+
+
+/**
+ Return the expression int_rel(vid int_op val)
+*/
+IntVar WSpace::int_expr_val(int vid, int int_op, int val) {
+    switch(int_op) {
+        case IOP_ADD: return expr(*this, get_int_var(vid) + val);
+        case IOP_SUB: return expr(*this, get_int_var(vid) - val);
+        case IOP_MUL: return expr(*this, get_int_var(vid) * val);
+        case IOP_DIV: return expr(*this, get_int_var(vid) / val);
+        case IOP_MOD: return expr(*this, get_int_var(vid) % val);
+        default:
+            cout << "Wrong expression type in IntVar creation." << endl;
+            return IntVar();
+    }
+}
+
+/**
+ Return the expression vid1 int_op vid2
+*/
+IntVar WSpace::int_expr_var(int vid1, int int_op, int vid2) {
+    switch(int_op) {
+        case IOP_ADD: return expr(*this, get_int_var(vid1) + get_int_var(vid2));
+        case IOP_SUB: return expr(*this, get_int_var(vid1) - get_int_var(vid2));
+        case IOP_MUL: return expr(*this, get_int_var(vid1) * get_int_var(vid2));
+        case IOP_DIV: return expr(*this, get_int_var(vid1) / get_int_var(vid2));
+        case IOP_MOD: return expr(*this, get_int_var(vid1) % get_int_var(vid2));
+        default:
+            cout << "Wrong expression type in IntVar creation." << endl;
+            return IntVar();
     }
 }
 
@@ -177,6 +210,26 @@ int* WSpace::add_intVarArrayWithDom(int n, int s, int* dom) {
     for(int i = 0; i < n; i++)
         vids[i] = this->add_intVarWithDom(s, dom);
     return vids;
+}
+
+/**
+ Add a IntVar to the WSpace corresponding to the evaluation of int_rel(vid, val).
+ In practice, push a new IntVar at the end of the vector int_vars.
+ Return the index of the IntVar in int_vars
+ */
+int WSpace::add_intVar_expr_val(int vid, int int_rel, int val) {
+    int_vars.push_back(int_expr_val(vid, int_rel, val));
+    return i_size++;
+}
+
+/**
+ Add a IntVar to the WSpace corresponding to the evaluation of int_rel(vid1, vid2).
+ In practice, push a new IntVar at the end of the vector int_vars.
+ Return the index of the IntVar in int_vars
+ */
+int WSpace::add_intVar_expr_var(int vid1, int int_rel, int vid2) {
+    int_vars.push_back(int_expr_var(vid1, int_rel, vid2));
+    return i_size++;
 }
 
 /**
@@ -330,6 +383,13 @@ void WSpace::cst_arr_rel(int n, int* vids, int rel_type) {
 */
 void WSpace::cst_arr_arr_rel(int n1, int* vids1, int rel_type, int n2, int* vids2) {
     rel(*this, int_var_args(n1, vids1), (IntRelType) rel_type, int_var_args(n2, vids2));
+}
+
+/**
+ Post a if-then-else relation constraint between the IntVars denoted by the vids.
+ */
+void WSpace::cst_ite_rel(int vid1, int vid2, int vid3, int vid4) {
+    ite(*this, get_bool_var(vid1), get_int_var(vid2), get_int_var(vid3), get_int_var(vid4));
 }
 
 /**
@@ -752,23 +812,8 @@ void WSpace::cst_element(int set_op, int n, int* vids, int vid1, int vid2){
  This is a virtual method as declared in space_wrapper.h
 */
 void WSpace::constrain(const Space& _b) {
-    const WSpace& b = static_cast<const WSpace&>(_b);
-
-    SetVarArgs bvars(b.var_sol_size);
-    for(int i = 0; i < b.var_sol_size; i++)
-        bvars[i] = (b.set_vars).at((b.solution_variable_indexes)[i]);
-
-    SetVarArgs vars(b.var_sol_size);
-    for(int i = 0; i < b.var_sol_size; i++)
-        vars[i] = (set_vars).at((solution_variable_indexes)[i]);
-
-    for(int i=0; i<b.var_sol_size; i++){
-      if((rand()%100)< b.percent_diff){
-	    SetVar tmp(bvars[i]);
-	    rel(*this,(vars[i] != tmp) );
-      }
-    }
-  }
+    // TODO: this function is applied when a solution is found with the BAB search
+}
 
 //==========================
 //= Exploration strategies =
@@ -968,7 +1013,26 @@ int WSpace::value_size(int vid) {
 int* WSpace::values(int n, int* vids) {
     int* vals = new int[n];
     for(int i = 0; i < n; i++)
-        vals[i] = get_int_var(vids[i]).val();
+        vals[i] = value(vids[i]);
+    return vals;
+}
+
+/**
+ * WARNING: Does not work and seems to returns the wrong values because of wrong ids
+ * Try to return the current boolean values of the n variables denoted by vids.
+ */
+int* WSpace::values_bool(int n, int* vids) {
+    int* vals = new int[n];
+    for(int i = 0; i < 2; i++){
+        try
+        {
+            vals[i] = value_bool(vids[i]);
+        }
+        catch(const std::exception& e)
+        {
+            vals[i] = 666;
+        }
+    }
     return vals;
 }
 

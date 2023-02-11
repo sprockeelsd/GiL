@@ -37,6 +37,20 @@ int* add_intVarArrayWithDom(void* sp, int n, int s, int* dom) {
 }
 
 /**
+ Wraps the WSpace add_intVar_expr_val method.
+ */
+int add_intVar_expr_val(void* sp, int vid, int op, int val) {
+    return static_cast<WSpace*>(sp)->add_intVar_expr_val(vid, op, val);
+}
+
+/**
+ Wraps the WSpace add_intVar_expr_var method.
+ */
+int add_intVar_expr_var(void* sp, int vid1, int op, int vid2) {
+    return static_cast<WSpace*>(sp)->add_intVar_expr_var(vid1, op, vid2);
+}
+
+/**
  Wraps the WSpace set_as_solution_variables method.
  */
 void set_solution_vars(void* sp, int n, int* vids){
@@ -153,6 +167,13 @@ void arr_arr_rel(void* sp, int n1, int* vids1, int rel_type, int n2, int* vids2)
 }
 
 /**
+ Wraps the WSpace cst_ite_rel method.
+ */
+void ite_rel(void* sp, int vid1, int vid2, int vid3, int vid4) {
+    return static_cast<WSpace*>(sp)->cst_ite_rel(vid1, vid2, vid3, vid4);
+}
+
+/**
  Wraps the WSpace cst_distinct method.
  */
 void distinct(void* sp, int n, int* vids) {
@@ -181,7 +202,7 @@ void arithmetics_abs(void* sp, int vid1, int vid2) {
 }
 
 /**
- Wraps the WSpace acst_div method.
+ Wraps the WSpace cst_div method.
  */
 void arithmetics_div(void* sp, int vid1, int vid2, int vid3) {
     return static_cast<WSpace*>(sp)->cst_div(vid1, vid2, vid3);
@@ -674,21 +695,21 @@ int get_value(void* sp, int vid) {
 }
 
 /**
- Wraps the WSpace value method.
+ Wraps the WSpace value_bool method.
  */
 int get_value_bool(void* sp, int vid) {
     return static_cast<WSpace*>(sp)->value_bool(vid);
 }
 
 /**
- Wraps the WSpace value method.
+ Wraps the WSpace value_set method.
  */
 int* get_value_set(void* sp, int vid, int n) {
     return static_cast<WSpace*>(sp)->value_set(vid, n);
 }
 
 /**
- Wraps the WSpace value method.
+ Wraps the WSpace value_size method.
  */
 int get_value_size(void* sp, int vid) {
     return static_cast<WSpace*>(sp)->value_size(vid);
@@ -699,6 +720,13 @@ int get_value_size(void* sp, int vid) {
  */
 int* get_values(void* sp, int n, int* vids) {
     return static_cast<WSpace*>(sp)->values(n, vids);
+}
+
+/**
+ Wraps the WSpace values_bool method.
+ */
+int* get_values_bool(void* sp, int n, int* vids) {
+    return static_cast<WSpace*>(sp)->values_bool(n, vids);
 }
 
 /**
