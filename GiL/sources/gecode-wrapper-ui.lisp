@@ -94,6 +94,10 @@
 ;id getter
 (defmethod vid ((self set-var)) (id self))
 
+(defmethod vid ((self list))
+    "Gets the vids of the variables in self"
+    (loop for v in self collect (vid v)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Methods for int constraints ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -247,6 +251,10 @@
 
 (defmethod g-count-array (sp vars (c list) rel-type (val fixnum)); ajouté
     (count-array-val sp (vid vars) c rel-type val)
+)
+
+(defmethod g-count-setvararray (sp (sva1 list) (sva2 list) (val fixnum)); added for melodizer-rock
+    (count-setvararray-val sp (vid sva1) (vid sva2) SRT_EQ val)
 )
 
 ;SEQUENCE

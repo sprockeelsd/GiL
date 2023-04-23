@@ -422,6 +422,11 @@ public:
     void cst_count_array_val(int n, int*vids, int* c, int rel_type, int val);
 
     /**
+    Post the constraint that vids1[i] rel_type vids2[i] val% of the time
+    */
+    void cst_count_setvararray_val(int n, int* vids1, int* vids2, int rel_type, int val);
+
+    /**
      Post the constraint that the number of occurences of s-set in every subsequence of length
      val1 in vids must be higher than val2 and lower than val3
      */

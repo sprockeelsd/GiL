@@ -623,6 +623,22 @@
             (count-array-val-aux sp (length vids) x y rel-type val))
 )
 
+(cffi::defcfun ("count_setvararray_val" count-setvararray-val-aux) :void
+    (sp :pointer)
+    (n :int)
+    (vids1 :pointer)
+    (vids2 :pointer)
+    (rel-type :int)
+    (val :int)
+)
+
+(defun count-setvararray-val (sp vids1 vids2 rel-type val)
+    "Post the constraint that the number of times that vids1[i] rel-type vids2[i] >= val"
+    (let ((x (cffi::foreign-alloc :int :initial-contents vids1))
+            (y (cffi::foreign-alloc :int :initial-contents vids2)))
+        (count-setvararray-val-aux sp (min (length vids1) (length vids2)) x y rel-type val))
+)
+
 (cffi::defcfun ("sequence_var" sequence-var-aux) :void
     "Post the constraint that the number of occurences of s-set in every subsequence of length
     val1 in vids must be higher than val2 and lower than val3"
