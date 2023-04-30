@@ -827,7 +827,22 @@ void WSpace::cst_element(int set_op, int n, int* vids, int vid1, int vid2){
  This is a virtual method as declared in space_wrapper.h
 */
 void WSpace::constrain(const Space& _b) {
-    // TODO: this function is applied when a solution is found with the BAB search
+    const WSpace& b = static_cast<const WSpace&>(_b);
+
+    SetVarArgs bvars(b.var_sol_size);
+    for(int i = 0; i < b.var_sol_size; i++)
+        bvars[i] = (b.set_vars).at((b.solution_variable_indexes)[i]);
+
+    SetVarArgs vars(b.var_sol_size);
+    for(int i = 0; i < b.var_sol_size; i++)
+        vars[i] = (set_vars).at((solution_variable_indexes)[i]);
+
+    for(int i=0; i<b.var_sol_size; i++){
+      if((rand()%100)< b.percent_diff){
+	    SetVar tmp(bvars[i]);
+	    rel(*this,(vars[i] != tmp) );
+      }
+    }
 }
 
 //==========================
