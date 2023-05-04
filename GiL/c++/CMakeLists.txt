@@ -16,6 +16,6 @@ include_directories(/Library/Frameworks/Gecode.framework/Headers)
 include_directories(${GECODE_INCLUDE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/headers)
 # Create the dynamic library and link to the Gecode library
-set(MY_HEADERS headers/gecode_wrapper.hpp headers/space_wrapper.hpp)
+set(MY_HEADERS headers/gecode_wrapper.hpp headers/space_wrapper.hpp space_wrapper.cpp)
 add_library(damien ${MY_HEADERS} gecode_wrapper.cpp)
 target_link_libraries(damien ${GECODE_LIBRARY})

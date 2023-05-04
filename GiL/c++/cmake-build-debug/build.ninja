@@ -49,6 +49,13 @@ cmake_ninja_workdir = /Users/sprockeelsd/Documents/GiL/GiL/c++/cmake-build-debug
 
 build cmake_object_order_depends_target_damien: phony || CMakeFiles/damien.dir
 
+build CMakeFiles/damien.dir/space_wrapper.cpp.o: CXX_COMPILER__damien_Debug /Users/sprockeelsd/Documents/GiL/GiL/c++/space_wrapper.cpp || cmake_object_order_depends_target_damien
+  DEP_FILE = CMakeFiles/damien.dir/space_wrapper.cpp.o.d
+  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -fcolor-diagnostics -F/Library/Frameworks  -std=gnu++11
+  INCLUDES = -I/Library/Frameworks/Gecode.framework/Headers -I/Users/sprockeelsd/Documents/GiL/GiL/c++/headers
+  OBJECT_DIR = CMakeFiles/damien.dir
+  OBJECT_FILE_DIR = CMakeFiles/damien.dir
+
 build CMakeFiles/damien.dir/gecode_wrapper.cpp.o: CXX_COMPILER__damien_Debug /Users/sprockeelsd/Documents/GiL/GiL/c++/gecode_wrapper.cpp || cmake_object_order_depends_target_damien
   DEP_FILE = CMakeFiles/damien.dir/gecode_wrapper.cpp.o.d
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -fcolor-diagnostics -F/Library/Frameworks  -std=gnu++11
@@ -64,7 +71,7 @@ build CMakeFiles/damien.dir/gecode_wrapper.cpp.o: CXX_COMPILER__damien_Debug /Us
 #############################################
 # Link the static library libdamien.a
 
-build libdamien.a: CXX_STATIC_LIBRARY_LINKER__damien_Debug CMakeFiles/damien.dir/gecode_wrapper.cpp.o
+build libdamien.a: CXX_STATIC_LIBRARY_LINKER__damien_Debug CMakeFiles/damien.dir/space_wrapper.cpp.o CMakeFiles/damien.dir/gecode_wrapper.cpp.o
   ARCH_FLAGS = -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk
   LANGUAGE_COMPILE_FLAGS = -g
   OBJECT_DIR = CMakeFiles/damien.dir
