@@ -20,12 +20,17 @@ using namespace Gecode::Search;
 class WSpace: public Space {
 protected:
     IntVarArray vars;
+    int size;
 
 public:
     /**
      Default constructor
      */
     WSpace();
+
+    int* return_solution();
+
+    int getSize();
 
     WSpace(WSpace &s);
 
@@ -42,7 +47,7 @@ class WdfsEngine {
 protected:
     DFS<WSpace>* dfs;
 public:
-    WdfsEngine(WSpace* sp, Options opts);
+    WdfsEngine(WSpace* sp);
     ~WdfsEngine();
 
     /**

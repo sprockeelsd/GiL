@@ -29,10 +29,14 @@ enum {
  */
 void* computation_space();
 
+int get_size(void* sp);
+
+int* return_solution(void* sp);
+
 /**
  Wraps the WdfsEngine constructor.
  */
-void* new_dfs_engine(void* sp, void* opts);
+void* new_dfs_engine(void* sp);
 
 /**
  Wraps the WdfsEngine next method.

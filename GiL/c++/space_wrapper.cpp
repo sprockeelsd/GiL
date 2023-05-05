@@ -18,16 +18,22 @@ To Print value to a file :
 /**
  Default constructor
  */
-WSpace::WSpace() {
+WSpace::WSpace() : vars(*this, 3,1,4){
+    distinct(*this, vars);
+    branch(*this, vars, INT_VAR_SIZE_MIN(), INT_VAL_MIN());
 }
 
-//==================
-//= Search support =
-//==================
+int WSpace::getSize(){
+    return size;
+}
 
-/**
- Define which variable, denoted by vid, will be considered as the cost.
- */
+int* WSpace::return_solution(){
+    int* solution = new int[size];
+    for(int i = 0; i < size; i++){
+        solution[i] = vars[i].val();
+    }
+    return solution;
+}
 
 WSpace::WSpace(WSpace& s): Space(s){
     //IntVars update
@@ -38,15 +44,12 @@ Space* WSpace::copy(void) {
     return new WSpace(*this);
 }
 
-//=================
-//= Search engine =
-//=================
+/**=================
+   = Search engine =
+   =================*/
 
-/*
- Depth-first search
-*/
-WdfsEngine::WdfsEngine(WSpace* sp, Options opts) {
-    dfs = new DFS<WSpace>(sp, opts);
+WdfsEngine::WdfsEngine(WSpace* sp) {
+    dfs = new DFS<WSpace>(sp);
 }
 
 WdfsEngine::~WdfsEngine() {

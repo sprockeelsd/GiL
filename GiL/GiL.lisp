@@ -23,4 +23,3 @@
 
 
 (compile&load (make-pathname :directory (pathname-directory *gecode-sources-dir*) :name "gecode-wrapper" :type "lisp"))
-(compile&load (make-pathname :directory (pathname-directory *gecode-sources-dir*) :name "gecode-wrapper-ui" :type "lisp"))
