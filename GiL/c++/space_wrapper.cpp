@@ -829,18 +829,21 @@ void WSpace::cst_element(int set_op, int n, int* vids, int vid1, int vid2){
 void WSpace::constrain(const Space& _b) {
     const WSpace& b = static_cast<const WSpace&>(_b);
 
-    SetVarArgs bvars(b.var_sol_size);
+    IntVarArgs bvars(b.var_sol_size);
     for(int i = 0; i < b.var_sol_size; i++)
-        bvars[i] = (b.set_vars).at((b.solution_variable_indexes)[i]);
+        bvars[i] = (b.int_vars).at((b.solution_variable_indexes)[i]);
 
-    SetVarArgs vars(b.var_sol_size);
+    IntVarArgs vars(b.var_sol_size);
     for(int i = 0; i < b.var_sol_size; i++)
-        vars[i] = (set_vars).at((solution_variable_indexes)[i]);
+        vars[i] = (int_vars).at((solution_variable_indexes)[i]);
 
     for(int i=0; i<b.var_sol_size; i++){
       if((rand()%100)< b.percent_diff){
-	    SetVar tmp(bvars[i]);
-	    rel(*this,(vars[i] != tmp) );
+        IntVar tmp(bvars[i]);
+        if(tmp.val()!= -1){
+            rel(*this,(vars[i] != tmp));
+        }
+        
       }
     }
 }
