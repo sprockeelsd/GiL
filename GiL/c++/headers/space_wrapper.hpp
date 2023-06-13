@@ -5,6 +5,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <exception>
+
 #include "gecode/kernel.hh"
 #include "gecode/int.hh"
 #include "gecode/search.hh"
@@ -18,22 +19,27 @@ using namespace std;
 using namespace Gecode::Search;
 
 
-void writeToLogFile(const char* message);
+/*************************
+ * Problem class methods *
+ *************************/
 
-class WSpace: public Space {
+/**
+ * Problem class. This class represents a problem
+ */
+class Problem: public Space {
 protected:
     IntVarArray vars;
     int size;
 
 public:
 
-    WSpace(int size);
+    Problem(int size);
 
     int getSize();
 
     int* return_solution();
 
-    WSpace(WSpace &s);
+    Problem(Problem &s);
 
     virtual Space *copy(void);
 
@@ -42,15 +48,19 @@ public:
 };
 
 
-/*
- * Search engine
- */
-DFS<WSpace>* make_dfs(WSpace* sp);
+/*************************
+ * Search engine methods *
+ *************************/
 
-WSpace* get_next_solution_space(DFS<WSpace>* dfs);
+DFS<Problem>* make_dfs(Problem* sp);
 
-//int* all_steps_at_once(WSpace* sp);
+Problem* get_next_solution_space(DFS<Problem>* dfs);
 
-//int* get_sol(WSpace* sp);
+
+/***********************
+ * Auxiliary functions *
+ ***********************/
+
+void writeToLogFile(const char* message);
 
 #endif

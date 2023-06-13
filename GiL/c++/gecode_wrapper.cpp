@@ -7,7 +7,7 @@
  * @return A pointer to a WSpace object casted as a void*
  */
 void* create_space(int size) {
-    return (void*) new WSpace(size);
+    return (void*) new Problem(size);
 }
 
 /**
@@ -16,7 +16,7 @@ void* create_space(int size) {
  * @return an integer representing the size of the problem
  */
 int get_size(void* sp){
-    return static_cast<WSpace*>(sp)->getSize();
+    return static_cast<Problem*>(sp)->getSize();
 }
 
 /**
@@ -25,7 +25,7 @@ int get_size(void* sp){
  * @return a int* pointer to an int* pointer representing the values of the variables
  */
 int* return_solution(void* sp){
-    return static_cast<WSpace*>(sp)->return_solution();
+    return static_cast<Problem*>(sp)->return_solution();
 }
 
 /**
@@ -34,7 +34,7 @@ int* return_solution(void* sp){
  * @return a void* pointer to a DFS<WSpace>* pointer
  */
 void* create_dfs(void* sp){
-    return (void*) make_dfs(static_cast<WSpace*>(sp));
+    return (void*) make_dfs(static_cast<Problem*>(sp));
 }
 
 /**
@@ -43,15 +43,5 @@ void* create_dfs(void* sp){
  * @return a void* pointer to a WSpace object
  */
 void* return_next_solution_space(void* dfs){
-    return (void*) get_next_solution_space(static_cast<DFS<WSpace>*>(dfs));
+    return (void*) get_next_solution_space(static_cast<DFS<Problem>*>(dfs));
 }
-
-
-//void* return_sol(void* sp){
-//    return (void*) get_sol(static_cast<WSpace*>(sp));
-//}
-//
-//void* return_all(void*sp){
-//    return (void*) all_steps_at_once(static_cast<WSpace*>(sp));
-//}
-

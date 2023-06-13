@@ -1,0 +1,2 @@
+- Handle errors when no solution or no more solution
+- Clean everything and make it clearer
