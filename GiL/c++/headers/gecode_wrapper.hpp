@@ -25,34 +25,43 @@ enum {
 };
 
 /**
- Wraps the WSpace constructor.
+ * Wraps the WSpace constructor.
+ * @param size an integer representing the size of the problem
+ * @return A pointer to a WSpace object casted as a void*
  */
-void* computation_space();
+void* create_space(int size);
 
+/**
+ * returns the size of the problem
+ * @param sp a void* pointer to a WSpace object
+ * @return an integer representing the size of the problem
+ */
 int get_size(void* sp);
 
-int* return_solution(void* sp);
+/**
+ * returns the values of the variables for a solution
+ * @param sp a void* pointer to a WSpace object
+ * @return a void* pointer to an int* pointer representing the values of the variables
+ */
+void* return_solution(void* sp);
 
 /**
- Wraps the WdfsEngine constructor.
+ * creates a dfs search engine for WSpace objects
+ * @param sp a void* pointer to a WSpace object
+ * @return a void* pointer to a DFS<WSpace>* pointer
  */
-void* new_dfs_engine(void* sp);
+void* create_dfs(void* sp);
 
 /**
- Wraps the WdfsEngine next method.
+ * returns the space of the next solution, it should be bound. If not, it will return NULL.
+ * @param dfs a void* pointer to a DFS<WSpace>* pointer for the search engine of the problem
+ * @return a void* pointer to a WSpace object
  */
-void* dfs_next(void* se);
-
-/**
- Wraps the WdfsEngine stopped method.
- */
-int dfs_stopped(void* se);
-
-/**
- Wraps the WSpace destructor.
- @todo Not sure whether to keep it or not
- */
-void release(void* sp);
+void* return_next_solution_space(void* dfs);
+//
+//void* return_sol(void* sp);
+//
+//void* return_all(void*sp);
 
 
 #ifdef __cplusplus

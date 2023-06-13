@@ -17,44 +17,40 @@ using namespace Gecode::Set;
 using namespace std;
 using namespace Gecode::Search;
 
+
+void writeToLogFile(const char* message);
+
 class WSpace: public Space {
 protected:
     IntVarArray vars;
     int size;
 
 public:
-    /**
-     Default constructor
-     */
-    WSpace();
 
-    int* return_solution();
+    WSpace(int size);
 
     int getSize();
+
+    int* return_solution();
 
     WSpace(WSpace &s);
 
     virtual Space *copy(void);
 
+    string toString();
+
 };
 
 
-//=================
-//= Search engine =
-//=================
+/*
+ * Search engine
+ */
+DFS<WSpace>* make_dfs(WSpace* sp);
 
-class WdfsEngine {
-protected:
-    DFS<WSpace>* dfs;
-public:
-    WdfsEngine(WSpace* sp);
-    ~WdfsEngine();
+WSpace* get_next_solution_space(DFS<WSpace>* dfs);
 
-    /**
-     Search the next solution for this search engine.
-     */
-    WSpace* next();
-    int stopped();
-};
+//int* all_steps_at_once(WSpace* sp);
+
+//int* get_sol(WSpace* sp);
 
 #endif
