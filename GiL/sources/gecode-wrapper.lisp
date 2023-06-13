@@ -34,6 +34,30 @@
     (dfs :pointer) ; a void* pointer to a DFS<WSpace>* pointer
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;
+;; Solution handling ;;
+;;;;;;;;;;;;;;;;;;;;;;;
+
+(cffi::defcfun ("return_solution" return-solution) :pointer
+    "Returns a int* that are the values of a solution."
+        (sp :pointer) ; a void* pointer to a WSpace object that is a solution of the problem
+)
+
+(defun solution-to-int-array (sp)
+    "Returns the values the variables have taken in the solution as a list of integers"
+    "sp is a pointer to a WSpace object that is a solution to the problem. Calling this funciton on a non-solution 
+        will result in undefined behavior."
+    (let* (
+            (size (get-size sp))
+            (ptr (return-solution sp))
+        )
+        (loop for i from 0 below size
+            collect (cffi::mem-aref ptr :int i)
+        )
+    )
+)
+
+
 
 
 

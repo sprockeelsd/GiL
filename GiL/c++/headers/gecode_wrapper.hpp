@@ -41,9 +41,9 @@ int get_size(void* sp);
 /**
  * returns the values of the variables for a solution
  * @param sp a void* pointer to a WSpace object
- * @return a void* pointer to an int* pointer representing the values of the variables
+ * @return a int* pointer to an int* pointer representing the values of the variables
  */
-void* return_solution(void* sp);
+int* return_solution(void* sp);
 
 /**
  * creates a dfs search engine for WSpace objects
