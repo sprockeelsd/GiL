@@ -51,4 +51,5 @@ void* return_next_solution_space(void* dfs);
 #ifdef __cplusplus
 };
 #endif
+
 #endif
