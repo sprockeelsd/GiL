@@ -16,12 +16,13 @@
 #include "gecode/set.hh"
 
 using namespace Gecode;
+using namespace Gecode::Search;
 using namespace std;
 
 /** Types of search engines */
 enum {
-    dfs,
-    bab,
+    dfs_solver, //0
+    bab_solver, //1
 };
 
 /*****************
@@ -71,15 +72,24 @@ public:
     virtual Space *copy(void);
 
     /**
+     * Constrain method for bab search
+     * @todo modify this function if you want to use branch and bound
+     * @param _b a space to constrain the current instance of the Problem class with upon finding a solution
+     */
+    virtual void constrain(const Space& _b);
+
+    /**
+     * Prints the solution in the console
+     */
+    void print_solution();
+
+    /**
      * toString method
      * @return a string representation of the current instance of the Problem class.
      * Right now, it returns a string "Problem object. size = <size>"
      * @todo modify this method to also print any additional attributes you add to the class
      */
     string toString();
-
-    void print_solution();
-
 };
 
 
@@ -88,20 +98,20 @@ public:
  *************************/
 
 /**
- * Creates a DFS engine for the given problem
+ * Creates a search engine for the given problem
  * @todo Modify this function to add search options etc
  * @param pb an instance of the Problem class representing a given problem
- * @param type the type of DFS engine to create
- * @return a DFS engine for the given problem
+ * @param type the type of search engine to create (see enumeration in headers/gecode_problem.hpp)
+ * @return a search engine for the given problem
  */
-DFS<Problem>* make_dfs(Problem* pb);
+Search::Base<Problem>* make_solver(Problem* pb, int type);
 
 /**
  * Returns the next solution space for the problem
- * @param dfs a DFS solver for the problem
+ * @param solver a solver for the problem
  * @return an instance of the Problem class representing the next solution to the problem
  */
-Problem* get_next_solution_space(DFS<Problem>* dfs);
+Problem* get_next_solution_space(Search::Base<Problem>* solver);
 
 
 /***********************

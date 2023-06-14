@@ -16,7 +16,7 @@ Problem::Problem(int s) {
     message += "size = " + to_string(size) + ".\n";
 
     // variable initialization
-    vars = IntVarArray(*this, size, 1, size);
+    vars = IntVarArray(*this, size, 1, 5);
 
     //constraints
     distinct(*this, vars);
@@ -73,6 +73,26 @@ Space* Problem::copy(void) {
 }
 
 /**
+ * Constrain method for bab search
+ * @todo modify this function if you want to use branch and bound
+ * @param _b a solution to the problem from which we wish to add a constraint for the next solutions
+ */
+void Problem::constrain(const Space& _b) {
+    const Problem &b = static_cast<const Problem &>(_b);
+    rel(*this, vars, IRT_GQ, 2);
+}
+
+/**
+ * Prints the solution in the console
+ */
+void Problem::print_solution(){
+    for(int i = 0; i < size; i++){
+        cout << vars[i].val() << " ";
+    }
+    cout << endl;
+}
+
+/**
  * toString method
  * @return a string representation of the current instance of the Problem class.
  * Right now, it returns a string "Problem object. size = <size>"
@@ -85,42 +105,39 @@ string Problem::toString(){
     return message;
 }
 
-void Problem::print_solution(){
-    for(int i = 0; i < size; i++){
-        cout << vars[i].val() << " ";
-    }
-    cout << endl;
-}
-
 /*************************
  * Search engine methods *
  *************************/
 
 /**
- * Creates a DFS engine for the given problem
+ * Creates a search engine for the given problem
  * @todo Modify this function to add search options etc
  * @param pb an instance of the Problem class representing a given problem
- * @return a DFS engine for the given problem
+ * @param type the type of search engine to create (see enumeration in headers/gecode_problem.hpp)
+ * @return a search engine for the given problem
  */
-DFS<Problem>* make_dfs(Problem* pb){
-    writeToLogFile("make_dfs function called.\n");
-    return new DFS<Problem>(pb);
+Search::Base<Problem>* make_solver(Problem* pb, int type){
+    string message = "make_solver function called. type of solver :\n" + to_string(type) + "\n";
+    writeToLogFile(message.c_str());
+    if (type == bab_solver)
+        return new BAB<Problem>(pb);
+    else // default case
+        return new DFS<Problem>(pb);
 }
 
 /**
  * Returns the next solution space for the problem
- * @param dfs a DFS solver for the problem
+ * @param solver a solver for the problem
  * @return an instance of the Problem class representing the next solution to the problem
  */
-Problem* get_next_solution_space(DFS<Problem>* dfs){
+Problem* get_next_solution_space(Search::Base<Problem>* solver){
     string message = "get_next_solution_space function called.\n";
-    Problem* sol_space = dfs->next();
-    if (sol_space == NULL)
+    Problem* sol_space = solver->next();
+    if (sol_space == nullptr)
         return NULL;
     message += sol_space->toString();
-    int* sol = sol_space->return_solution();
     writeToLogFile(message.c_str());
-    return sol_space; // WSpace* pointer
+    return sol_space;
 }
 
 /***********************

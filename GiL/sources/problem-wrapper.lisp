@@ -31,12 +31,12 @@
 (cffi::defcfun ("create_solver" create-solver) :pointer
     "Creates a DFS<Problem> object. Returns a void* cast of a DFS<Problem> object."
     (sp :pointer) ; a void* cast of a Problem*
-    (solver-type :int); an integer representing the type of the solver (see aboce)
+    (solver-type :int); an integer representing the type of the solver (see above)
 )
 
 (cffi::defcfun ("return_next_solution_space" return-next-solution-space) :pointer
     "Returns a pointer to the next solution of the problem. Returns a void* cast of a Problem*."
-    (dfs :pointer) ; a void* cast of a DFS<Problem>* pointer
+    (solver :pointer) ; a void* cast of a Base<Problem>* pointer
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;

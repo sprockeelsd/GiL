@@ -9,12 +9,12 @@ int main(int argc, char* argv[]) {
     Problem* p = new Problem(size);
 
     // create a new search engine
-    DFS<Problem>* e = make_dfs(p);
+    Search::Base<Problem>* e = make_solver(p, bab_solver);
     delete p;
 
     int nb_sol = 0;
 
-    while(Problem * pb = e->next()){
+    while(Problem * pb = get_next_solution_space(e)){
         nb_sol++;
         cout << "Solution " << nb_sol << ": " << endl;
         pb->print_solution();

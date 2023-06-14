@@ -1,9 +1,3 @@
-- Handle errors when no solution or no more solution
-- Clean everything and make it clearer
-- Add method for bab
-- Add arguments for domain bounds
-- Add a main to create and solve the problem in c++
-- Generalize the solver creating function to take an argument specifying the type of solver
-- Generalize the get-next-solution function to take any Search object
-- Add a get-next-sol or something function to the lisp part so there are only 3 functions : create the problem, create the solver, get the next solution directly as numbers
 - Handle null solutions in lisp so it doesn't throw an error
+- Add arguments for domain bounds
+- Add a get-next-sol or something function to the lisp part so there are only 3 functions : create the problem, create the solver, get the next solution directly as numbers
