@@ -8,6 +8,13 @@
 
 (defparameter DFS 0)
 (defparameter BAB 1)
+; corresponds to enum values in gecode_problem.h, but can be used graphically in om
+(defun bab ()
+    BAB
+)
+(defun dfs ()
+    DFS
+)
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Problem methods ;;
