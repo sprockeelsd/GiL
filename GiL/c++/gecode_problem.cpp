@@ -8,15 +8,19 @@
  * Constructor
  * @todo Modify this constructor depending on your problem. This constructor is where the problem is defined
  * @todo (variables, constraints, branching, ...)
- * @param size
+ * @param size the size of the array of variables
+ * @param l the lower bound of the domain of the variables
+ * @param u the upper bound of the domain of the variables
  */
-Problem::Problem(int s) {
+Problem::Problem(int s, int l, int u) {
     string message = "WSpace object created. ";
     size = s;
+    lower_bound_domain = l;
+    upper_bound_domain = u;
     message += "size = " + to_string(size) + ".\n";
 
     // variable initialization
-    vars = IntVarArray(*this, size, 1, 5);
+    vars = IntVarArray(*this, size, l, u);
 
     //constraints
     distinct(*this, vars);
@@ -34,6 +38,8 @@ Problem::Problem(int s) {
 Problem::Problem(Problem& s): Space(s){
     //IntVars update
     size = s.size;
+    lower_bound_domain = s.lower_bound_domain;
+    upper_bound_domain = s.upper_bound_domain;
     vars.update(*this, s.vars);
 }
 

@@ -34,6 +34,8 @@ protected:
     // solution related attributes
     IntVarArray vars; // The variables of interest
     int size; // The size of the variable array of interest
+    int lower_bound_domain;
+    int upper_bound_domain;
     /* @todo Add here any additional attributes you need to represent your problem (domain bounds, ...)*/
 
 public:
@@ -41,9 +43,11 @@ public:
      * Constructor
      * @todo Modify this constructor depending on your problem. This constructor is where the problem is defined
      * @todo (variables, constraints, branching, ...)
-     * @param size
+     * @param s the size of the array of variables
+     * @param l the lower bound of the domain of the variables
+     * @param u the upper bound of the domain of the variables
      */
-    Problem(int size);
+    Problem(int s, int l, int u);
 
     /**
      * Copy constructor

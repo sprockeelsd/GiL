@@ -16,6 +16,8 @@
 (cffi::defcfun ("create_new_problem" new-problem) :pointer
     "Creates a new instance of the problem. Returns a void* cast of a Problem*."
     (size :int) ; an integer representing the size
+    (lower-bound-domain :int) ; an integer representing the lower bound of the domain
+    (upper-bound-domain :int) ; an integer representing the upper bound of the domain
     ; TODO add here any additional arguments that your Problem constructor takes
 )
 
@@ -52,6 +54,9 @@
     "Returns the values the variables have taken in the solution as a list of integers. Casts a int* into a list of numbers."
     "sp is a void* cast of a Problem* that is a solution to the problem. Calling this funciton on a non-solution 
         will result in an error."
+        (if (cffi::null-pointer-p sp) ; TODO check
+            (error "No (more) solutions.")
+        )
     (let* (
             (size (get-size sp))
             (ptr (return-solution sp))
