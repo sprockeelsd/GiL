@@ -99,11 +99,22 @@ string Problem::toString(){
  * Search engine methods *
  *************************/
 
-DFS<Problem>* make_dfs(Problem* sp){
+/**
+ * Creates a DFS engine for the given problem
+ * @todo Modify this function to add search options etc
+ * @param pb an instance of the Problem class representing a given problem
+ * @return a DFS engine for the given problem
+ */
+DFS<Problem>* make_dfs(Problem* pb){
     writeToLogFile("make_dfs function called.\n");
-    return new DFS<Problem>(sp);
+    return new DFS<Problem>(pb);
 }
 
+/**
+ * Returns the next solution space for the problem
+ * @param dfs a DFS solver for the problem
+ * @return an instance of the Problem class representing the next solution to the problem
+ */
 Problem* get_next_solution_space(DFS<Problem>* dfs){
     string message = "get_next_solution_space function called.\n";
     Problem* sol_space = dfs->next();

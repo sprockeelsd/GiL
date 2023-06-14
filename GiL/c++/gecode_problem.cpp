@@ -1,4 +1,4 @@
-#include "headers/gecode_wrapper.hpp"
+#include "headers/gecode_problem.hpp"
 #include "headers/space_wrapper.hpp"
 
 /**

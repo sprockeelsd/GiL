@@ -80,8 +80,19 @@ public:
  * Search engine methods *
  *************************/
 
-DFS<Problem>* make_dfs(Problem* sp);
+/**
+ * Creates a DFS engine for the given problem
+ * @todo Modify this function to add search options etc
+ * @param pb an instance of the Problem class representing a given problem
+ * @return a DFS engine for the given problem
+ */
+DFS<Problem>* make_dfs(Problem* pb);
 
+/**
+ * Returns the next solution space for the problem
+ * @param dfs a DFS solver for the problem
+ * @return an instance of the Problem class representing the next solution to the problem
+ */
 Problem* get_next_solution_space(DFS<Problem>* dfs);
 
 
@@ -89,6 +100,10 @@ Problem* get_next_solution_space(DFS<Problem>* dfs);
  * Auxiliary functions *
  ***********************/
 
+/**
+ * Write a text into a log file
+ * @param message the text to write
+ */
 void writeToLogFile(const char* message);
 
 #endif
