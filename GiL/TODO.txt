@@ -1,1 +1,1 @@
-- Add a get-next-sol or something function to the lisp part so there are only 3 functions : create the problem, create the solver, get the next solution directly as numbers
+- Add the search options

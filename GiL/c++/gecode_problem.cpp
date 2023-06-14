@@ -1,8 +1,8 @@
 #include "headers/gecode_problem.hpp"
 
-/*************************
- * Problem class methods *
- *************************/
+/***********************************************************************************************************************
+ *                                          Problem class methods                                                      *
+ ***********************************************************************************************************************/
 
 /**
  * Constructor
@@ -17,7 +17,8 @@ Problem::Problem(int s, int l, int u) {
     size = s;
     lower_bound_domain = l;
     upper_bound_domain = u;
-    message += "size = " + to_string(size) + ".\n";
+    message += "size = " + to_string(size) +  " domain : [" + to_string(lower_bound_domain) + "," +
+            to_string(upper_bound_domain) + "].\n";
 
     // variable initialization
     vars = IntVarArray(*this, size, l, u);
@@ -102,11 +103,21 @@ void Problem::print_solution(){
  * toString method
  * @return a string representation of the current instance of the Problem class.
  * Right now, it returns a string "Problem object. size = <size>"
+ * If a variable is not assigned when this function is called, it writes <not assigned> instead of the value
  * @todo modify this method to also print any additional attributes you add to the class
  */
 string Problem::toString(){
     string message = "Problem object. \n";
-    message += "size = " + to_string(size) + "\n";
+    message += "size = " + to_string(size) + "\n" + "lower bound for the domain : " +
+            to_string(lower_bound_domain) + "\n" + "upper bound for the domain : " + to_string(upper_bound_domain)
+             + "\n" + "current values for vars: [";
+    for(int i = 0; i < size; i++){
+        if (vars[i].assigned())
+            message += to_string(vars[i].val()) + " ";
+        else
+            message += "<not assigned> ";
+    }
+    message += "]\n\n";
     writeToLogFile(message.c_str());
     return message;
 }
@@ -125,10 +136,14 @@ string Problem::toString(){
 Search::Base<Problem>* make_solver(Problem* pb, int type){
     string message = "make_solver function called. type of solver :\n" + to_string(type) + "\n";
     writeToLogFile(message.c_str());
+
+    Gecode::Search::Options opts;
+    /**@todo add here any options you want*/
+
     if (type == bab_solver)
-        return new BAB<Problem>(pb);
+        return new BAB<Problem>(pb, opts);
     else // default case
-        return new DFS<Problem>(pb);
+        return new DFS<Problem>(pb, opts);
 }
 
 /**

@@ -36,7 +36,7 @@ protected:
     int size; // The size of the variable array of interest
     int lower_bound_domain;
     int upper_bound_domain;
-    /* @todo Add here any additional attributes you need to represent your problem (domain bounds, ...)*/
+    /* @todo Add here any additional attributes you need to represent your problem */
 
 public:
     /**
@@ -91,6 +91,7 @@ public:
      * toString method
      * @return a string representation of the current instance of the Problem class.
      * Right now, it returns a string "Problem object. size = <size>"
+     * If a variable is not assigned when this function is called, it writes <not assigned> instead of the value
      * @todo modify this method to also print any additional attributes you add to the class
      */
     string toString();
