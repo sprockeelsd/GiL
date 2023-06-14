@@ -19,30 +19,58 @@ using namespace std;
 using namespace Gecode::Search;
 
 
-/*************************
- * Problem class methods *
- *************************/
-
-/**
- * Problem class. This class represents a problem
- */
+/*****************
+ * Problem class *
+ *****************/
+ // This class represents a constraint problem to be solved
 class Problem: public Space {
 protected:
-    IntVarArray vars;
-    int size;
+    // solution related attributes
+    IntVarArray vars; // The variables of interest
+    int size; // The size of the variable array of interest
+    // @todo Add here any additional attributes you need to represent your problem (domain bounds, ...)
 
 public:
-
+    /**
+     * Constructor
+     * @todo Modify this constructor depending on your problem. This constructor is where the problem is defined
+     * @todo (variables, constraints, branching, ...)
+     * @param size
+     */
     Problem(int size);
 
-    int getSize();
-
-    int* return_solution();
-
+    /**
+     * Copy constructor
+     * @param s an instance of the Problem class
+     * @todo modify this copy constructor to also copy any additional attributes you add to the class
+     */
     Problem(Problem &s);
 
+    /**
+     * Returns the size of the problem
+     * @return an integer representing the size of the vars array
+     */
+    int getSize();
+
+    /**
+     * Returns the values taken by the variables vars in a solution
+     * @todo Modify this to return the solution for your problem. This function uses @param size to generate an array of integers
+     * @return an array of integers representing the values of the variables in a solution
+     */
+    int* return_solution();
+
+    /**
+     * Copy method
+     * @return a copy of the current instance of the Problem class. Calls the copy constructor
+     */
     virtual Space *copy(void);
 
+    /**
+     * toString method
+     * @return a string representation of the current instance of the Problem class.
+     * Right now, it returns a string "Problem object. size = <size>"
+     * @todo modify this method to also print any additional attributes you add to the class
+     */
     string toString();
 
 };
