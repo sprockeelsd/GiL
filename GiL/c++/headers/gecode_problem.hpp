@@ -1,70 +1,109 @@
-#ifndef gecode_wrapper_hpp
-#define gecode_wrapper_hpp
+#ifndef space_wrapper_hpp
+#define space_wrapper_hpp
 
+#include <vector>
+#include <iostream>
+#include <fstream>
 #include <stdlib.h>
+#include <string>
+#include <ctime>
+#include <exception>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "gecode/kernel.hh"
+#include "gecode/int.hh"
+#include "gecode/search.hh"
+#include "gecode/minimodel.hh"
+#include "gecode/set.hh"
 
-enum {
-    IRT_EQ,
-    IRT_NQ,
-    IRT_LQ,
-    IRT_LE,
-    IRT_GQ,
-    IRT_GR
+using namespace Gecode;
+using namespace std;
+
+
+/*****************
+ * Problem class *
+ *****************/
+ // This class represents a constraint problem to be solved
+class Problem: public Space {
+protected:
+    // solution related attributes
+    IntVarArray vars; // The variables of interest
+    int size; // The size of the variable array of interest
+    // @todo Add here any additional attributes you need to represent your problem (domain bounds, ...)
+
+public:
+    /**
+     * Constructor
+     * @todo Modify this constructor depending on your problem. This constructor is where the problem is defined
+     * @todo (variables, constraints, branching, ...)
+     * @param size
+     */
+    Problem(int size);
+
+    /**
+     * Copy constructor
+     * @param s an instance of the Problem class
+     * @todo modify this copy constructor to also copy any additional attributes you add to the class
+     */
+    Problem(Problem &s);
+
+    /**
+     * Returns the size of the problem
+     * @return an integer representing the size of the vars array
+     */
+    int getSize();
+
+    /**
+     * Returns the values taken by the variables vars in a solution
+     * @todo Modify this to return the solution for your problem. This function uses @param size to generate an array of integers
+     * @return an array of integers representing the values of the variables in a solution
+     */
+    int* return_solution();
+
+    /**
+     * Copy method
+     * @return a copy of the current instance of the Problem class. Calls the copy constructor
+     */
+    virtual Space *copy(void);
+
+    /**
+     * toString method
+     * @return a string representation of the current instance of the Problem class.
+     * Right now, it returns a string "Problem object. size = <size>"
+     * @todo modify this method to also print any additional attributes you add to the class
+     */
+    string toString();
+
 };
 
-enum {
-    BOT_AND,
-    BOT_OR,
-    BOT_IMP,
-    BOT_EQV,
-    BOT_XOR
-};
+
+/*************************
+ * Search engine methods *
+ *************************/
 
 /**
- * Wraps the WSpace constructor.
- * @param size an integer representing the size of the problem
- * @return A pointer to a WSpace object casted as a void*
+ * Creates a DFS engine for the given problem
+ * @todo Modify this function to add search options etc
+ * @param pb an instance of the Problem class representing a given problem
+ * @return a DFS engine for the given problem
  */
-void* create_space(int size);
+DFS<Problem>* make_dfs(Problem* pb);
 
 /**
- * returns the size of the problem
- * @param sp a void* pointer to a WSpace object
- * @return an integer representing the size of the problem
+ * Returns the next solution space for the problem
+ * @param dfs a DFS solver for the problem
+ * @return an instance of the Problem class representing the next solution to the problem
  */
-int get_size(void* sp);
+Problem* get_next_solution_space(DFS<Problem>* dfs);
+
+
+/***********************
+ * Auxiliary functions *
+ ***********************/
 
 /**
- * returns the values of the variables for a solution
- * @param sp a void* pointer to a WSpace object
- * @return a int* pointer to an int* pointer representing the values of the variables
+ * Write a text into a log file
+ * @param message the text to write
  */
-int* return_solution(void* sp);
+void writeToLogFile(const char* message);
 
-/**
- * creates a dfs search engine for WSpace objects
- * @param sp a void* pointer to a WSpace object
- * @return a void* pointer to a DFS<WSpace>* pointer
- */
-void* create_dfs(void* sp);
-
-/**
- * returns the space of the next solution, it should be bound. If not, it will return NULL.
- * @param dfs a void* pointer to a DFS<WSpace>* pointer for the search engine of the problem
- * @return a void* pointer to a WSpace object
- */
-void* return_next_solution_space(void* dfs);
-//
-//void* return_sol(void* sp);
-//
-//void* return_all(void*sp);
-
-
-#ifdef __cplusplus
-};
-#endif
 #endif
