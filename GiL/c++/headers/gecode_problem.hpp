@@ -28,7 +28,7 @@ protected:
     // solution related attributes
     IntVarArray vars; // The variables of interest
     int size; // The size of the variable array of interest
-    // @todo Add here any additional attributes you need to represent your problem (domain bounds, ...)
+    /* @todo Add here any additional attributes you need to represent your problem (domain bounds, ...)*/
 
 public:
     /**
