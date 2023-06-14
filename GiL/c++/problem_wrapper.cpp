@@ -7,7 +7,7 @@
  * @param size an integer representing the size of the problem
  * @return A pointer to a Problem object casted as a void*
  */
-void* create_space(int size) {
+void* create_new_problem(int size) {
     return (void*) new Problem(size);
 }
 

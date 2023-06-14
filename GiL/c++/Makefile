@@ -6,6 +6,11 @@ so:
 dylib: problem_wrapper.cpp
 	g++  problem_wrapper.cpp gecode_problem.cpp -std=c++11 -dynamiclib -fPIC -F/Library/Frameworks -framework gecode -o ../sources/libgecode.dylib  -ffast-math -O3
 	install_name_tool -change gecode.framework/Versions/49/gecode /Library/Frameworks/gecode.framework/Versions/49/gecode ../sources/libgecode.dylib
+run_mac_os:
+	g++ -std=c++11 -F/Library/Frameworks -c gecode_problem.cpp Main.cpp
+	g++ -std=c++11 -F/Library/Frameworks -framework gecode -o Main gecode_problem.cpp Main.cpp
+	./Main
 
 clean:
 	rm -f *.o *.so *.dylib ../sources/*.so ../sources/*.dylib
+

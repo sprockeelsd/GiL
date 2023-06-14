@@ -18,6 +18,11 @@
 using namespace Gecode;
 using namespace std;
 
+/** Types of search engines */
+enum {
+    dfs,
+    bab,
+};
 
 /*****************
  * Problem class *
@@ -73,6 +78,8 @@ public:
      */
     string toString();
 
+    void print_solution();
+
 };
 
 
@@ -84,6 +91,7 @@ public:
  * Creates a DFS engine for the given problem
  * @todo Modify this function to add search options etc
  * @param pb an instance of the Problem class representing a given problem
+ * @param type the type of DFS engine to create
  * @return a DFS engine for the given problem
  */
 DFS<Problem>* make_dfs(Problem* pb);

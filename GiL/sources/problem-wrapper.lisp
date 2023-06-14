@@ -6,12 +6,15 @@
 
 (print "Loading gecode-wrapper...")
 
+(defparameter DFS 0)
+(defparameter BAB 1)
+
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Problem methods ;;
 ;;;;;;;;;;;;;;;;;;;;;
 
-(cffi::defcfun ("create_space" create-space) :pointer
-    "Creates a new computation space. Returns a void* cast of a Problem*."
+(cffi::defcfun ("create_new_problem" new-problem) :pointer
+    "Creates a new instance of the problem. Returns a void* cast of a Problem*."
     (size :int) ; an integer representing the size
     ; TODO add here any additional arguments that your Problem constructor takes
 )
@@ -25,9 +28,10 @@
 ;; Search engine methods ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(cffi::defcfun ("create_dfs" create-dfs) :pointer
+(cffi::defcfun ("create_solver" create-solver) :pointer
     "Creates a DFS<Problem> object. Returns a void* cast of a DFS<Problem> object."
     (sp :pointer) ; a void* cast of a Problem*
+    (solver-type :int); an integer representing the type of the solver (see aboce)
 )
 
 (cffi::defcfun ("return_next_solution_space" return-next-solution-space) :pointer

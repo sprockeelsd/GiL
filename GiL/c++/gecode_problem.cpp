@@ -16,7 +16,7 @@ Problem::Problem(int s) {
     message += "size = " + to_string(size) + ".\n";
 
     // variable initialization
-    vars = IntVarArray(*this, size, 1, 4);
+    vars = IntVarArray(*this, size, 1, size);
 
     //constraints
     distinct(*this, vars);
@@ -85,6 +85,13 @@ string Problem::toString(){
     return message;
 }
 
+void Problem::print_solution(){
+    for(int i = 0; i < size; i++){
+        cout << vars[i].val() << " ";
+    }
+    cout << endl;
+}
+
 /*************************
  * Search engine methods *
  *************************/
@@ -108,6 +115,8 @@ DFS<Problem>* make_dfs(Problem* pb){
 Problem* get_next_solution_space(DFS<Problem>* dfs){
     string message = "get_next_solution_space function called.\n";
     Problem* sol_space = dfs->next();
+    if (sol_space == NULL)
+        return NULL;
     message += sol_space->toString();
     int* sol = sol_space->return_solution();
     writeToLogFile(message.c_str());

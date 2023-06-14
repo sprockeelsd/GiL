@@ -7,18 +7,13 @@
 extern "C" {
 #endif
 
-enum {
-    BOT_AND,
-    BOT_OR,
-};
-
 /**
  * Wraps the Problem constructor.
  * @todo modify this to include any parameters your Problem constructor requires
  * @param size an integer representing the size of the problem
  * @return A pointer to a Problem object casted as a void*
  */
-void* create_space(int size);
+void* create_new_problem(int size);
 
 /**
  * returns the size of the problem
