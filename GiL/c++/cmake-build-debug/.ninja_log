@@ -1,6 +1,0 @@
-# ninja log v5
-741	789	1683212842381140000	libdamien.a	84b2be986c2e14e3
-1	697	1686745691228146112	CMakeFiles/damien.dir/problem_wrapper.cpp.o	f7f8f9936012e375
-0	703	1686745691230140230	CMakeFiles/damien.dir/main.cpp.o	8a96e4f86e47b9a5
-0	732	1686745691253911013	CMakeFiles/damien.dir/gecode_problem.cpp.o	aee159727f999c81
-732	878	1686745691418710000	libdamien.a	837ebcd4de1a8c2a
