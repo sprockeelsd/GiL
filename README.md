@@ -4,6 +4,9 @@ GiL (Gecode interface Lisp) is composed of two different projects : a framework 
 
 GiL is an open-source project, therefore any contributions are welcome. Please email me at damien.sprockeels@uclouvain.be if you wish to contribute.
 
+## Setup
+To use GiL, you need to install [Gecode](https://www.gecode.org/download.html), a Common Lisp implementation and [CFFI](https://cffi.common-lisp.dev).
+
 ## Gil Framework
 
 The framework version of GiL can be found in the GiL_Framework folder. As its name suggests, it is a framework for integrating constraint problems into Lisp code, with the goal of calling constraint problems written with Gecode directly in Lisp. Two folders are of interest when using this framework, as well as one Lisp library file.
@@ -41,23 +44,23 @@ This file calls the dynamic library functions using [CFFI](https://cffi.common-l
 The library version of GiL is a wrapper that allows to use Gecode functions in Lisp programs. It is far from complete but does provides enough tools to generate interesting CSPs in Common Lisp. It is the continuation of Baptiste Lapière's work (https://github.com/blapiere/GiL). 
 Features supported include Integer, Boolean and Set variables and arrays along with a variety of constraints for those types of variables, various branching strategies, depth-first-search and branch-and-bound search engines, several search options,...
 
-## How to use
+### Setup
 **Disclaimer : GiL currently only works on MacOS And Ubuntu (we haven't tested it on other linux distributions).**
 
 *For MacOS Users*
-Install [Gecode](https://www.gecode.org), a Common Lisp implementation and CFFI. Depending on what MacOS version you are using, you might run into a problem with the dynamic library not finding Gecode due to a relative path problem. If this is the case, there is a script **script.sh** in the c++ folder that should solve the problem. You should update the value for the relative and full path in the script, then run it. The problem should be gone after that. If you have an M1 chip, you will have to recompile the dynamic library. Instructions on how to do that can be found below.
+Depending on what MacOS version you are using, you might run into a problem with the dynamic library not finding Gecode due to a relative path problem. If this is the case, there is a script **script.sh** in the c++ folder that should solve the problem. You should update the value for the relative and full path in the script, then run it. The problem should be gone after that. If you have an M1 chip, you will have to recompile the dynamic library. Instructions on how to do that can be found below.
 
 *For Linux Users*
-Install Gecode, a Common Lisp implementation and CFFI. Add the path to your gecode installation folder (it looks like gecode-release-x.x.x) to LD_LIBRARY_PATH (help [here](https://stackoverflow.com/questions/13428910/how-to-set-the-environmental-variable-ld-library-path-in-linux)). That's it.
+Add the path to your gecode installation folder (it looks like gecode-release-x.x.x) to LD_LIBRARY_PATH (help [here](https://stackoverflow.com/questions/13428910/how-to-set-the-environmental-variable-ld-library-path-in-linux)). That's it.
 
 You are ready to load the library and use it! A small example problem is shown in the **Gil** pdf. The exact same problem is given in C++ and in Lisp.
 
 The library can only be used with [OpenMusic](https://openmusic-project.github.io/openmusic/) for now, but it shouldn't require too much effort to make it work outside of it in a Lisp environment.
 
-## Recompiling Gil
+### Recompiling Gil
 To recompile Gil in case of problem or after some modification you can use the makefile in Gil/C++, for MacOS use "make dylib" and for linux "make so". On MacOS, make sure your Gecode library is compiled for your processor if you have an M1 chip.
 
-## How to improve GiL
+### How to improve GiL
 The **Gil** pdf provides explanation on how to add features to GiL. Here is a (non-exhaustive) list of ideas to add : 
 
 - Adding the Limited Discrepancy and other search engine
@@ -66,7 +69,7 @@ The **Gil** pdf provides explanation on how to add features to GiL. Here is a (n
 
 Basically the long term goal is to support all Gecode features in GiL.
 
-## Known issues
+### Known issues
 - the g-value function currently only works for displaying integer variables
 - the Args variables are not supported which hurts the efficiency of the search for complex problems
 
