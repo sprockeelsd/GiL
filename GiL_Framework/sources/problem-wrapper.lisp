@@ -1,8 +1,8 @@
-(cl:defpackage "gil"
-  (:nicknames "GIL")
+(cl:defpackage "gilf"
+  (:nicknames "GILF")
    (:use common-lisp :cl-user :cl :cffi))
 
-(in-package :gil)
+(in-package :gilf)
 
 (print "Loading gecode-wrapper...")
 
