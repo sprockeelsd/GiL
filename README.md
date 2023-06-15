@@ -6,7 +6,10 @@ GiL is an open-source project, therefore any contributions are welcome. Please e
 
 ## Gil Framework
 
-The framework version of GiL can be found in the GiL_Framework folder. As its name suggests, it is a framework for integrating constraint problems into Lisp code, with the goal of calling constraint problems written with Gecodes directly in Lisp. Two folders are of interest when using this framework.
+The framework version of GiL can be found in the GiL_Framework folder. As its name suggests, it is a framework for integrating constraint problems into Lisp code, with the goal of calling constraint problems written with Gecodes directly in Lisp. Two folders are of interest when using this framework as well as one generic library file.
+
+### Gil_Framework.lisp
+This file defines the lisp library that is necessary to use GiL in OpenMusic. Though GiL is a Lisp library, it is a C++ framework and needs to be modified to model different problems. This file binds the dynamic library to the Lisp program, and compiles the problem-wrapper.lisp file described below.
 
 ### c++ folder
 
@@ -22,9 +25,16 @@ This file wraps the functions from the gecode_problem.cpp file into a dynamic li
 This file calls the functions from the gecode_problem.cpp file. It can be used to test the problem in c++ before testing it in Lisp, as it is easier to debug.
 
 ***Makefile***
-The makefile allows to compile and run the problem in command line, or to compile it into a dynamic library to be used in Lisp. The different targets are explained in the Makefile itself. A CMakeList also exists, though it might need modifications to run.
+The makefile allows to compile and run the problem in command line, or to compile it into a dynamic library to be used in Lisp. The different targets are explained in the Makefile itself. A CMakeList also exists, though it might need modifications to run. There is currently no dll target because OpenMusic on Windows does not support a 64 bit version of Lisp, making it incompatible with Gecode. However, it is fairly straightforward to compile the dynamic library for Windows as well.
 
 ### Sources folder
+This folder contains the Lisp part of the GiL framework. It is intended to be used in OpenMusic, but should be useable in other Lisp programs relatively easily.
+
+***libgecode.dylib/libgecode.so***
+These files are the dynamic library that is generated from the Gecode problem developped earlier. There is no .dll version for the reasons stated before.
+
+***problem-wrapper.lisp***
+This file calls the dynamic library functions using [CFFI](https://cffi.common-lisp.dev) to make the bridge between the C functions and Lisp. Very few modifications need to be done here, but functions that should be modified are marked by a TODO line in their specifications.
 
 
 ## GiL Library 
