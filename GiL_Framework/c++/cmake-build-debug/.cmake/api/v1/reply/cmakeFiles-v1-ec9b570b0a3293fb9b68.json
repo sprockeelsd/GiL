@@ -1163,8 +1163,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "/Users/sprockeelsd/OM/Libraries/GiL_Framework/c++/cmake-build-debug",
-		"source" : "/Users/sprockeelsd/OM/Libraries/GiL_Framework/c++"
+		"build" : "/Users/sprockeelsd/Documents/GiL/GiL_Framework/c++/cmake-build-debug",
+		"source" : "/Users/sprockeelsd/Documents/GiL/GiL_Framework/c++"
 	},
 	"version" : 
 	{

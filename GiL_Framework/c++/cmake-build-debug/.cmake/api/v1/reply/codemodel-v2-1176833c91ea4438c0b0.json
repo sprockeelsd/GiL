@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "damien::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-damien-Debug-4eed91d4e442dbd7ede6.json",
+					"jsonFile" : "target-damien-Debug-fe1434847b32e6356bd5.json",
 					"name" : "damien",
 					"projectIndex" : 0
 				}
@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/Users/sprockeelsd/OM/Libraries/GiL_Framework/c++/cmake-build-debug",
-		"source" : "/Users/sprockeelsd/OM/Libraries/GiL_Framework/c++"
+		"build" : "/Users/sprockeelsd/Documents/GiL/GiL_Framework/c++/cmake-build-debug",
+		"source" : "/Users/sprockeelsd/Documents/GiL/GiL_Framework/c++"
 	},
 	"version" : 
 	{
