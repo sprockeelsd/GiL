@@ -28,7 +28,7 @@ This file wraps the functions from the gecode_problem.cpp file into a dynamic li
 This file calls the functions from the gecode_problem.cpp file. It can be used to test the problem in c++ before using it in Lisp.
 
 ***Makefile***
-The makefile allows to compile and run the problem in command line, or to compile it into a dynamic library to be used in Lisp. The different targets are explained in the Makefile itself. A CMakeList also exists, though it might need modifications to run. There is currently no dll target because OpenMusic on Windows does not support a 64 bit version of Lisp, making it incompatible with Gecode. However, it is fairly straightforward to compile the dynamic library for Windows as well.
+The makefile allows to compile and run the problem in command line, or to compile it into a dynamic library to be used in Lisp. The different targets are explained in the Makefile itself. A CMakeList file also exists, though I don't use CMake so it might need modifications to run. There is currently no dll target because OpenMusic on Windows does not support a 64 bit version of Lisp, making it incompatible with Gecode. However, it is fairly straightforward to compile the dynamic library for Windows as well.
 
 ### Sources folder
 This folder contains the Lisp part of the GiL framework. It is intended to be used in OpenMusic, but should be useable in other Lisp programs relatively easily.
