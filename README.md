@@ -9,7 +9,9 @@ To use GiL, you need to install [Gecode](https://www.gecode.org/download.html), 
 
 ## Gil Framework
 
-The framework version of GiL can be found in the GiL_Framework folder. As its name suggests, it is a framework for integrating constraint problems into Lisp code, with the goal of calling constraint problems written with Gecode directly in Lisp. Two folders are of interest when using this framework, as well as one Lisp library file. The figure below illustrates the interactions between Gecode, the GiL framework and OpenMusic or other Common Lisp applications. ![General structure of the framework](GiL_Framework_structure.png){: style="width: 50%;"}
+The framework version of GiL can be found in the GiL_Framework folder. As its name suggests, it is a framework for integrating constraint problems into Lisp code, with the goal of calling constraint problems written with Gecode directly in Lisp. Two folders are of interest when using this framework, as well as one Lisp library file. The figure below illustrates the interactions between Gecode, the GiL framework and OpenMusic or other Common Lisp applications. 
+
+<img src="GiL_Framework_structure.png" alt="Alt Text" style="width:50%;">
 
 ### Gil_Framework.lisp
 This file defines the lisp library that is necessary to use GiL in OpenMusic. It binds the dynamic library (described below) to the Lisp program, and compiles the problem-wrapper.lisp file (described below).
