@@ -13,7 +13,7 @@ The framework version of GiL can be found in the GiL_Framework folder. As its na
 
 <p align="center">
   <img src="GiL_Framework_structure.png" alt="Alt Text" style="width:60%;">
-<\p>
+</p>
 
 ### Gil_Framework.lisp
 This file defines the lisp library that is necessary to use GiL in OpenMusic. It binds the dynamic library (described below) to the Lisp program, and compiles the problem-wrapper.lisp file (described below).
