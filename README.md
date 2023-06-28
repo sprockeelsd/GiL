@@ -43,6 +43,7 @@ These files are the dynamic library that is generated from the Gecode problem de
 ***problem-wrapper.lisp***
 This file calls the dynamic library functions using [CFFI](https://cffi.common-lisp.dev) to make the bridge between the C functions and Lisp. Very few modifications need to be done here, but functions that should be modified are marked by a TODO line in their specifications.
 
+Additionally,an example patch is given in OM that calls the GiL_Framework to solve the example CSP (TestProblemCreator.omp). 
 
 ## GiL Library 
 The library version of GiL is a wrapper that allows to use Gecode functions in Lisp programs. It is far from complete but does provides enough tools to generate interesting CSPs in Common Lisp. It is the continuation of Baptiste Lapière's work (https://github.com/blapiere/GiL). 
