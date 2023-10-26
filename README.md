@@ -28,6 +28,9 @@ This file contains the modelization of the problem, as well as the search engine
 ***problem_wrapper.cpp***
 This file wraps the functions from the gecode_problem.cpp file into a dynamic library. It is fairly straight-forward, and the in-file documentation should be more than enough to understand it.
 
+***Utilities.cpp***
+This file contains useful functions to print variables, cast vectors into pointers, etc.
+
 ***main.cpp*** 
 This file calls the functions from the gecode_problem.cpp file. It can be used to test the problem in c++ before using it in Lisp.
 
